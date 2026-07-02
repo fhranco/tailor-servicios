@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-type ServiceKey = 'reclutamiento' | 'gestion' | 'desarrollo' | 'busqueda';
+type ServiceKey = 'reclutamiento' | 'gestion' | 'desarrollo';
 
 const servicesData: Record<ServiceKey, any> = {
   reclutamiento: {
