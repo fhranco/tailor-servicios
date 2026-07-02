@@ -1,0 +1,130 @@
+/* SpecialProject.css */
+.special-project-section {
+  position: relative;
+  background-color: #ffffff; /* Color break against dark sections */
+  padding: 6rem 0; /* "Aire" / Breathing room */
+  overflow: hidden;
+}
+
+.sp-editorial-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .sp-editorial-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+  }
+}
+
+/* Image Column */
+.sp-image-col {
+  position: relative;
+  width: 100%;
+}
+
+.sp-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 400px;
+  max-height: 700px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.sp-parallax-img {
+  position: absolute;
+  top: -15%;
+  left: 0;
+  width: 100%;
+  height: 130%; /* Taller for parallax effect */
+  background-size: cover;
+  background-position: center;
+}
+
+/* Text Content Column */
+.sp-content-col {
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sp-content-inner {
+  max-width: 550px;
+}
+
+.sp-badge {
+  display: inline-block;
+  color: #be1622; /* Tailor Granate */
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #be1622;
+  padding-bottom: 0.2rem;
+}
+
+.sp-logo-wrapper {
+  margin-bottom: 1.5rem;
+}
+
+.sp-hotel-logo {
+  max-width: 180px;
+  height: auto;
+}
+
+.sp-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.2rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  color: var(--color-dark); /* Corporate dark text */
+  letter-spacing: 0.02em;
+}
+
+.sp-description {
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.8;
+  margin-bottom: 3rem;
+  color: var(--color-gray);
+}
+
+.sp-description strong {
+  color: var(--color-dark);
+  font-weight: 600;
+}
+
+/* Corporate Luxury CTA */
+.sp-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-dark);
+  color: #ffffff;
+  padding: 1rem 2.5rem;
+  border: 1px solid var(--color-dark);
+  font-family: var(--font-primary, system-ui, -apple-system, sans-serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.sp-cta-btn:hover {
+  background-color: #be1622;
+  border-color: #be1622;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(190, 22, 34, 0.4);
+}

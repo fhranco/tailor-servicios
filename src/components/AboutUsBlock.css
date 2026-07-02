@@ -1,0 +1,134 @@
+.about-section {
+  padding: 4rem 0;
+  background-color: var(--color-light);
+}
+
+.about-container {
+  position: relative;
+  min-height: 600px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 4rem;
+}
+
+/* Background image wrapper spanning the whole container */
+.about-image-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.about-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+/* Slight dark overlay on the background image to ensure contrast */
+.about-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.4);
+  z-index: 1;
+}
+
+/* Glassmorphism content block */
+.about-content.glass-panel {
+  position: relative;
+  z-index: 2;
+  width: 50%;
+  padding: 3.5rem;
+  background: rgba(15, 23, 42, 0.65); /* dark blue glass */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  color: var(--color-light);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.about-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.about-content p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  color: #f1f5f9;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.about-features-title {
+  margin-top: 3rem;
+  font-size: 1.5rem;
+  border-bottom: 2px solid var(--color-accent);
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.about-features {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.feature-icon {
+  color: var(--color-accent);
+  margin-top: 2px;
+  font-weight: bold;
+}
+
+.feature-text {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #f1f5f9;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .about-container {
+    padding: 2rem;
+  }
+  
+  .about-content.glass-panel {
+    width: 80%;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    padding: 1.5rem;
+  }
+  
+  .about-content.glass-panel {
+    width: 100%;
+    padding: 2rem;
+  }
+  
+  .about-features {
+    grid-template-columns: 1fr;
+  }
+}

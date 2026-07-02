@@ -1,0 +1,144 @@
+.specialization-section {
+  padding: 6rem 0;
+  background-color: var(--color-light);
+}
+
+.specialization-header {
+  max-width: 800px;
+  margin: 0 auto 4rem auto;
+}
+
+.specialization-header .section-title {
+  margin-bottom: 1rem;
+}
+
+.specialization-header .section-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-gray-medium);
+  line-height: 1.6;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.specialization-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+}
+
+.spec-card-clean {
+  position: relative;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 3rem 2.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-gray-light);
+}
+
+.spec-card-clean:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  border-color: transparent;
+}
+
+.spec-icon-clean {
+  width: 65px;
+  height: 65px;
+  background-color: rgba(252, 195, 113, 0.15); /* light orange */
+  color: var(--color-accent);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+
+.spec-icon-clean svg {
+  width: 32px;
+  height: 32px;
+}
+
+.spec-card-clean:hover .spec-icon-clean {
+  background-color: var(--color-accent);
+  color: var(--color-dark);
+  transform: scale(1.1) rotate(5deg);
+}
+
+.spec-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.spec-card-desc {
+  font-size: 1rem;
+  color: var(--color-gray-medium);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.spec-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.3s ease;
+  margin-top: auto;
+}
+
+.spec-card-arrow {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.spec-card-clean:hover .spec-card-footer {
+  color: var(--color-dark);
+}
+
+.spec-card-clean:hover .spec-card-arrow {
+  transform: translateX(5px);
+}
+
+.spec-hover-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+  z-index: 3;
+}
+
+.spec-card-corporate:hover .spec-hover-bar {
+  transform: scaleX(1);
+}
+
+@media (max-width: 768px) {
+  .specialization-section {
+    padding: 4rem 0;
+  }
+  
+  .specialization-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}

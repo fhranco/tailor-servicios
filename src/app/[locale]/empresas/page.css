@@ -1,0 +1,63 @@
+.funnel-page {
+  background-color: var(--color-gray-light);
+  min-height: calc(100vh - 80px); /* Adjust based on header height */
+  display: flex;
+  flex-direction: column;
+}
+
+.funnel-hero {
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  padding: 5rem 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.funnel-hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background-color: var(--color-accent);
+}
+
+.funnel-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.funnel-hero p {
+  font-size: 1.125rem;
+  max-width: 600px;
+  margin: 0 auto;
+  color: #f1f5f9;
+  line-height: 1.6;
+}
+
+.funnel-content {
+  flex: 1;
+  padding: 4rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.form-wrapper {
+  background-color: var(--color-light);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 600px;
+  border-top: 4px solid var(--color-accent);
+}
+
+@media (max-width: 768px) {
+  .funnel-hero h1 {
+    font-size: 2rem;
+  }
+  .form-wrapper {
+    padding: 1.5rem;
+  }
+}

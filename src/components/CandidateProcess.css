@@ -1,0 +1,151 @@
+.c-process-section {
+  padding: 8rem 0;
+  background-color: var(--color-white);
+}
+
+.c-process-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 6rem;
+  align-items: flex-start;
+}
+
+.c-process-text {
+  position: sticky;
+  top: 120px;
+}
+
+.c-process-subtitle {
+  display: inline-block;
+  color: var(--color-accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.c-process-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.c-process-desc {
+  font-size: 1.1rem;
+  color: var(--color-gray-medium);
+  line-height: 1.6;
+}
+
+.c-process-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  position: relative;
+}
+
+/* Vertical line */
+.c-process-timeline::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 32px;
+  width: 2px;
+  background-color: var(--color-gray-light);
+  z-index: 1;
+}
+
+.c-process-step {
+  display: flex;
+  gap: 2.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.c-step-number {
+  width: 66px;
+  height: 66px;
+  min-width: 66px;
+  border-radius: 50%;
+  background-color: var(--color-white);
+  border: 2px solid var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.c-process-step:hover .c-step-number {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  transform: scale(1.05);
+}
+
+.c-step-content {
+  padding-top: 10px;
+}
+
+.c-step-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: 0.8rem;
+}
+
+.c-step-desc {
+  font-size: 1.05rem;
+  color: var(--color-gray-medium);
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .c-process-layout {
+    gap: 4rem;
+  }
+  
+  .c-process-title {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .c-process-section {
+    padding: 5rem 0;
+  }
+
+  .c-process-layout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .c-process-text {
+    position: relative;
+    top: 0;
+    text-align: center;
+  }
+  
+  .c-process-timeline::before {
+    left: 24px;
+  }
+
+  .c-step-number {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    font-size: 1.1rem;
+  }
+  
+  .c-process-step {
+    gap: 1.5rem;
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "Header": {
+    "sube_cv": "Sube tu CV",
+    "buscas_contratar": "¿Buscas contratar?",
+    "inicio": "Inicio",
+    "especializacion": "Especialización",
+    "candidatos": "Candidatos",
+    "servicios": "Servicios",
+    "nosotros": "Nosotros",
+    "contacto": "Contacto",
+    "mi_cuenta": "Mi cuenta"
+  },
+  "Index": {
+    "hero_title_1": "EL TALENTO QUE TU EMPRESA",
+    "hero_title_2": "NECESITA, DONDE LO",
+    "hero_title_3": "NECESITA",
+    "hero_subtitle": "Conectamos profesionales excepcionales con las mejores empresas del extremo sur de Chile. Únete a nuestra red y accede a oportunidades confidenciales y estratégicas.",
+    "cta_empresas": "Buscamos Talento",
+    "cta_candidatos": "Soy Candidato",
+    "special_project_title": "PROYECTO ESPECIAL",
+    "special_project_subtitle": "¿Necesitas contratar un volumen alto de profesionales para tu nuevo proyecto?",
+    "special_project_text": "Tailor Servicios asume el desafío por ti. Nos especializamos en la búsqueda, selección y evaluación de profesionales altamente calificados para grandes operaciones e industrias complejas en todo el sur de Chile.",
+    "special_project_cta": "Quiero saber más"
+  },
+  "HeroDual": {
+    "slides": {
+      "1": {
+        "badge": "Consultoría Estratégica",
+        "titleBase": "IMPULSANDO EL ",
+        "titleAccent": "DESARROLLO",
+        "desc": "Creemos que las organizaciones crecen cuando las personas crecen con ellas. Somos tu socio estratégico para atraer talento y desarrollar culturas sostenibles."
+      },
+      "2": {
+        "badge": "Selección Ejecutiva",
+        "titleBase": "CONECTAMOS ",
+        "titleAccent": "TALENTO",
+        "desc": "Más de 9 años de experiencia brindando consultoría en Recursos Humanos. Optimizamos tus procesos de selección y potenciamos a tu equipo."
+      },
+      "3": {
+        "badge": "Servicios a Medida",
+        "titleBase": "SOLUCIONES PARA TU ",
+        "titleAccent": "REALIDAD",
+        "desc": "No creemos en recetas estándar. Diseñamos estrategias de Reclutamiento, Selección y Desarrollo alineadas a tus objetivos comerciales."
+      }
+    },
+    "cta_empresas": "Buscamos Talento",
+    "cta_candidatos": "Soy Candidato",
+    "footer_text": "Consultoría líder en reclutamiento ejecutivo y gestión de talento"
+  },
+  "AboutUsBlock": {
+    "title": "Quiénes Somos",
+    "p1": "Tailor Servicios nació en la Región de Magallanes con un propósito claro: elevar el estándar del talento humano en las organizaciones. Hoy, con despliegue operativo en Punta Arenas y Santiago, nos hemos convertido en el socio estratégico de empresas que buscan crecer a través de su gente.",
+    "p2": "Entendemos que cada negocio es único. Por eso, diseñamos soluciones <em>\"a medida\"</em> (tailor-made) en Atracción de Talento, Desarrollo Organizacional y Gestión de Personas. No aplicamos fórmulas estandarizadas, sino que nos sumergimos en la cultura de nuestros clientes para encontrar el ajuste perfecto.",
+    "features_title": "¿Por qué nos eligen?",
+    "f1": "Conocimiento local y visión nacional",
+    "f2": "Diseño de soluciones \"Tailor-made\"",
+    "f3": "Red de talento ejecutivo de alto nivel",
+    "f4": "Cultura centrada en resultados",
+    "cta": "Conoce más de nosotros"
+  },
+  "MetricsBar": {
+    "anos": "Años en el Mercado",
+    "empresas": "Empresas en Chile",
+    "profesionales": "Profesionales en Base Activa",
+    "efectividad": "de Efectividad"
+  },
+  "BusinessLines": {
+    "title": "Nuestros Servicios",
+    "desc": "Soluciones integrales de Recursos Humanos diseñadas para impulsar la eficiencia y el crecimiento de su organización.",
+    "reclutamiento_title": "Reclutamiento y Selección",
+    "reclutamiento_desc": "Evaluación por competencias, Assessment Center y mapeo de mercado con garantía de calce cultural.",
+    "gestion_title": "Consultoría en Gestión de Personas",
+    "gestion_desc": "Diseño de modelos de compensación, estudios de clima, evaluaciones de desempeño y gestión del cambio.",
+    "desarrollo_title": "Desarrollo Organizacional",
+    "desarrollo_desc": "Formación de líderes, diseño de estructuras, levantamiento de perfiles y planes de sucesión.",
+    "busqueda_title": "Búsqueda Ejecutiva (Headhunting)",
+    "busqueda_desc": "Reclutamiento confidencial de roles C-Level y posiciones estratégicas con metodología directa.",
+    "ver_mas": "Ver más"
+  },
+  "ClientLogos": {
+    "title": "Empresas que confían en nosotros"
+  },
+  "TestimonialSection": {
+    "title": "Casos de Éxito",
+    "subtitle": "Resultados medibles y relaciones de largo plazo. Desliza para leer más.",
+    "t1_quote": "Tailor entendió nuestra cultura corporativa desde el primer día. Los ejecutivos que reclutaron compartían nuestra visión de negocio. Redujimos nuestra rotación en un 40%.",
+    "t2_quote": "El diagnóstico de clima laboral fue revelador. Logramos alinear a nuestros líderes y aumentar la productividad de los equipos de forma impresionante.",
+    "t3_quote": "Buscábamos talento muy específico para operaciones extremas. Tailor Servicios nos entregó candidatos excepcionales en tiempo récord.",
+    "t4_quote": "Diseñaron un sistema de gestión de desempeño a nuestra medida. Pasamos de evaluaciones anuales burocráticas a un modelo ágil y motivador.",
+    "t5_quote": "El proceso de outplacement que gestionaron para nuestros ejecutivos salientes fue impecable. Muy humanos y orientados a resultados reales en el mercado.",
+    "t6_quote": "Nos ayudaron a estructurar toda la gerencia comercial desde cero. Su conocimiento del mercado laboral y su metodología de evaluación son inigualables."
+  },
+  "SpecialProject": {
+    "badge": "Proyecto Exclusivo",
+    "title": "Únete a la excelencia de The Cormorant at 55 South",
+    "p1": "En Tailor Servicios estamos liderando el proceso de reclutamiento para el nuevo hotel boutique <strong>The Cormorant at 55 South</strong>.",
+    "p2": "Buscamos profesionales apasionados por la hospitalidad de lujo en la Región de Magallanes. Descubre las oportunidades y sé parte fundamental de este proyecto único en el fin del mundo.",
+    "cta": "Ver Ofertas del Hotel"
+  },
+  "ContactSection": {
+    "title": "Conversemos sobre el futuro de su equipo",
+    "desc": "Déjenos sus datos y un especialista de Tailor Servicios se pondrá en contacto con usted a la brevedad para entender sus necesidades y proponer la mejor solución estratégica."
+  },
+  "Footer": {
+    "desc": "Consultoría estratégica en Reclutamiento, Gestión de Personas y Desarrollo Organizacional. Impulsando el desarrollo desde Magallanes.",
+    "nav": "Navegación",
+    "embudos": "Embudos",
+    "oficinas": "Oficinas",
+    "legal": "Legal",
+    "inicio": "Inicio",
+    "nosotros": "Nosotros",
+    "servicios": "Servicios",
+    "contacto": "Contacto",
+    "empresas": "Para Empresas",
+    "postulantes": "Para Postulantes",
+    "subir_cv": "Subir CV",
+    "privacidad": "Política de Privacidad",
+    "terminos": "Términos y Condiciones",
+    "cookies": "Política de Cookies",
+    "derechos": "Tailor Servicios. Todos los derechos reservados."
+  },
+  "EmpresasPage": {
+    "hero_title": "¿Necesita cubrir un cargo estratégico?",
+    "hero_desc": "Confíe en nuestra experiencia de más de 9 años en la Región de Magallanes y todo Chile para encontrar el talento que su organización necesita.",
+    "form_title": "Solicite Presupuesto o Asesoría"
+  },
+  "PostulantesPage": {
+    "hero_title": "Tu próximo gran paso profesional",
+    "hero_desc": "Las mejores oportunidades laborales en Magallanes y Chile pasan por nuestras manos. Únete a nuestra red de talentos y accede a ofertas exclusivas.",
+    "form_title": "Sube tu Currículum",
+    "form_subtitle": "Regístrate en nuestra base de datos para futuras búsquedas."
+  },
+  "B2C_Dropzone": {
+    "err_type": "El archivo subido no es un documento de texto. Sube un PDF o DOCX.",
+    "err_size": "El documento supera los 5MB. Por favor, comprímelo e intenta de nuevo.",
+    "inst_main": "Arrastra y suelta tu currículum aquí",
+    "inst_sub": "Formatos admitidos: .PDF o .DOCX. Peso máximo permitido: 5MB.",
+    "btn_remove": "Eliminar archivo",
+    "lbl_legal_1": "Acepto el tratamiento de mis datos para procesos de selección según la ",
+    "lbl_legal_link": "Política de Privacidad"
+  },
+  "CandidatosPage": {
+    "meta_title": "Candidatos - Tailor Servicios",
+    "meta_desc": "Únete a nuestra red de talento exclusivo. Conectamos profesionales de alto nivel con las empresas líderes en el sur de Chile."
+  },
+  "HeroCandidatos": {
+    "badge": "Red de Talento",
+    "title1": "POTENCIA TU ",
+    "title_accent": "CARRERA",
+    "subtitle": "Conectamos profesionales excepcionales con las mejores empresas del extremo sur de Chile. Únete a nuestra red y accede a oportunidades confidenciales y estratégicas."
+  },
+  "JobOffersCarousel": {
+    "activeOpportunities": "Oportunidades Activas",
+    "featuredOffers": "Ofertas Laborales Destacadas",
+    "viewAll": "Ver todas las postulaciones",
+    "btn": "Postular en Rex+"
+  },
+  "CandidateBenefits": {
+    "title": "¿Por qué postular con Tailor Servicios?",
+    "subtitle": "El valor que aportamos a tu carrera",
+    "b1_title": "Confidencialidad Absoluta",
+    "b1_desc": "Manejamos tus antecedentes con el máximo rigor ético. Tu búsqueda permanece privada hasta que tú decidas lo contrario.",
+    "b2_title": "Acceso a Mercado Oculto",
+    "b2_desc": "Muchas de nuestras búsquedas son confidenciales y no se publican en portales tradicionales. Accede a las mejores oportunidades directivas.",
+    "b3_title": "Feedback Constructivo",
+    "b3_desc": "Te acompañamos durante todo el proceso, entregando retroalimentación real que te ayudará a mejorar tu perfil profesional.",
+    "b4_title": "Empresas Top Regionales",
+    "b4_desc": "Trabajamos con las organizaciones más importantes de la zona austral, en sectores como Acuicultura, Energía, Logística y Retail."
+  },
+  "CandidateProcess": {
+    "subtitle": "Nuestra Metodología",
+    "title": "El camino hacia tu próximo desafío",
+    "desc": "Nuestro proceso de selección es transparente, ágil y centrado en el candidato. Te mantenemos informado en cada etapa, respetando tus tiempos y expectativas.",
+    "s1_title": "Recepción Confidencial",
+    "s1_desc": "Envías tu CV a nuestra base de datos encriptada. Solo nuestro equipo de consultores tendrá acceso inicial a tu información.",
+    "s2_title": "Entrevista de Calce",
+    "s2_desc": "Cuando surge una oportunidad afín, realizamos una entrevista profunda para evaluar no solo tus skills, sino también tu fit cultural.",
+    "s3_title": "Presentación Exclusiva",
+    "s3_desc": "Presentamos tu perfil directamente a los tomadores de decisión de la empresa, destacando tu valor estratégico.",
+    "s4_title": "Onboarding y Seguimiento",
+    "s4_desc": "Una vez seleccionado, te acompañamos durante tus primeros meses para asegurar una integración exitosa."
+  },
+  "CandidateUpload": {
+    "badge": "Únete hoy",
+    "title": "Ingresa a nuestra Red de Talento",
+    "desc": "Déjanos tu currículum de forma confidencial. Nuestro equipo de consultores lo evaluará y te contactará cuando exista una oportunidad que potencie tu carrera en el sur de Chile.",
+    "lbl_name": "Nombre Completo",
+    "ph_name": "Ej. Juan Pérez",
+    "lbl_email": "Correo Electrónico",
+    "lbl_area": "Área de Especialidad",
+    "opt_default": "Selecciona tu industria principal",
+    "opt_acuicultura": "Acuicultura y Pesca",
+    "opt_energia": "Energía e Hidrógeno",
+    "opt_logistica": "Logística y Transporte",
+    "opt_turismo": "Turismo y Hospitalidad",
+    "opt_otro": "Otra Especialidad",
+    "lbl_cv": "Sube tu CV (PDF, DOCX)",
+    "prompt_drag": "Arrastra tu archivo aquí o ",
+    "prompt_click": "Haz clic para explorar",
+    "btn_submit": "Enviar mis antecedentes",
+    "lbl_legal_1": "Acepto el tratamiento de mis datos para procesos de selección según la ",
+    "lbl_legal_link": "Política de Privacidad"
+  },
+  "B2B_LeadForm": {
+    "err_name": "El nombre es obligatorio.",
+    "err_company": "La empresa es obligatoria.",
+    "err_email": "El correo es obligatorio.",
+    "err_email_invalid": "Ingresa un correo válido.",
+    "err_email_free": "Ingresa un dominio corporativo válido. No se admiten casillas gratuitas.",
+    "err_service": "Por favor, indica qué línea de consultoría necesitas.",
+    "err_legal": "Debes aceptar la Política de Privacidad.",
+    "err_network": "No pudimos conectar con el servidor central en Punta Arenas. Tus datos no se perdieron; por favor, haz clic en enviar nuevamente.",
+    "success_msg": "Hemos capturado tus datos. Un consultor de nuestra oficina técnica se pondrá en contacto contigo en un plazo máximo de 24 horas.",
+    "lbl_name": "Nombre completo",
+    "ph_name": "Ej: Carlos Mendoza",
+    "lbl_company": "Empresa",
+    "ph_company": "Ej: Austral Logística",
+    "lbl_email": "Correo corporativo",
+    "ph_email": "nombre@empresa.cl",
+    "lbl_service": "Línea de servicio requerida",
+    "opt_default": "Selecciona un servicio",
+    "opt_recruitment": "Reclutamiento y Selección",
+    "opt_management": "Gestión de Personas",
+    "opt_development": "Desarrollo Organizacional",
+    "lbl_legal_1": "Acepto el tratamiento de mis datos para ser contactado según la ",
+    "lbl_legal_link": "Política de Privacidad",
+    "btn_submit": "Enviar",
+    "privacy_notice": "Tus datos serán tratados por Tailor Servicios exclusivamente para gestionar tu solicitud. Puedes solicitar su eliminación en cualquier momento escribiendo a privacidad@tailorservicios.cl."
+  },
+  "TerminosPage": {
+    "meta_title": "Términos y Condiciones - Tailor Servicios",
+    "meta_desc": "Términos y condiciones, y política de privacidad de Tailor Servicios.",
+    "page_title": "Términos y Condiciones",
+    "page_subtitle": "Última actualización: Julio 2026",
+    "intro_title": "1. Introducción y Propósito",
+    "intro_text": "Tailor Servicios es una empresa consultora B2B ubicada en Punta Arenas, especializada en Reclutamiento y Selección, Gestión de Personas y Desarrollo Organizacional. Este sitio web tiene como propósito informar sobre nuestros servicios y servir como plataforma de contacto para empresas y candidatos.",
+    "privacy_title": "2. Tratamiento de Datos Personales (Ley N° 19.628 y Ley N° 21.719)",
+    "privacy_p1": "En cumplimiento de la legislación chilena sobre protección a la vida privada y datos personales, Tailor Servicios informa que recopila y trata datos personales exclusivamente con el consentimiento de sus titulares para las siguientes finalidades:",
+    "privacy_li1": "Empresas (Leads B2B): Recopilamos nombre, apellido, correo corporativo y nombre de empresa para propósitos de contacto comercial.",
+    "privacy_li2": "Candidatos: Recopilamos nombre, correo, especialidad y Curriculum Vitae (CV) exclusivamente para evaluación en procesos de selección.",
+    "privacy_p2": "Garantizamos que NO capturamos ni almacenamos datos financieros, información de pago, RUT de manera obligatoria (salvo para formalización de contratos futuros), ni realizamos seguimiento de geolocalización activa.",
+    "rights_title": "3. Derechos ARCO de los Titulares",
+    "rights_text": "Como titular de los datos, usted tiene el derecho de Acceder, Rectificar, Cancelar (Eliminar) y Oponerse al tratamiento de sus datos personales. Para ejercer estos derechos, debe enviar una solicitud al encargado oficial de privacidad de Tailor Servicios:",
+    "rights_li1": "Encargado de Tratamiento: René Bravo.",
+    "rights_li2": "Correo Electrónico Oficial: privacidad@tailorservicios.cl.",
+    "rights_p2": "Responderemos a su solicitud en los plazos estipulados por la ley chilena.",
+    "security_title": "4. Seguridad y Retención de Datos",
+    "security_text": "Implementamos medidas técnicas y organizativas razonables para proteger sus datos personales contra el acceso no autorizado, pérdida o alteración. Sus datos pueden ser procesados a través de software de terceros (CRM o sistemas de alojamiento en la nube) que actúan como encargados de tratamiento bajo estricta confidencialidad. Conservaremos sus datos (incluyendo CVs) durante el tiempo necesario para cumplir con los fines descritos, o hasta que el titular solicite su eliminación.",
+    "cookies_title": "5. Política de Cookies",
+    "cookies_text": "Este sitio web utiliza cookies (pequeños archivos de texto almacenados en su dispositivo) para asegurar su correcto funcionamiento y mejorar su experiencia de navegación.",
+    "cookies_li1": "Cookies Esenciales: Son estrictamente necesarias para el funcionamiento técnico del sitio y para recordar sus preferencias de privacidad (ej. si aceptó o rechazó el banner). No recopilan información personal identificable.",
+    "cookies_li2": "Cookies Analíticas: Se utilizan de forma agregada y anónima para entender cómo los visitantes interactúan con la página, permitiéndonos optimizar la experiencia del usuario.",
+    "cookies_p2": "Usted puede administrar o revocar su consentimiento de cookies en cualquier momento borrando las cookies desde la configuración de su navegador.",
+    "terms_2_title": "2. Condiciones de Uso del Sitio Web",
+    "terms_2_text": "El acceso y uso de este sitio web están dirigidos exclusivamente a profesionales y empresas con fines comerciales o de empleabilidad B2B. Queda estrictamente prohibido el uso de la plataforma para fines ilícitos, el envío de spam, la extracción de datos (scraping) o cualquier acción que atente contra la seguridad y estabilidad de nuestros sistemas.",
+    "terms_3_title": "3. Propiedad Intelectual",
+    "terms_3_text": "Todo el contenido, diseño, logotipos, bases de datos, textos e imágenes presentados en este sitio web son propiedad exclusiva de Tailor Servicios o cuenta con las licencias respectivas. Se prohíbe expresamente la reproducción, distribución o modificación total o parcial de nuestro contenido sin autorización previa por escrito.",
+    "terms_4_title": "4. Exención de Responsabilidad",
+    "terms_4_text": "Tailor Servicios se esfuerza por mantener la información actualizada, pero no garantiza la disponibilidad ininterrumpida del sitio web. No nos hacemos responsables de posibles daños, perjuicios o pérdidas de oportunidades derivadas de problemas técnicos, fallas de conexión, o del uso indebido de la plataforma por parte de terceros.",
+    "terms_5_title": "5. Modificaciones y Jurisdicción Aplicable",
+    "terms_5_text": "Nos reservamos el derecho de modificar estos Términos y Condiciones en cualquier momento, publicando las versiones actualizadas en esta página. Cualquier controversia legal derivada del uso de este sitio web será interpretada y sometida a la jurisdicción de los tribunales competentes de Punta Arenas, Región de Magallanes, bajo la legislación de la República de Chile."
+  },
+  "CookieBanner": {
+    "text": "Utilizamos cookies esenciales para el funcionamiento de este sitio y cookies analíticas para mejorar tu experiencia, en cumplimiento con nuestra ",
+    "link": "Política de Privacidad y Cookies.",
+    "accept": "Aceptar",
+    "reject": "Solo esenciales"
+  }
+}

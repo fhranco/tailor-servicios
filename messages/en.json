@@ -1,0 +1,265 @@
+{
+  "Header": {
+    "sube_cv": "Upload CV",
+    "buscas_contratar": "Looking to hire?",
+    "inicio": "Home",
+    "especializacion": "Specialization",
+    "candidatos": "Candidates",
+    "servicios": "Services",
+    "nosotros": "About Us",
+    "contacto": "Contact",
+    "mi_cuenta": "My Account"
+  },
+  "Index": {
+    "hero_title_1": "THE TALENT YOUR COMPANY",
+    "hero_title_2": "NEEDS, WHERE YOU",
+    "hero_title_3": "NEED IT",
+    "hero_subtitle": "We connect exceptional professionals with the best companies in the extreme south of Chile. Join our network and access confidential and strategic opportunities.",
+    "cta_empresas": "We Need Talent",
+    "cta_candidatos": "I'm a Candidate",
+    "special_project_title": "SPECIAL PROJECT",
+    "special_project_subtitle": "Need to hire a high volume of professionals for your new project?",
+    "special_project_text": "Tailor Servicios takes on the challenge for you. We specialize in the search, selection, and evaluation of highly qualified professionals for large operations and complex industries throughout southern Chile.",
+    "special_project_cta": "I want to know more"
+  },
+  "HeroDual": {
+    "slides": {
+      "1": {
+        "badge": "Strategic Consulting",
+        "titleBase": "DRIVING ",
+        "titleAccent": "DEVELOPMENT",
+        "desc": "We believe that organizations grow when people grow with them. We are your strategic partner to attract talent and develop sustainable cultures."
+      },
+      "2": {
+        "badge": "Executive Search",
+        "titleBase": "CONNECTING ",
+        "titleAccent": "TALENT",
+        "desc": "Over 9 years of experience providing HR consulting. We optimize your selection processes and empower your team."
+      },
+      "3": {
+        "badge": "Tailored Services",
+        "titleBase": "SOLUTIONS FOR YOUR ",
+        "titleAccent": "REALITY",
+        "desc": "We don't believe in standard recipes. We design Recruitment, Selection, and Development strategies aligned with your business goals."
+      }
+    },
+    "cta_empresas": "We Need Talent",
+    "cta_candidatos": "I'm a Candidate",
+    "footer_text": "Leading consulting firm in executive recruitment and talent management"
+  },
+  "AboutUsBlock": {
+    "title": "About Us",
+    "p1": "Tailor Servicios was born in the Magallanes Region with a clear purpose: to raise the standard of human talent in organizations. Today, with operational deployment in Punta Arenas and Santiago, we have become the strategic partner of companies seeking to grow through their people.",
+    "p2": "We understand that every business is unique. That is why we design <em>\"tailor-made\"</em> solutions in Talent Attraction, Organizational Development, and People Management. We don't apply standardized formulas; instead, we immerse ourselves in our clients' culture to find the perfect fit.",
+    "features_title": "Why choose us?",
+    "f1": "Local knowledge and national vision",
+    "f2": "Design of \"Tailor-made\" solutions",
+    "f3": "High-level executive talent network",
+    "f4": "Results-oriented culture",
+    "cta": "Learn more about us"
+  },
+  "MetricsBar": {
+    "anos": "Years in the Market",
+    "empresas": "Companies in Chile",
+    "profesionales": "Professionals in Active Database",
+    "efectividad": "Effectiveness"
+  },
+  "BusinessLines": {
+    "title": "Our Services",
+    "desc": "Comprehensive Human Resources solutions designed to boost your organization's efficiency and growth.",
+    "reclutamiento_title": "Recruitment & Selection",
+    "reclutamiento_desc": "Competency assessment, Assessment Center, and market mapping with cultural fit guarantee.",
+    "gestion_title": "People Management Consulting",
+    "gestion_desc": "Design of compensation models, climate studies, performance evaluations, and change management.",
+    "desarrollo_title": "Organizational Development",
+    "desarrollo_desc": "Leadership training, structure design, profile assessment, and succession plans.",
+    "busqueda_title": "Executive Search (Headhunting)",
+    "busqueda_desc": "Confidential recruitment of C-Level roles and strategic positions with direct methodology.",
+    "ver_mas": "View more"
+  },
+  "ClientLogos": {
+    "title": "Companies that trust us"
+  },
+  "TestimonialSection": {
+    "title": "Success Stories",
+    "subtitle": "Measurable results and long-term relationships. Swipe to read more.",
+    "t1_quote": "Tailor understood our corporate culture from day one. The executives they recruited shared our business vision. We reduced our turnover by 40%.",
+    "t2_quote": "The work climate diagnosis was revealing. We managed to align our leaders and increase team productivity impressively.",
+    "t3_quote": "We were looking for very specific talent for extreme operations. Tailor Servicios delivered exceptional candidates in record time.",
+    "t4_quote": "They designed a custom performance management system. We went from bureaucratic annual evaluations to an agile and motivating model.",
+    "t5_quote": "The outplacement process they managed for our departing executives was impeccable. Very human and oriented to real market results.",
+    "t6_quote": "They helped us structure the entire commercial management from scratch. Their knowledge of the labor market and their evaluation methodology are unmatched."
+  },
+  "SpecialProject": {
+    "badge": "Exclusive Project",
+    "title": "Join the excellence of The Cormorant at 55 South",
+    "p1": "At Tailor Servicios we are leading the recruitment process for the new boutique hotel <strong>The Cormorant at 55 South</strong>.",
+    "p2": "We are looking for professionals passionate about luxury hospitality in the Magallanes Region. Discover the opportunities and be a fundamental part of this unique project at the end of the world.",
+    "cta": "View Hotel Offers"
+  },
+  "ContactSection": {
+    "title": "Let's talk about your team's future",
+    "desc": "Leave us your details and a Tailor Servicios specialist will contact you shortly to understand your needs and propose the best strategic solution."
+  },
+  "Footer": {
+    "desc": "Strategic consulting in Recruitment, People Management, and Organizational Development. Driving development from Magallanes.",
+    "nav": "Navigation",
+    "embudos": "Funnels",
+    "oficinas": "Offices",
+    "legal": "Legal",
+    "inicio": "Home",
+    "nosotros": "About Us",
+    "servicios": "Services",
+    "contacto": "Contact",
+    "empresas": "For Companies",
+    "postulantes": "For Candidates",
+    "subir_cv": "Upload CV",
+    "privacidad": "Privacy Policy",
+    "terminos": "Terms & Conditions",
+    "cookies": "Cookie Policy",
+    "derechos": "Tailor Servicios. All rights reserved."
+  },
+  "EmpresasPage": {
+    "hero_title": "Do you need to fill a strategic position?",
+    "hero_desc": "Trust our experience of over 9 years in the Magallanes Region and throughout Chile to find the talent your organization needs.",
+    "form_title": "Request a Quote or Consultation"
+  },
+  "PostulantesPage": {
+    "hero_title": "Your next big career move",
+    "hero_desc": "The best job opportunities in Magallanes and Chile pass through our hands. Join our talent network and access exclusive offers.",
+    "form_title": "Upload your Resume",
+    "form_subtitle": "Register in our database for future searches."
+  },
+  "B2C_Dropzone": {
+    "err_type": "The uploaded file is not a text document. Upload a PDF or DOCX.",
+    "err_size": "The document exceeds 5MB. Please compress it and try again.",
+    "inst_main": "Drag and drop your resume here",
+    "inst_sub": "Supported formats: .PDF or .DOCX. Maximum allowed size: 5MB.",
+    "btn_remove": "Remove file"
+  },
+  "CandidatosPage": {
+    "meta_title": "Candidates - Tailor Servicios",
+    "meta_desc": "Join our exclusive talent network. We connect high-level professionals with leading companies in southern Chile."
+  },
+  "HeroCandidatos": {
+    "badge": "Talent Network",
+    "title1": "BOOST YOUR ",
+    "title_accent": "CAREER",
+    "subtitle": "We connect exceptional professionals with the best companies in the extreme south of Chile. Join our network and access confidential and strategic opportunities."
+  },
+  "JobOffersCarousel": {
+    "activeOpportunities": "Active Opportunities",
+    "featuredOffers": "Featured Job Offers",
+    "viewAll": "View all job listings",
+    "btn": "Apply on Rex+"
+  },
+  "CandidateBenefits": {
+    "title": "Why apply with Tailor Servicios?",
+    "subtitle": "The value we bring to your career",
+    "b1_title": "Absolute Confidentiality",
+    "b1_desc": "We handle your background with the utmost ethical rigor. Your search remains private until you decide otherwise.",
+    "b2_title": "Hidden Market Access",
+    "b2_desc": "Many of our searches are confidential and are not published on traditional portals. Access the best executive opportunities.",
+    "b3_title": "Constructive Feedback",
+    "b3_desc": "We accompany you throughout the process, providing real feedback that will help you improve your professional profile.",
+    "b4_title": "Top Regional Companies",
+    "b4_desc": "We work with the most important organizations in the southern zone, in sectors such as Aquaculture, Energy, Logistics, and Retail."
+  },
+  "CandidateProcess": {
+    "subtitle": "Our Methodology",
+    "title": "The path to your next challenge",
+    "desc": "Our selection process is transparent, agile, and candidate-centered. We keep you informed at every stage, respecting your time and expectations.",
+    "s1_title": "Confidential Reception",
+    "s1_desc": "You send your resume to our encrypted database. Only our consulting team will have initial access to your information.",
+    "s2_title": "Fit Interview",
+    "s2_desc": "When a matching opportunity arises, we conduct an in-depth interview to evaluate not only your skills but also your cultural fit.",
+    "s3_title": "Exclusive Presentation",
+    "s3_desc": "We present your profile directly to the company's decision-makers, highlighting your strategic value.",
+    "s4_title": "Onboarding and Follow-up",
+    "s4_desc": "Once selected, we accompany you during your first months to ensure successful integration."
+  },
+  "CandidateUpload": {
+    "badge": "Join today",
+    "title": "Enter our Talent Network",
+    "desc": "Leave us your resume confidentially. Our consulting team will evaluate it and contact you when there is an opportunity to boost your career in southern Chile.",
+    "lbl_name": "Full Name",
+    "ph_name": "E.g. John Doe",
+    "lbl_email": "Email Address",
+    "lbl_area": "Area of Specialty",
+    "opt_default": "Select your main industry",
+    "opt_acuicultura": "Aquaculture and Fishing",
+    "opt_energia": "Energy and Hydrogen",
+    "opt_logistica": "Logistics and Transport",
+    "opt_turismo": "Tourism and Hospitality",
+    "opt_otro": "Other Specialty",
+    "lbl_cv": "Upload your CV (PDF, DOCX)",
+    "prompt_drag": "Drag your file here or ",
+    "prompt_click": "Click to browse",
+    "btn_submit": "Send my background"
+  },
+  "B2B_LeadForm": {
+    "err_name": "Name is required.",
+    "err_company": "Company is required.",
+    "err_email": "Email is required.",
+    "err_email_invalid": "Enter a valid email address.",
+    "err_email_free": "Enter a valid corporate domain. Free email addresses are not allowed.",
+    "err_service": "Please indicate which consulting line you need.",
+    "err_legal": "You must accept the Privacy Policy.",
+    "err_network": "We couldn't connect to the central server in Punta Arenas. Your data wasn't lost; please click send again.",
+    "success_msg": "We have captured your details. A consultant from our technical office will contact you within a maximum of 24 hours.",
+    "lbl_name": "Full Name",
+    "ph_name": "E.g., Charles Smith",
+    "lbl_company": "Company",
+    "ph_company": "E.g., Austral Logistics",
+    "lbl_email": "Corporate Email",
+    "ph_email": "name@company.com",
+    "lbl_service": "Required service line",
+    "opt_default": "Select a service",
+    "opt_recruitment": "Recruitment and Selection",
+    "opt_management": "People Management",
+    "opt_development": "Organizational Development",
+    "lbl_legal_1": "I accept the processing of my data to be contacted according to the ",
+    "lbl_legal_link": "Privacy Policy",
+    "btn_submit": "Submit",
+    "privacy_notice": "Your data will be processed by Tailor Servicios exclusively to manage your request. You can request its deletion at any time by writing to privacidad@tailorservicios.cl."
+  },
+  "TerminosPage": {
+    "meta_title": "Terms and Conditions - Tailor Servicios",
+    "meta_desc": "Terms and conditions, and privacy policy of Tailor Servicios.",
+    "page_title": "Terms and Conditions",
+    "page_subtitle": "Last updated: July 2026",
+    "intro_title": "1. Introduction and Purpose",
+    "intro_text": "Tailor Servicios is a B2B consulting firm located in Punta Arenas, specialized in Recruitment and Selection, People Management, and Organizational Development. This website aims to provide information about our services and serve as a contact platform for companies and candidates.",
+    "privacy_title": "2. Personal Data Processing (Law No. 19.628 and Law No. 21.719)",
+    "privacy_p1": "In compliance with Chilean legislation on privacy protection and personal data, Tailor Servicios informs that it collects and processes personal data exclusively with the consent of its owners for the following purposes:",
+    "privacy_li1": "Companies (B2B Leads): We collect name, surname, corporate email, and company name for commercial contact purposes.",
+    "privacy_li2": "Candidates: We collect name, email, specialty, and Curriculum Vitae (CV) exclusively for evaluation in selection processes.",
+    "privacy_p2": "We guarantee that we DO NOT capture or store financial data, payment information, mandatory RUT (except for future contract formalization), nor do we track active geolocation.",
+    "rights_title": "3. ARCO Rights of Data Subjects",
+    "rights_text": "As the data subject, you have the right to Access, Rectify, Cancel (Delete), and Oppose the processing of your personal data. To exercise these rights, you must send a request to the official privacy officer of Tailor Servicios:",
+    "rights_li1": "Data Controller: René Bravo.",
+    "rights_li2": "Official Email: privacidad@tailorservicios.cl.",
+    "rights_p2": "We will respond to your request within the deadlines stipulated by Chilean law.",
+    "security_title": "4. Security and Data Retention",
+    "security_text": "We implement reasonable technical and organizational measures to protect your personal data against unauthorized access, loss, or alteration. Your data may be processed through third-party software (CRM or cloud hosting systems) acting as data processors under strict confidentiality. We will retain your data (including CVs) for the time necessary to fulfill the described purposes, or until the data subject requests its deletion.",
+    "cookies_title": "5. Cookie Policy",
+    "cookies_text": "This website uses cookies (small text files downloaded to your device) to ensure proper functioning and improve your browsing experience.",
+    "cookies_li1": "Essential Cookies: Strictly necessary for the technical operation of the site and to remember your privacy preferences (e.g., if you accepted or rejected the cookie banner). They do not collect personally identifiable information.",
+    "cookies_li2": "Analytics Cookies: Used in an aggregated and anonymous way to understand how visitors interact with the page, allowing us to optimize the user experience.",
+    "cookies_p2": "You can manage or revoke your cookie consent at any time by clearing the cookies from your browser settings.",
+    "terms_2_title": "2. Website Terms of Use",
+    "terms_2_text": "Access and use of this website are exclusively directed to professionals and companies for commercial or B2B employability purposes. The use of the platform for illicit purposes, sending spam, data scraping, or any action that threatens the security and stability of our systems is strictly prohibited.",
+    "terms_3_title": "3. Intellectual Property",
+    "terms_3_text": "All content, design, logos, databases, texts, and images presented on this website are the exclusive property of Tailor Servicios or have the respective licenses. The total or partial reproduction, distribution, or modification of our content without prior written authorization is expressly prohibited.",
+    "terms_4_title": "4. Disclaimer",
+    "terms_4_text": "Tailor Servicios strives to keep the information updated, but does not guarantee the uninterrupted availability of the website. We are not responsible for possible damages or loss of opportunities arising from technical problems, connection failures, or the misuse of the platform by third parties.",
+    "terms_5_title": "5. Modifications and Applicable Jurisdiction",
+    "terms_5_text": "We reserve the right to modify these Terms and Conditions at any time by publishing the updated versions on this page. Any legal controversy derived from the use of this website will be interpreted and submitted to the jurisdiction of the competent courts of Punta Arenas, Magallanes Region, under the laws of the Republic of Chile."
+  },
+  "CookieBanner": {
+    "text": "We use essential cookies for the operation of this site and analytics cookies to improve your experience, in compliance with our ",
+    "link": "Privacy and Cookie Policy.",
+    "accept": "Accept",
+    "reject": "Essential only"
+  }
+}

@@ -1,0 +1,97 @@
+.cookie-banner-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  padding: 1rem;
+  pointer-events: none; /* Allows clicking through the empty space around the banner */
+  display: flex;
+  justify-content: center;
+}
+
+.cookie-banner-container {
+  background-color: #ffffff;
+  border: 1px solid var(--color-gray-light);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  pointer-events: auto; /* Restores clicks for the banner itself */
+}
+
+@media (min-width: 768px) {
+  .cookie-banner-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+  }
+}
+
+.cookie-banner-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.cookie-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.cookie-text {
+  font-size: 0.9rem;
+  color: var(--color-gray-dark);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.cookie-link {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.cookie-link:hover {
+  color: var(--color-dark);
+  text-decoration: underline;
+}
+
+.cookie-banner-actions {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+@media (min-width: 480px) {
+  .cookie-banner-actions {
+    flex-direction: row;
+  }
+}
+
+.cookie-btn-reject {
+  background-color: transparent;
+  color: var(--color-gray-dark);
+  border: 1px solid var(--color-gray-light);
+  font-size: 0.9rem;
+  padding: 0.6rem 1.2rem;
+}
+
+.cookie-btn-reject:hover {
+  background-color: var(--color-gray-light);
+  color: var(--color-dark);
+}
+
+.cookie-btn-accept {
+  font-size: 0.9rem;
+  padding: 0.6rem 1.2rem;
+  white-space: nowrap;
+}

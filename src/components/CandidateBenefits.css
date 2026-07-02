@@ -1,0 +1,123 @@
+.c-benefits-section {
+  padding: 6rem 0;
+  background-color: var(--color-light); /* Off-white / light gray */
+}
+
+.c-benefits-header {
+  text-align: center;
+  margin-bottom: 5rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.c-benefits-subtitle {
+  display: inline-block;
+  color: var(--color-accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.c-benefits-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: 1.5rem;
+}
+
+.c-benefits-intro {
+  font-size: 1.1rem;
+  color: var(--color-gray-medium);
+  line-height: 1.6;
+}
+
+.c-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+
+.c-benefit-card {
+  background-color: var(--color-white);
+  padding: 3rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.c-benefit-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+  border-color: rgba(252, 195, 113, 0.3); /* Accent color hint */
+}
+
+.c-benefit-icon {
+  width: 65px;
+  height: 65px;
+  background-color: rgba(252, 195, 113, 0.15);
+  color: var(--color-accent);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+
+.c-benefit-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.c-benefit-card:hover .c-benefit-icon {
+  background-color: var(--color-accent);
+  color: var(--color-dark);
+  transform: scale(1.1) rotate(5deg);
+}
+
+.c-benefit-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: 1rem;
+}
+
+.c-benefit-desc {
+  font-size: 1rem;
+  color: var(--color-gray-medium);
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .c-benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .c-benefits-section {
+    padding: 4rem 0;
+  }
+  
+  .c-benefits-title {
+    font-size: 2.2rem;
+  }
+  
+  .c-benefits-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .c-benefit-card {
+    padding: 2.5rem 2rem;
+  }
+}

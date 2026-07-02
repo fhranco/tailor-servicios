@@ -1,0 +1,422 @@
+.business-lines-section {
+  padding: 8rem 0;
+  background-color: var(--color-white);
+}
+
+
+
+.section-header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.section-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--color-dark);
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+
+.service-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 450px;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  color: var(--color-light);
+}
+
+/* Background Image with Zoom effect */
+.card-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 0;
+}
+
+.service-card:hover .card-bg {
+  transform: scale(1.08);
+}
+
+/* Base Gradient Overlay (Normal state) */
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.1) 0%,
+    rgba(15, 23, 42, 0.7) 100%
+  );
+  z-index: 1;
+  transition: opacity 0.4s ease;
+}
+
+/* Hover Gradient Overlay (Dark Blue state) */
+.card-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.7) 0%,
+    rgba(15, 23, 42, 1) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.service-card:hover .card-overlay::after {
+  opacity: 1;
+}
+
+/* Red accent bar */
+.card-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 6px;
+  background-color: var(--color-accent);
+  z-index: 2;
+  transition: width 0.4s ease;
+}
+
+.service-card:hover .card-accent {
+  width: 100%;
+}
+
+/* Content block */
+.card-content {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.card-desc {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #ffffff;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  max-height: 0;
+  overflow: hidden;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  font-weight: 500;
+}
+
+/* Reveal description on hover */
+.service-card:hover .card-desc {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 200px; /* arbitrary large value to reveal content */
+}
+
+.card-link {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  transition: color 0.2s ease;
+}
+
+.service-card.secondary .card-link {
+  color: var(--color-accent-secondary);
+}
+
+.card-link .arrow {
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover .card-link,
+.service-card.secondary:hover .card-link {
+  color: #fff;
+}
+
+.service-card:hover .card-link .arrow {
+  transform: translateX(5px);
+}
+
+@media (max-width: 992px) {
+  .cards-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .business-lines-section {
+    padding: 4rem 0;
+  }
+  
+  .section-title {
+    font-size: 2.25rem;
+  }
+  
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
+  
+  /* On mobile, always show description since hover is unreliable */
+  .card-desc {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 200px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .service-card {
+    height: auto;
+    min-height: 350px;
+  }
+}
+
+/* 
+ * =======================
+ * Modal (Popup) Styles
+ * =======================
+ */
+
+.service-modal-portal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.service-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1;
+}
+
+.service-modal-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  padding: 2rem;
+  pointer-events: auto;
+}
+
+.service-modal-content {
+  background-color: var(--color-light);
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  border-radius: 24px;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.service-modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: white;
+  border: none;
+  color: var(--color-dark);
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.service-modal-close:hover {
+  transform: scale(1.1) rotate(90deg);
+  background-color: var(--color-dark);
+  color: white;
+}
+
+.modal-header {
+  position: relative;
+  height: 250px;
+  width: 100%;
+}
+
+.modal-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.modal-accent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+}
+
+.modal-body {
+  padding: 3rem;
+  color: var(--color-dark);
+}
+
+.modal-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.modal-desc {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #475569; /* var(--color-gray-dark) fallback */
+  margin-bottom: 2.5rem;
+}
+
+.modal-subtitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #cbd5e1; /* var(--color-gray-light) fallback */
+  padding-bottom: 0.5rem;
+}
+
+.modal-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 3rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.modal-benefits li {
+  display: flex;
+  align-items: flex-start;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: #475569;
+}
+
+.benefit-icon {
+  margin-right: 0.75rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .service-modal-wrapper {
+    padding: 1rem;
+  }
+  
+  .modal-header {
+    height: 180px;
+  }
+  
+  .modal-body {
+    padding: 2rem;
+  }
+  
+  .modal-title {
+    font-size: 1.8rem;
+  }
+  
+  .modal-benefits {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+  }
+  
+  .modal-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* 
+ * Overrides for buttons inside the white modal 
+ */
+.service-modal-content .btn-primary {
+  border: 2px solid var(--color-accent);
+}
+
+.service-modal-content .btn-primary:hover {
+  background-color: var(--color-dark) !important;
+  color: var(--color-light) !important;
+  border-color: var(--color-dark) !important;
+}
+
+.service-modal-content .btn-outline {
+  border: 2px solid var(--color-gray-medium) !important;
+  color: var(--color-dark) !important;
+}
+
+.service-modal-content .btn-outline:hover {
+  background-color: var(--color-gray-light) !important;
+  color: var(--color-dark) !important;
+  border-color: var(--color-dark) !important;
+}

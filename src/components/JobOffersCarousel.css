@@ -1,0 +1,261 @@
+.c-jobs-section {
+  padding: 6rem 0;
+  background-color: var(--color-dark); /* Contrast dark background */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle background glow/gradient to enhance glassmorphism */
+.c-jobs-section::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 50%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(252, 195, 113, 0.05) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.c-jobs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.c-jobs-badge {
+  display: inline-block;
+  color: var(--color-accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.c-jobs-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff; /* White title */
+}
+
+.c-jobs-controls {
+  display: flex;
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.c-jobs-all-btn {
+  display: inline-block;
+  background: transparent;
+  color: #ffffff;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-align: center;
+}
+
+.c-jobs-all-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* Marquee Styles */
+.c-jobs-marquee-wrapper {
+  width: 100%;
+  overflow: hidden;
+  padding: 1rem 0 3rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Gradient fades on the edges matching the dark background */
+.c-jobs-marquee-wrapper::before,
+.c-jobs-marquee-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 150px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.c-jobs-marquee-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, var(--color-dark), transparent);
+}
+
+.c-jobs-marquee-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, var(--color-dark), transparent);
+}
+
+.c-jobs-marquee-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  animation: scroll-marquee 40s linear infinite; /* Slower, more elegant scroll */
+}
+
+/* Pause animation on hover */
+.c-jobs-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 1rem)); } /* -50% because we duplicated the array */
+}
+
+/* Glassmorphism Cards */
+.c-job-card-marquee {
+  width: 420px; /* Slightly narrower to fit well */
+  height: 380px; /* Fixed height for uniform cards */
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.03); /* Extremely subtle white */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08); /* Delicate border */
+  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Slightly brighter top border for lighting effect */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  flex-shrink: 0;
+}
+
+.c-job-card-marquee:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(252, 195, 113, 0.1); /* Subtle gold glow */
+  border-color: rgba(252, 195, 113, 0.3); /* Border highlights on hover */
+}
+
+.c-job-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  flex-wrap: nowrap;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.c-job-department {
+  background-color: #be1622; /* Solid background */
+  color: #ffffff; /* White text */
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid #be1622;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60%;
+}
+
+.c-job-type {
+  color: #a0a0a0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.c-job-type::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  box-shadow: 0 0 5px var(--color-accent); /* Glowing dot */
+}
+
+.c-job-title {
+  /* Using primary sans-serif font for better UI legibility on long titles */
+  font-family: var(--font-primary, system-ui, -apple-system, sans-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  /* Prevent overly long titles from breaking the layout */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.c-job-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #b0b0b0;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.c-job-location svg {
+  width: 18px;
+  height: 18px;
+  color: var(--color-accent);
+}
+
+.c-job-apply-btn {
+  display: inline-block;
+  background: transparent;
+  color: var(--color-accent);
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid var(--color-accent);
+  text-align: center;
+  width: 100%;
+  /* Push to bottom */
+  margin-top: auto;
+}
+
+.c-job-card-marquee:hover .c-job-apply-btn {
+  background-color: var(--color-accent);
+  color: var(--color-dark);
+  box-shadow: 0 4px 15px rgba(252, 195, 113, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .c-jobs-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .c-job-card-marquee {
+    width: 320px;
+    height: 350px;
+    padding: 1.5rem;
+  }
+  
+  .c-job-title {
+    font-size: 1.2rem;
+  }
+}
