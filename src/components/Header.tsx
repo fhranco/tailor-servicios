@@ -77,10 +77,10 @@ export default function Header() {
           <nav className={`nav-content ${isMenuOpen ? 'open' : ''}`}>
             <ul className="nav-links">
               <li><Link href="/" className="nav-item">{t('inicio')}</Link></li>
+              <li><Link href="/nosotros" className="nav-item">{t('nosotros')}</Link></li>
+              <li><Link href="/servicios" className="nav-item">{t('servicios')}</Link></li>
               <li><Link href="/especializacion" className="nav-item">{t('especializacion')}</Link></li>
               <li><Link href="/candidatos" className="nav-item">{t('candidatos')}</Link></li>
-              <li><Link href="/servicios" className="nav-item">{t('servicios')}</Link></li>
-              <li><Link href="/nosotros" className="nav-item">{t('nosotros')}</Link></li>
               <li>
                 <Link href="/contacto" className="btn-contact-nav">
                   {t('contacto')}
