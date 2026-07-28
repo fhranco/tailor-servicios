@@ -6,6 +6,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
+import VisitLogger from "@/components/VisitLogger";
 
 export const metadata: Metadata = {
   title: "Tailor Servicios | Soluciones de Recursos Humanos",
@@ -46,6 +47,7 @@ export default async function RootLayout({
     <html lang={locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
+          <VisitLogger />
           <Header />
           {children}
           <Footer />

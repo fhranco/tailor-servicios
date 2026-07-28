@@ -1,0 +1,165 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset="utf-8">
+<title>Manual de Entrega Técnica - Tailor Servicios</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        color: #333333;
+        line-height: 1.6;
+    }
+    h1 {
+        color: #121824;
+        font-size: 24pt;
+        border-bottom: 2px solid #c5a880;
+        padding-bottom: 5px;
+    }
+    h2 {
+        color: #121824;
+        font-size: 18pt;
+        margin-top: 20pt;
+        border-left: 4px solid #c5a880;
+        padding-left: 10px;
+    }
+    h3 {
+        color: #121824;
+        font-size: 14pt;
+        margin-top: 15pt;
+    }
+    p, li {
+        font-size: 11pt;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+    th {
+        background-color: #121824;
+        color: #ffffff;
+        text-align: left;
+        padding: 8px;
+        font-size: 11pt;
+    }
+    td {
+        padding: 8px;
+        border-bottom: 1px solid #dddddd;
+        font-size: 11pt;
+    }
+    .highlight {
+        background-color: #fdfaf7;
+        border: 1px solid #f3e8d7;
+        padding: 15px;
+        margin: 15px 0;
+    }
+</style>
+</head>
+<body>
+
+<h1>Manual de Presentación y Entrega Técnica</h1>
+<p><strong>Proyecto Web Corporativo — Tailor Servicios</strong></p>
+
+<h2>1. Resumen Ejecutivo del Proyecto</h2>
+<p>El sitio web de Tailor Servicios ha sido transformado en una plataforma digital moderna para una consultora boutique de Recursos Humanos (B2B y B2C). Cuenta con:</p>
+<ul>
+    <li><strong>Arquitectura de vanguardia:</strong> Desarrollado sobre <strong>Next.js 14</strong> (App Router) y TypeScript, garantizando carga instantánea, optimización SEO y escalabilidad.</li>
+    <li><strong>Base de Datos en la Nube:</strong> Integración completa con <strong>Supabase</strong> para el registro estructurado de leads y postulantes.</li>
+    <li><strong>Cumplimiento Legal Chileno (Ley 21.719):</strong> Implementación rigurosa de protección de datos personales.</li>
+    <li><strong>Panel de Administración Privado:</strong> Un dashboard seguro para visualizar leads de empresas y descargar currículums de candidatos.</li>
+</ul>
+
+<h2>2. Mapa del Sitio y Arquitectura de Navegación</h2>
+<p>El sitio se estructuró de manera desacoplada para optimizar el posicionamiento en buscadores (SEO) y facilitar la navegación:</p>
+<ul>
+    <li><strong>/</strong> — Inicio (Home)</li>
+    <li><strong>/nosotros</strong> — Quiénes somos y valores de marca</li>
+    <li><strong>/servicios</strong> — Líneas de negocio</li>
+    <li><strong>/especializacion</strong> — Áreas de foco operativo</li>
+    <li><strong>/contacto</strong> — Formulario B2B para captación de Empresas</li>
+    <li><strong>/candidatos</strong> — Portal y formulario de postulación</li>
+    <li><strong>/empresas</strong> — Landing informativa de soluciones B2B</li>
+    <li><strong>Páginas Legales independientes:</strong>
+        <ul>
+            <li><strong>/terminos</strong> — Términos y Condiciones</li>
+            <li><strong>/privacidad</strong> — Políticas de Privacidad</li>
+            <li><strong>/cookies</strong> — Políticas de Cookies</li>
+        </ul>
+    </li>
+    <li><strong>Panel Interno:</strong> <strong>/admin/privacidad</strong> — Dashboard seguro de datos</li>
+</ul>
+
+<h2>3. Características y Funcionalidades Clave</h2>
+
+<h3>A. Formularios Inteligentes y Base de Datos (Supabase)</h3>
+<ul>
+    <li><strong>Formulario de Contacto B2B (Empresas):</strong> Registra automáticamente los mensajes en la tabla <em>leads</em> de la base de datos.</li>
+    <li><strong>Formulario de Carga de CV (Candidatos):</strong> Sube los archivos de currículum de forma encriptada a un Storage Bucket y los enlaza en la tabla <em>candidates</em>. Cuenta con restricción de tamaño (máx. 5MB) y de formato (PDF, DOC, DOCX).</li>
+</ul>
+
+<h3>B. Panel de Administración Privado (Dashboard)</h3>
+<p>Ubicado en <strong>/admin/privacidad</strong>, este panel permite al equipo interno de Tailor visualizar de manera centralizada los leads de empresas, las postulaciones recibidas y descargar directamente los currículums de los candidatos con un solo clic.</p>
+
+<h3>C. Cumplimiento de la Ley 21.719 (Protección de Datos en Chile)</h3>
+<p>El sitio cuenta con un banner de cookies dinámico con memoria de aceptación, casillas de verificación obligatorias de políticas en los formularios y páginas independientes actualizadas con fecha de vigencia a <strong>Julio 2026</strong>.</p>
+
+<h2>4. Justificación Tecnológica y Negocio (Para el Cliente)</h2>
+
+<h3>¿Por qué elegimos esta Arquitectura y no WordPress?</h3>
+<p>Para una consultora boutique de Recursos Humanos que maneja información confidencial, el desarrollo en código moderno representa ventajas fundamentales:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Criterio</th>
+            <th>Solución a Medida (Código)</th>
+            <th>WordPress Tradicional</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Seguridad de Datos</strong></td>
+            <td><strong>Máxima.</strong> Base de datos aislada con encriptación avanzada estándar de la industria.</td>
+            <td><strong>Baja-Media.</strong> Alta vulnerabilidad por uso de múltiples plugins de terceros.</td>
+        </tr>
+        <tr>
+            <td><strong>Velocidad y Carga</strong></td>
+            <td><strong>Instantánea (0.5s).</strong> Carga optimizada que favorece el posicionamiento SEO en Google.</td>
+            <td><strong>Lenta (3s+).</strong> Carga excesiva de archivos redundantes y bases de datos pesadas.</td>
+        </tr>
+        <tr>
+            <td><strong>Protección contra Caídas</strong></td>
+            <td><strong>Inmune.</strong> Alojamiento global distribuido mediante Vercel CDN tolerando picos de tráfico.</td>
+            <td><strong>Dependiente.</strong> Si el servidor del hosting compartido falla, la página cae de inmediato.</td>
+        </tr>
+        <tr>
+            <td><strong>Mantenimiento</strong></td>
+            <td><strong>Cero costo.</strong> No requiere actualizaciones de plugins que puedan desconfigurar el diseño.</td>
+            <td><strong>Alto.</strong> Requiere constante mantenimiento preventivo para evitar fallos de compatibilidad.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>La Importancia de la Ley 21.719</h3>
+<p>Almacenar datos personales de candidatos y empresas exige el estándar más alto de seguridad para mitigar riesgos legales de filtración. Al guardar la información en Supabase de forma aislada y privada en lugar de usar un servidor de hosting común, Tailor minimiza a cero cualquier riesgo de seguridad.</p>
+
+<h3>Futura Autoadministración</h3>
+<p>Next.js está preparado para integrarse a futuro con un Headless CMS (como Sanity o Contentful) de forma rápida. Esto le permitirá al cliente modificar textos, fotos y blog desde un panel visual muy sencillo, manteniendo el 100% de la velocidad y seguridad del código a medida.</p>
+
+<h2>5. Guía de Revisión de Contenidos</h2>
+<div class="highlight">
+    <p><strong>💡 Recomendaciones para la revisión del cliente:</strong></p>
+    <ul>
+        <li><strong>Revisión Legal:</strong> Validar con su asesor los textos de Privacidad, Términos y Cookies (fechados a Julio 2026).</li>
+        <li><strong>Líneas de Negocio:</strong> Confirmar que las descripciones de servicios en las pestañas se alineen con su propuesta de valor.</li>
+        <li><strong>Pruebas Prácticas:</strong> Realizar un envío de prueba en el portal de candidatos y de empresas para validar la recepción de la información.</li>
+    </ul>
+</div>
+
+<h2>6. Siguientes Pasos para Lanzamiento (Paso a Producción)</h2>
+<ol>
+    <li><strong>Cambio de DNS en cPanel:</strong> Apuntar el registro <strong>A</strong> de tailorservicios.cl y el <strong>CNAME</strong> de www a los servidores de Vercel. <em>*Los correos corporativos de Google Workspace no se verán afectados.*</em></li>
+    <li><strong>Asignación de Dominio:</strong> Activar el dominio final dentro de la consola del proyecto en Vercel para generar el certificado SSL automático.</li>
+</ol>
+
+</body>
+</html>

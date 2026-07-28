@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import './page.css';
+import ValuesSection from '@/components/ValuesSection';
 
 export default function NosotrosPage() {
   return (
@@ -27,8 +28,8 @@ export default function NosotrosPage() {
       </section>
 
       {/* Quiénes Somos */}
-      <section className="story-section fluid-container">
-        <div className="story-container">
+      <section className="story-section">
+        <div className="fluid-container story-container">
           <h2>Nuestra Historia</h2>
           <p className="lead-text" style={{ fontWeight: 600, color: 'var(--color-dark)', fontSize: '1.4rem' }}>
             En Tailor Servicios creemos que las <span className="text-accent">organizaciones crecen</span> cuando las <span className="text-accent">personas crecen</span> con ellas.
@@ -51,11 +52,63 @@ export default function NosotrosPage() {
               Nuestro propósito es simple pero desafiante: ayudar a las organizaciones a construir equipos más sólidos, culturas más saludables y procesos más eficientes.
             </p>
           </div>
-          <p style={{ fontWeight: 'bold', color: 'var(--color-accent)', fontSize: '1.25rem', marginTop: '2rem' }}>
+          <p style={{ fontWeight: 'bold', color: 'var(--color-dark)', fontSize: '1.25rem', marginTop: '2rem' }}>
             Impulsando el desarrollo desde Magallanes.
           </p>
         </div>
       </section>
+
+      {/* Misión y Visión */}
+      <section className="mission-vision-section">
+        <div className="fluid-container">
+          <div className="mission-vision-grid">
+            <motion.div 
+              className="mv-card mission-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="mv-card-header">
+                <div className="mv-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mv-icon">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="6"></circle>
+                    <circle cx="12" cy="12" r="2"></circle>
+                  </svg>
+                </div>
+                <h2>Misión</h2>
+              </div>
+              <p className="mv-text">
+                Agregar valor a nuestros clientes contribuyendo al logro de sus objetivos organizacionales, mediante la realización de trabajos diseñados e implementados a la medida de cada compañía.
+              </p>
+            </motion.div>
+
+            <motion.div 
+              className="mv-card vision-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <div className="mv-card-header">
+                <div className="mv-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mv-icon">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </div>
+                <h2>Visión</h2>
+              </div>
+              <p className="mv-text">
+                Proporcionar a nuestros clientes servicios de asesorías y consultorías de calidad, a la medida de sus propias necesidades e impulsando el desarrollo en <span className="text-highlight">Magallanes</span>.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <ValuesSection />
 
       {/* Por qué nos eligen */}
       <section className="why-section">

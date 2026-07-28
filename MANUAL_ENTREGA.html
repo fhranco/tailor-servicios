@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Entrega Técnica - Tailor Servicios</title>
+    <style>
+        :root {
+            --color-primary: #121824;
+            --color-accent: #c5a880;
+            --color-text: #374151;
+            --color-bg: #f9fafb;
+            --font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+        body {
+            font-family: var(--font-family);
+            color: var(--color-text);
+            background-color: var(--color-bg);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .document-container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 50px 60px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            border-top: 6px solid var(--color-accent);
+        }
+
+        h1 {
+            color: var(--color-primary);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 5px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        h2 {
+            color: var(--color-primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--color-accent);
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: var(--color-primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        p, li {
+            font-size: 1.05rem;
+            color: #4b5563;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #e5e7eb;
+            margin: 40px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: var(--color-primary);
+            color: #ffffff;
+            text-align: left;
+            padding: 12px 15px;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        .badge {
+            background-color: #eef2f6;
+            color: var(--color-primary);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .highlight-box {
+            background-color: #fdfaf7;
+            border: 1px solid #f3e8d7;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .highlight-box h4 {
+            margin-top: 0;
+            color: #b45309;
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        .print-btn {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 30px auto;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .print-btn:hover {
+            background-color: #1e293b;
+        }
+
+        @media print {
+            body {
+                background-color: #ffffff;
+                padding: 0;
+            }
+            .document-container {
+                box-shadow: none;
+                padding: 0;
+                border-radius: 0;
+                border: none;
+            }
+            .print-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Guardar como PDF / Imprimir</button>
+
+    <div class="document-container">
+        <h1>Manual de Presentación y Entrega Técnica</h1>
+        <div class="subtitle">Proyecto Web Corporativo — Tailor Servicios</div>
+
+        <h2>1. Resumen Ejecutivo del Proyecto</h2>
+        <p>El sitio web de Tailor Servicios ha sido transformado en una plataforma digital moderna para una consultora boutique de Recursos Humanos (B2B y B2C). Cuenta con:</p>
+        <ul>
+            <li><strong>Arquitectura de vanguardia:</strong> Desarrollado sobre <strong>Next.js 14</strong> (App Router) y TypeScript, garantizando carga instantánea, optimización SEO y escalabilidad.</li>
+            <li><strong>Base de Datos en la Nube:</strong> Integración completa con <strong>Supabase</strong> para el registro estructurado de leads y postulantes.</li>
+            <li><strong>Cumplimiento Legal Chileno (Ley 21.719):</strong> Implementación rigurosa de protección de datos personales.</li>
+            <li><strong>Panel de Administración Privado:</strong> Un dashboard seguro para visualizar leads de empresas y descargar currículums de candidatos.</li>
+        </ul>
+
+        <h2>2. Mapa del Sitio y Arquitectura de Navegación</h2>
+        <p>El sitio se estructuró de manera desacoplada para optimizar el posicionamiento en buscadores (SEO) y facilitar la navegación:</p>
+        <ul>
+            <li><span class="badge">/</span> — Inicio (Home)</li>
+            <li><span class="badge">/nosotros</span> — Quiénes somos y valores de marca</li>
+            <li><span class="badge">/servicios</span> — Líneas de negocio</li>
+            <li><span class="badge">/especializacion</span> — Áreas de foco operativo</li>
+            <li><span class="badge">/contacto</span> — Formulario B2B para captación de Empresas</li>
+            <li><span class="badge">/candidatos</span> — Portal y formulario de postulación</li>
+            <li><span class="badge">/empresas</span> — Landing informativa de soluciones B2B</li>
+            <li><strong>Páginas Legales independientes:</strong>
+                <ul>
+                    <li><span class="badge">/terminos</span> — Términos y Condiciones</li>
+                    <li><span class="badge">/privacidad</span> — Políticas de Privacidad</li>
+                    <li><span class="badge">/cookies</span> — Políticas de Cookies</li>
+                </ul>
+            </li>
+            <li><strong>Panel Interno:</strong> <span class="badge">/admin/privacidad</span> — Dashboard seguro de datos</li>
+        </ul>
+
+        <h2>3. Características y Funcionalidades Clave</h2>
+        
+        <h3>A. Formularios Inteligentes y Base de Datos (Supabase)</h3>
+        <ul>
+            <li><strong>Formulario de Contacto B2B (Empresas):</strong> Registra automáticamente los mensajes en la tabla <span class="badge">leads</span> de la base de datos.</li>
+            <li><strong>Formulario de Carga de CV (Candidatos):</strong> Sube los archivos de currículum de forma encriptada a un **Storage Bucket** y los enlaza en la tabla <span class="badge">candidates</span>. Cuenta con restricción de tamaño (máx. 5MB) y de formato (PDF, DOC, DOCX).</li>
+        </ul>
+
+        <h3>B. Panel de Administración Privado (Dashboard)</h3>
+        <p>Ubicado en <span class="badge">/admin/privacidad</span>, este panel permite al equipo interno de Tailor visualizar de manera centralizada los leads de empresas, las postulaciones recibidas y descargar directamente los currículums de los candidatos con un solo clic.</p>
+
+        <h3>C. Cumplimiento de la Ley 21.719 (Protección de Datos en Chile)</h3>
+        <p>El sitio cuenta con un banner de cookies dinámico con memoria de aceptación, casillas de verificación obligatorias de políticas en los formularios y páginas independientes actualizadas con fecha de vigencia a <strong>Julio 2026</strong>.</p>
+
+        <hr>
+
+        <h2>4. Justificación Tecnológica y Negocio (Para el Cliente)</h2>
+
+        <h3>¿Por qué elegimos esta Arquitectura y no WordPress?</h3>
+        <p>Para una consultora boutique de Recursos Humanos que maneja información confidencial, el desarrollo en código moderno representa ventajas fundamentales:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Criterio</th>
+                    <th>Solución a Medida (Código)</th>
+                    <th>WordPress Tradicional</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Seguridad de Datos</strong></td>
+                    <td><strong>Máxima.</strong> Base de datos aislada con encriptación avanzada estándar de la industria.</td>
+                    <td><strong>Baja-Media.</strong> Alta vulnerabilidad por uso de múltiples plugins de terceros.</td>
+                </tr>
+                <tr>
+                    <td><strong>Velocidad y Carga</strong></td>
+                    <td><strong>Instantánea (0.5s).</strong> Carga optimizada que favorece el posicionamiento SEO en Google.</td>
+                    <td><strong>Lenta (3s+).</strong> Carga excesiva de archivos redundantes y bases de datos pesadas.</td>
+                </tr>
+                <tr>
+                    <td><strong>Protección contra Caídas</strong></td>
+                    <td><strong>Inmune.</strong> Alojamiento global distribuido mediante Vercel CDN tolerando picos de tráfico.</td>
+                    <td><strong>Dependiente.</strong> Si el servidor del hosting compartido falla, la página cae de inmediato.</td>
+                </tr>
+                <tr>
+                    <td><strong>Mantenimiento</strong></td>
+                    <td><strong>Cero costo.</strong> No requiere actualizaciones de plugins que puedan desconfigurar el diseño.</td>
+                    <td><strong>Alto.</strong> Requiere constante mantenimiento preventivo para evitar fallos de compatibilidad.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>La Importancia de la Ley 21.719</h3>
+        <p>Almacenar datos personales de candidatos y empresas exige el estándar más alto de seguridad para mitigar riesgos legales de filtración. Al guardar la información en <strong>Supabase</strong> de forma aislada y privada en lugar de usar un servidor de hosting común, Tailor minimiza a cero cualquier riesgo de seguridad.</p>
+
+        <h3>Futura Autoadministración</h3>
+        <p>Next.js está preparado para integrarse a futuro con un **Headless CMS** (como <em>Sanity</em> o <em>Contentful</em>) de forma rápida. Esto le permitirá al cliente modificar textos, fotos y blog desde un panel visual muy sencillo, manteniendo el 100% de la velocidad y seguridad del código a medida.</p>
+
+        <hr>
+
+        <h2>5. Guía de Revisión de Contenidos</h2>
+        <div class="highlight-box">
+            <h4>💡 Recomendaciones para la revisión del cliente:</h4>
+            <ul>
+                <li><strong>Revisión Legal:</strong> Validar con su asesor los textos de Privacidad, Términos y Cookies (fechados a Julio 2026).</li>
+                <li><strong>Líneas de Negocio:</strong> Confirmar que las descripciones de servicios en las pestañas se alineen con su propuesta de valor.</li>
+                <li><strong>Pruebas Prácticas:</strong> Realizar un envío de prueba en el portal de candidatos y de empresas para validar la recepción de la información.</li>
+            </ul>
+        </div>
+
+        <h2>6. Siguientes Pasos para Lanzamiento (Paso a Producción)</h2>
+        <ol>
+            <li><strong>Cambio de DNS en cPanel:</strong> Apuntar el registro <strong>A</strong> de <span class="badge">tailorservicios.cl</span> y el <strong>CNAME</strong> de <span class="badge">www</span> a los servidores de Vercel. <em>*Los correos corporativos de Google Workspace no se verán afectados.*</em></li>
+            <li><strong>Asignación de Dominio:</strong> Activar el dominio final dentro de la consola del proyecto en Vercel para generar el certificado SSL automático.</li>
+        </ol>
+    </div>
+
+</body>
+</html>

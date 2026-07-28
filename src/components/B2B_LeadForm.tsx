@@ -112,6 +112,25 @@ export default function B2B_LeadForm() {
 
       if (dbError) throw dbError;
 
+      // Send Email Notifications (Alert & Auto-responder)
+      try {
+        await fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            type: 'lead',
+            nombre: formData.nombre.value,
+            email: formData.correo.value,
+            empresa: formData.empresa.value,
+            servicio: formData.servicio.value,
+          }),
+        });
+      } catch (mailErr) {
+        console.error('Failed to trigger email notification:', mailErr);
+      }
+
       setIsSuccess(true);
     } catch (err) {
       console.error('Supabase Error:', err);

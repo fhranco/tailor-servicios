@@ -84,6 +84,32 @@ export default function CandidateUpload() {
 
       if (dbError) throw dbError;
 
+      // 3. Generate Public URL for CV file
+      const { data: publicUrlData } = supabase.storage
+        .from('cvs')
+        .getPublicUrl(filePath);
+
+      const cvUrl = publicUrlData?.publicUrl || '';
+
+      // 4. Send Email Notifications (Alert & Auto-responder)
+      try {
+        await fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            type: 'candidate',
+            nombre: name,
+            email: email,
+            specialty: specialty,
+            cvUrl: cvUrl,
+          }),
+        });
+      } catch (mailErr) {
+        console.error('Failed to trigger candidate email notification:', mailErr);
+      }
+
       setSuccessMessage('¡Tu CV ha sido enviado exitosamente!');
       setFile(null);
       setName('');

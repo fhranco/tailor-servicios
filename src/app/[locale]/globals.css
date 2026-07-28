@@ -2,13 +2,17 @@
   /* Custom Tailor Corporate Colors */
   --color-dark: #0f172a;      /* Contrast dark */
   
-  /* Logo Colors */
-  --color-accent: #b0d574;    /* Logo Green Accent */
-  --color-accent-secondary: #fcc371; /* Logo Yellow/Orange Accent */
-  --color-accent-tertiary: #8b1c31; /* Logo Granate Accent */
+  /* Logo Colors (Client's Palette) */
+  --color-accent: #8ec53c;           /* Green */
+  --color-accent-secondary: #fcae48; /* Yellow */
+  --color-accent-tertiary: #ed4240;  /* Red */
+  --color-accent-blue: #31ade3;      /* Blue */
+  --color-accent-orange: #f67a32;    /* Orange */
+  --color-accent-gray: #636363;      /* Gray */
 
   --color-light: #FFFFFF;     /* Main background */
   
+  /* Typography */
   --color-gray-dark: #334155;
   --color-gray-medium: #94a3b8;
   --color-gray-light: #f1f5f9;

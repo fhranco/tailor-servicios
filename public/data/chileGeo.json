@@ -1,0 +1,18 @@
+{
+  "region": {
+    "name": "Magallanes y de la Antártica Chilena",
+    "code": "XIV",
+    "communes": [
+      {
+        "name": "Punta Arenas",
+        "code": "16601",
+        "barrios": ["Centro", "Villa Florida", "Alto de la Estación"]
+      },
+        {
+        "name": "Puerto Natales",
+        "code": "16602",
+        "barrios": ["Puerto Natales", "Los Canelos"]
+      }
+    ]
+  }
+}

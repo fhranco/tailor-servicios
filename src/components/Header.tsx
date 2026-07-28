@@ -87,7 +87,7 @@ export default function Header() {
                 </Link>
               </li>
               <li className="mobile-only-account">
-                <Link href="/login" className="nav-item">
+                <Link href="/admin" className="nav-item">
                   {t('mi_cuenta')}
                 </Link>
               </li>
@@ -96,7 +96,7 @@ export default function Header() {
 
           {/* Desktop Account icon (moved outside the main ul for better layout) */}
           <div className="desktop-actions">
-            <Link href="/login" className="account-link">
+            <Link href="/admin" className="account-link">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </Link>
           </div>
