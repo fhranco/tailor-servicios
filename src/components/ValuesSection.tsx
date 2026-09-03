@@ -133,7 +133,7 @@ export default function ValuesSection() {
             <div className="center-motto-circle">
               <div className="motto-content">
                 <span className="motto-small">Propósito</span>
-                <span className="motto-large">Impulsando el desarrollo en Magallanes</span>
+                <span className="motto-large">Impulsando el Desarrollo desde Magallanes</span>
               </div>
             </div>
 
@@ -204,7 +204,7 @@ export default function ValuesSection() {
           </div>
 
           <div className="mobile-motto-banner">
-            <span>Propósito: Impulsando el desarrollo en Magallanes</span>
+            <span>Propósito: Impulsando el Desarrollo desde Magallanes</span>
           </div>
         </div>
       </div>

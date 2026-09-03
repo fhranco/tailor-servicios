@@ -1,8 +1,8 @@
 .hero-candidatos-section {
   position: relative;
   width: 100%;
-  height: 90vh;
-  min-height: 600px;
+  min-height: 85vh;
+  padding: 10rem 0 6rem;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -27,10 +27,10 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    to right,
-    rgba(14, 26, 36, 0.95) 0%,
-    rgba(14, 26, 36, 0.7) 50%,
-    rgba(14, 26, 36, 0.3) 100%
+    135deg,
+    rgba(14, 26, 36, 0.96) 0%,
+    rgba(15, 23, 42, 0.90) 50%,
+    rgba(15, 23, 42, 0.82) 100%
   );
   z-index: 2;
 }
@@ -39,166 +39,233 @@
   position: relative;
   z-index: 3;
   width: 100%;
+}
+
+.hero-candidatos-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.hero-left-col {
   display: flex;
-  justify-content: flex-start;
-  padding-top: 80px; /* Offset for navbar */
-}
-
-.hero-candidatos-text-box {
-  max-width: 650px;
-  color: var(--color-white);
-}
-
-.hero-candidatos-badge {
-  display: inline-block;
-  background-color: rgba(252, 195, 113, 0.15);
-  color: var(--color-accent);
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-  border: 1px solid rgba(252, 195, 113, 0.3);
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .hero-candidatos-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 4.5rem;
-  font-weight: 700;
+  font-family: var(--font-primary, system-ui, -apple-system, sans-serif);
+  font-size: clamp(2.5rem, 4.5vw, 4rem);
+  font-weight: 800;
   line-height: 1.1;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   color: #ffffff !important;
+  letter-spacing: -0.02em;
 }
 
 .hero-candidatos-description {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   color: rgba(255, 255, 255, 0.85);
-  line-height: 1.6;
-  margin-bottom: 2.5rem;
-  max-width: 550px;
+  line-height: 1.65;
+  margin-bottom: 2rem;
+  max-width: 600px;
 }
 
+/* Primary Highlighted CTA to Rex+ */
 .hero-candidatos-actions {
   display: flex;
+  flex-direction: column;
   gap: 1rem;
-  align-items: center;
-  margin-bottom: 3rem;
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
-.hero-cta-btn {
+.hero-cta-btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #be1622;
-  color: #ffffff;
-  padding: 1.2rem 3rem;
-  border-radius: 4px;
+  gap: 0.85rem;
+  background: linear-gradient(135deg, #be1622 0%, #9e121c 100%);
+  color: #ffffff !important;
+  padding: 1.25rem 2.5rem;
+  border-radius: 10px;
   font-family: var(--font-primary, system-ui, -apple-system, sans-serif);
   font-size: 1.1rem;
   font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(190, 22, 34, 0.45);
+  transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+  width: fit-content;
+}
+
+.hero-cta-btn-primary:hover {
+  background: linear-gradient(135deg, #d31b28 0%, #b01420 100%);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(190, 22, 34, 0.6);
+}
+
+.hero-features-strip {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.feature-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #b0d574;
+}
+
+/* Video Column & Card */
+.hero-video-col {
+  width: 100%;
+}
+
+.hero-video-card {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.hero-video-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.video-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.video-pill {
+  padding: 0.3rem 0.75rem;
+  background: rgba(176, 213, 116, 0.2);
+  color: #b0d574;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  border: none;
+  letter-spacing: 0.05em;
+}
+
+.video-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.video-duration {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+}
+
+.hero-video-player-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #000000;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  box-shadow: 0 4px 15px rgba(190, 22, 34, 0.3);
 }
 
-.hero-cta-btn:hover {
-  background-color: #9e121c; /* Darker red on hover */
-  transform: translateY(-3px);
-  box-shadow: 0 15px 30px rgba(190, 22, 34, 0.5);
+.hero-video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-/* Full-width Top Banner */
-.hero-top-banner {
+.video-play-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  background: rgba(252, 195, 113, 0.95);
-  color: var(--color-dark);
-  z-index: 10;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.banner-content {
+  height: 100%;
+  background: rgba(15, 23, 42, 0.45);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  font-size: 0.95rem;
+  transition: background 0.3s ease;
 }
 
-.banner-content p {
+.hero-video-player-wrapper:hover .video-play-overlay {
+  background: rgba(15, 23, 42, 0.25);
+}
+
+.video-play-btn {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background-color: #be1622;
+  color: #ffffff;
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px rgba(190, 22, 34, 0.8);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hero-video-player-wrapper:hover .video-play-btn {
+  transform: scale(1.15);
+  background-color: #d31b28;
+}
+
+.video-play-btn svg {
+  margin-left: 3px;
+}
+
+.video-play-label {
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.hero-video-card-footer {
+  margin-top: 1.2rem;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+}
+
+.hero-video-card-footer p {
   margin: 0;
 }
 
-.banner-pulse {
-  width: 10px;
-  height: 10px;
-  background-color: #ff4757;
-  border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7);
-  animation: pulse-red 2s infinite;
-}
-
-@keyframes pulse-red {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
-}
-
-.banner-link {
-  color: var(--color-dark);
-  font-weight: 700;
-  text-decoration: underline;
-  transition: color 0.3s ease;
-}
-
-.banner-link:hover {
-  color: var(--color-white);
-}
-
-/* Responsive adjustments */
+/* Responsiveness */
 @media (max-width: 1024px) {
-  .hero-candidatos-title {
-    font-size: 3.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-candidatos-overlay {
-    background: linear-gradient(
-      to bottom,
-      rgba(14, 26, 36, 0.8) 0%,
-      rgba(14, 26, 36, 0.95) 100%
-    );
+  .hero-candidatos-grid {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
   }
 
-  .hero-candidatos-content {
-    justify-content: center;
+  .hero-cta-btn-primary {
+    width: 100%;
     text-align: center;
-  }
-
-  .hero-candidatos-text-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .hero-candidatos-title {
-    font-size: 2.8rem;
-  }
-  
-  .hero-candidatos-description {
-    font-size: 1.1rem;
-  }
-
-  .hero-candidatos-actions {
-    justify-content: center;
   }
 }

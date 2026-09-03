@@ -165,3 +165,29 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+/* Global Buttons & High-Contrast Hover Styles */
+.btn-primary {
+  background-color: var(--color-accent);
+  color: var(--color-dark) !important;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background-color: var(--color-dark) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.25);
+}
+
+.btn-primary svg {
+  stroke: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.btn-primary:hover svg {
+  transform: translateX(2px);
+}
+

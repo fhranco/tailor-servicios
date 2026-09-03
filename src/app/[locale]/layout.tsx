@@ -9,6 +9,7 @@ import CookieBanner from "@/components/CookieBanner";
 import VisitLogger from "@/components/VisitLogger";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://tailorservicios.cl'),
   title: "Tailor Servicios | Soluciones de Recursos Humanos",
   description: "Consultoría estratégica en Reclutamiento, Gestión de Personas y Desarrollo Organizacional con despliegue operativo en Punta Arenas y Santiago.",
   icons: {

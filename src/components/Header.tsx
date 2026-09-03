@@ -31,10 +31,15 @@ export default function Header() {
       <div className={`meta-header ${isScrolled ? 'meta-hidden' : ''}`}>
         <div className="fluid-container meta-container">
           <div className="meta-left">
-            <Link href="/candidatos#subir-cv" className="meta-link">
+            <a 
+              href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="meta-link"
+            >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               {t('sube_cv')}
-            </Link>
+            </a>
             <div className="meta-divider"></div>
             <Link href="/empresas" className="meta-link">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
@@ -60,7 +65,7 @@ export default function Header() {
         <div className="fluid-container nav-container">
           <Link href="/" className="logo-link">
             <img 
-              src="/logo.jpeg" 
+              src="/tailor-logo-official.png" 
               alt="Tailor Servicios" 
               className="logo-img"
             />
@@ -79,8 +84,8 @@ export default function Header() {
               <li><Link href="/" className="nav-item">{t('inicio')}</Link></li>
               <li><Link href="/nosotros" className="nav-item">{t('nosotros')}</Link></li>
               <li><Link href="/servicios" className="nav-item">{t('servicios')}</Link></li>
-              <li><Link href="/especializacion" className="nav-item">{t('especializacion')}</Link></li>
               <li><Link href="/candidatos" className="nav-item">{t('candidatos')}</Link></li>
+              <li><Link href="/blog" className="nav-item">{t('blog')}</Link></li>
               <li>
                 <Link href="/contacto" className="btn-contact-nav">
                   {t('contacto')}

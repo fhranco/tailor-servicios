@@ -4,8 +4,41 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import './page.css';
 import ValuesSection from '@/components/ValuesSection';
+import TestimonialSection from '@/components/TestimonialSection';
+import IndustriesMarquee from '@/components/IndustriesMarquee';
 
 export default function NosotrosPage() {
+  const alliances = [
+    {
+      id: 'canales',
+      name: 'ONG Canales',
+      desc: 'Educación Técnico Profesional y vinculación formativo-laboral para potenciar el talento juvenil en la Patagonia y sur austral.',
+      tag: 'Educación & Empleabilidad',
+      logo: '/alianzas/ong-canales.svg'
+    },
+    {
+      id: 'ist',
+      name: 'IST',
+      desc: 'Instituto de Seguridad del Trabajo. Alianza orientada a la prevención de riesgos laborales, cuidado y bienestar de las personas.',
+      tag: 'Seguridad y Salud Laboral',
+      logo: '/alianzas/ist.svg'
+    },
+    {
+      id: 'austro',
+      name: 'Austro Chile',
+      desc: 'Asociación Magallánica de Empresas de Turismo y Servicios. Impulso gremial al capital humano para el desarrollo turístico regional.',
+      tag: 'Asociación Gremial Austral',
+      logo: '/alianzas/austro.svg'
+    },
+    {
+      id: 'britanico',
+      name: 'Instituto Británico',
+      desc: 'Instituto Chileno Británico de Cultura (Punta Arenas). Convenio de capacitación idiomática y fortalecimiento de competencias globales.',
+      tag: 'Capacitación e Idiomas',
+      logo: '/alianzas/instituto-britanico.svg'
+    }
+  ];
+
   return (
     <main className="nosotros-page">
       <section className="inner-hero">
@@ -27,7 +60,7 @@ export default function NosotrosPage() {
         </div>
       </section>
 
-      {/* Quiénes Somos */}
+      {/* Quiénes Somos / Nuestra Historia */}
       <section className="story-section">
         <div className="fluid-container story-container">
           <h2>Nuestra Historia</h2>
@@ -35,7 +68,7 @@ export default function NosotrosPage() {
             En Tailor Servicios creemos que las <span className="text-accent">organizaciones crecen</span> cuando las <span className="text-accent">personas crecen</span> con ellas.
           </p>
           <p>
-            Somos una consultora especializada en Recursos Humanos con más de nueve años de experiencia acompañando a empresas de distintos tamaños e industrias en la Región de Magallanes y en todo Chile. Desde nuestras oficinas en Punta Arenas y Santiago, hemos construido relaciones de largo plazo con más de 100 clientes, transformándonos en un socio estratégico para organizaciones que buscan atraer talento, fortalecer sus equipos y desarrollar culturas organizacionales sostenibles.
+            Somos una consultora especializada en Recursos Humanos con más de 20 años acompañando a empresas de distintos tamaños e industrias en la Región de Magallanes y en todo Chile. Desde nuestras oficinas en Punta Arenas y Santiago, hemos construido relaciones de largo plazo con más de 100 clientes, transformándonos en un socio estratégico para organizaciones que buscan atraer talento, fortalecer sus equipos y desarrollar culturas organizacionales sostenibles.
           </p>
           <p>
             Nuestro trabajo combina conocimiento técnico, experiencia práctica y una profunda comprensión de las realidades de cada territorio, especialmente de los desafíos que implica gestionar personas en zonas extremas, industrias complejas y mercados laborales altamente competitivos.
@@ -53,7 +86,7 @@ export default function NosotrosPage() {
             </p>
           </div>
           <p style={{ fontWeight: 'bold', color: 'var(--color-dark)', fontSize: '1.25rem', marginTop: '2rem' }}>
-            Impulsando el desarrollo desde Magallanes.
+            Impulsando el Desarrollo desde Magallanes.
           </p>
         </div>
       </section>
@@ -110,6 +143,9 @@ export default function NosotrosPage() {
 
       <ValuesSection />
 
+      {/* Sección de Rubros e Industrias (Marquesina Coloreada con Clic Sostenido / Drag) */}
+      <IndustriesMarquee />
+
       {/* Por qué nos eligen */}
       <section className="why-section">
         <div className="fluid-container">
@@ -147,7 +183,7 @@ export default function NosotrosPage() {
         </div>
       </section>
 
-      {/* Las personas detrás */}
+      {/* Las personas detrás - Cuadro azul / Destacado de equipo */}
       <section className="team-section">
         <div className="fluid-container team-grid">
           <div className="team-image-placeholder">
@@ -160,13 +196,71 @@ export default function NosotrosPage() {
           <div className="team-content">
             <h2>Las personas detrás de Tailor Servicios</h2>
             <ul className="team-list">
-              <li><strong>Más de 20 profesionales especializados</strong> dedicados a potenciar su organización.</li>
+              <li><strong>Más de 40 profesionales especializados</strong> dedicados a potenciar su organización.</li>
               <li><strong>Equipo multidisciplinario</strong> que aporta diversas perspectivas y soluciones innovadoras.</li>
-              <li><strong>Experiencia acumulada de más de 15 años</strong> en distintas especialidades de recursos humanos.</li>
+              <li><strong>Experiencia acumulada de más de 20 años</strong> en distintas especialidades de recursos humanos.</li>
               <li><strong>Presencia regional y nacional</strong>, entendiendo las realidades de cada zona.</li>
               <li><strong>Conocimiento profundo</strong> de las industrias donde participamos y sus dinámicas.</li>
               <li><strong>Cercanía y acompañamiento permanente</strong> a clientes y candidatos, humanizando cada proceso.</li>
             </ul>
+
+            {/* Identificador de Marca Oficial Vigente en el pie de la sección */}
+            <div className="team-brand-badge">
+              <div className="team-brand-logo-wrap">
+                <img 
+                  src="/tailor-logo-white.png" 
+                  alt="Tailor Servicios — Identificador Oficial" 
+                  className="team-brand-logo"
+                />
+              </div>
+              <div className="team-brand-text">
+                <span className="team-brand-title">Identificador de Marca Oficial Vigente</span>
+                <span className="team-brand-sub">Tailor Servicios · Consultora Estratégica de Personas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Casos de Éxito / Testimonios (Área de Testimonios / Post-its) */}
+      <TestimonialSection />
+
+      {/* Nueva Sección: "Alianzas Estratégicas" (Alianzas y Convenios) */}
+      <section className="alliances-section">
+        <div className="fluid-container">
+          <div className="alliances-header">
+            <span className="alliances-badge">Alianzas y Convenios</span>
+            <h2 className="alliances-title">Alianzas Estratégicas</h2>
+            <p className="alliances-subtitle">
+              Trabajamos en estrecha colaboración con entidades líderes para fortalecer la formación técnica, la empleabilidad y la seguridad en el trabajo en la Región de Magallanes y en todo Chile.
+            </p>
+          </div>
+
+          <div className="alliances-grid">
+            {alliances.map((alliance, i) => (
+              <motion.div 
+                key={alliance.id} 
+                className="alliance-card"
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+              >
+                <div className="alliance-logo-box">
+                  <img 
+                    src={alliance.logo} 
+                    alt={`Logo Alianza ${alliance.name}`} 
+                    className="alliance-logo-img"
+                  />
+                </div>
+                <h3 className="alliance-entity-name">{alliance.name}</h3>
+                <p className="alliance-entity-desc">{alliance.desc}</p>
+                <span className="alliance-tag">
+                  <span className="alliance-tag-dot"></span>
+                  {alliance.tag}
+                </span>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

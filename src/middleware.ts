@@ -1,23 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
 
-const intlMiddleware = createMiddleware({
-  locales: ['es'],
-  defaultLocale: 'es',
-  localePrefix: 'never'
-});
-
-export default function middleware(req: NextRequest) {
-  // Skip next-intl for API routes
-  if (req.nextUrl.pathname.startsWith('/api')) {
-    return NextResponse.next();
-  }
-
-  // For non-api pages, run next-intl as usual
-  return intlMiddleware(req);
-}
+export default createMiddleware(routing);
 
 export const config = {
-  // Match all pathnames except for _next, _vercel, and static files
-  matcher: ['/((?!_next|_vercel|.*\\..*).*)']
+  // Match all pathnames except for api, _next, _vercel, and static files
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
 };
+

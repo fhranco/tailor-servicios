@@ -12,38 +12,49 @@ const servicesData: Record<ServiceKey, any> = {
   reclutamiento: {
     title: "Reclutamiento y Selección",
     shortDesc: "Encontramos a las personas que harán crecer su organización. Identificamos talento que aporte valor y resultados sostenibles.",
-    longDesc: "Nuestro proceso de Reclutamiento y Selección no se basa solo en habilidades técnicas, sino en el encaje cultural y el potencial de desarrollo. Realizamos un levantamiento exhaustivo del perfil, utilizamos redes de contacto especializadas y aplicamos evaluaciones por competencias para asegurar que el candidato no solo pueda hacer el trabajo, sino que se alinee con la visión de su empresa.",
+    longDesc: "Nuestro proceso de Reclutamiento y Selección no se basa solo en habilidades técnicas, sino en el encaje cultural y el potencial de desarrollo. Realizamos un levantamiento exhaustivo del perfil, búsqueda directa y evaluaciones rigurosas para asegurar contrataciones de alto impacto.",
     benefits: [
-      "Levantamiento de perfil profundo y a medida.",
+      "Levantamiento de perfil profundo y a la medida.",
+      "Hunting de manera paralela sin costo adicional.",
       "Evaluaciones por competencias y psicolaborales.",
-      "Garantía de reposición ante desvinculaciones.",
-      "Red de talento en todo Chile, con foco en Magallanes y Santiago."
+      "Red de talento en todo Chile.",
+      "Garantía de reposición ante desvinculaciones o renuncias.",
+      "Toma exhaustiva y reforzada de referencias laborales.",
+      "Comunicación directa, constante y fluida con el cliente durante todo el proceso."
     ],
     image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     color: "var(--color-accent)"
   },
   gestion: {
-    title: "Gestión de Personas",
-    shortDesc: "Transformamos la gestión de recursos humanos en una ventaja competitiva equilibrando bienestar y productividad.",
-    longDesc: "Diseñamos políticas y prácticas que ponen a las personas en el centro sin perder de vista los objetivos del negocio. Desde la evaluación del desempeño hasta planes de compensación y beneficios, nuestro enfoque estructurado permite a las empresas retener el talento crítico y mantener altos niveles de motivación y compromiso.",
+    title: "Gestión de Dotaciones",
+    shortDesc: "Optimización operativa, legal y administrativa integral del personal y nóminas para su empresa.",
+    longDesc: "Acompañamos a su organización en la gestión operativa y regulatoria del capital humano, asegurando el cumplimiento estricto de la legislación laboral, la continuidad de las nóminas y el máximo aprovechamiento de beneficios tributarios y leyes de excepción.",
     benefits: [
-      "Sistemas de evaluación de desempeño continuos.",
-      "Diseño de estructuras de compensación y beneficios.",
-      "Planes de carrera y sucesión.",
-      "Asesoría laboral y cumplimiento normativo."
+      "Auditorías internas de personal.",
+      "Externalización y administración de remuneraciones / nómina.",
+      "Gestión integral de dotaciones.",
+      "Implementación, asesoría y optimización en ERPs de personas.",
+      "Servicios orientados al bienestar laboral.",
+      "Gestión y asesoría en bonificación a la contratación de mano de obra en zonas extremas (Leyes de excepción).",
+      "Estudios de mercado laboral y mano de obra regional.",
+      "Programas y planes de acción tipo semillero de talento."
     ],
     image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     color: "var(--color-accent-secondary)"
   },
   desarrollo: {
     title: "Desarrollo Organizacional",
-    shortDesc: "Entregamos herramientas para optimizar el funcionamiento de su organización, analizando y mejorando el clima laboral.",
-    longDesc: "Las organizaciones son ecosistemas vivos que requieren adaptación constante. Intervenimos a nivel de cultura y clima laboral, liderazgo y gestión del cambio para asegurar que su equipo esté preparado para enfrentar nuevos desafíos. Diagnosticamos las brechas existentes y construimos rutas de desarrollo que potencien la agilidad y colaboración en todos los niveles.",
+    shortDesc: "Fortalecemos la cultura, estructura, clima y liderazgo para construir empresas sostenibles y de alto desempeño.",
+    longDesc: "Intervenimos en la arquitectura humana de las organizaciones combinando diagnóstico de clima, diseño de estructuras, compensaciones y sistemas continuos de desarrollo para preparar a sus equipos frente a los desafíos estratégicos.",
     benefits: [
-      "Diagnósticos e intervenciones de clima organizacional.",
-      "Programas de formación y desarrollo de líderes.",
-      "Gestión de procesos de cambio organizacional.",
-      "Alineación de cultura corporativa con estrategia de negocio."
+      "Sistemas continuos de evaluación de desempeño.",
+      "Planes de capacitación, carrera y sucesión.",
+      "Estudios y diagnósticos de clima laboral.",
+      "Diseño de estructuras de compensación y beneficios.",
+      "Asesoría laboral y cumplimiento normativo.",
+      "Auditoría de estructuras organizacionales y levantamiento de perfiles de cargo.",
+      "Colaboración en planificaciones estratégicas y pilares corporativos.",
+      "Diseño e implementación del sistema integral de Desarrollo Organizacional."
     ],
     image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     color: "var(--color-accent)"

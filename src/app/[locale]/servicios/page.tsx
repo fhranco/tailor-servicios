@@ -95,7 +95,7 @@ export default function ServiciosPage() {
         </div>
       </section>
 
-      {/* Servicio 2: Gestión */}
+      {/* Servicio 2: Gestión de Dotaciones */}
       <section className="service-block light-block" id="gestion">
         <div className="fluid-container service-grid reverse-grid">
           <motion.div 
@@ -106,21 +106,21 @@ export default function ServiciosPage() {
             transition={{ duration: 0.6 }}
           >
             <div className="service-number dark-number">02</div>
-            <h2>Gestión <br/>de Personas</h2>
-            <h3>Transformamos la gestión de recursos humanos en una ventaja competitiva</h3>
+            <h2>Gestión de <br/>Dotaciones</h2>
+            <h3>Acompañamiento operativo, legal y estratégico en la administración de su personal</h3>
             <div className="service-divider dark-divider"></div>
             <p>
-              Las organizaciones exitosas entienden que la gestión de personas no es únicamente una función administrativa; es una herramienta estratégica para alcanzar resultados.
+              La administración eficiente y ordenada del personal es fundamental para la continuidad operativa y la solidez de cualquier empresa.
             </p>
             <p>
-              En Tailor Servicios apoyamos a las empresas en el diseño, implementación y fortalecimiento de procesos que permitan gestionar a sus equipos de manera eficiente, ordenada y alineada con sus objetivos organizacionales. Nuestro enfoque busca equilibrar las necesidades del negocio con el bienestar de las personas, generando entornos laborales que favorezcan la productividad y el compromiso.
+              En Tailor Servicios brindamos soporte integral en la gestión de dotaciones, desde la externalización de remuneraciones hasta auditorías de cumplimiento normativo y asesoría técnica en leyes de excepción para contratación en zonas extremas.
             </p>
             <p>
-              Entendemos que detrás de cada proceso existen personas con expectativas y proyectos de vida. Por ello buscamos construir soluciones que generen valor tanto para las empresas como para quienes forman parte de ellas.
+              Aseguramos procesos precisos, transparentes y orientados al bienestar laboral y la optimización de costos para su organización.
             </p>
             <div className="quote-box dark-quote">
               <svg className="quote-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 11L8 15H11V19H5V15L7 11H5V7H11V11H10ZM20 11L18 15H21V19H15V15L17 11H15V7H21V11H20Z" fill="currentColor"/></svg>
-              <p>Gestionar personas correctamente no es un gasto; es una inversión en productividad, sostenibilidad y crecimiento.</p>
+              <p>Optimizar la dotación y la nómina es garantizar la sostenibilidad operativa y legal de su negocio.</p>
             </div>
           </motion.div>
           
@@ -133,25 +133,17 @@ export default function ServiciosPage() {
           >
             <div className="glass-header">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-              <h4>Trabajamos junto a nuestros clientes en:</h4>
+              <h4>Nuestros servicios operativos incluyen:</h4>
             </div>
             <ul className="service-list luxury-list dark-list">
-              <li>Diseño de estructuras organizacionales</li>
-              <li>Descripciones y perfiles de cargo</li>
-              <li>Políticas y procedimientos de RRHH</li>
-              <li>Gestión del desempeño</li>
-              <li>Evaluación de competencias</li>
-              <li>Sistemas de reconocimiento y beneficios</li>
-              <li>Estudios de rentas y equidad interna</li>
-              <li>Diagnósticos organizacionales</li>
-              <li>Clima laboral</li>
-              <li>Encuestas de satisfacción</li>
-              <li>Gestión documental laboral</li>
-              <li>Asesoría en relaciones laborales</li>
-              <li>Cumplimiento normativo</li>
-              <li>Apoyo en implementación de Ley Karin</li>
-              <li>Procesos de comunicación interna</li>
-              <li>Acompañamiento a áreas de RRHH</li>
+              <li>Auditorías internas de personal</li>
+              <li>Externalización y administración de remuneraciones / nómina</li>
+              <li>Gestión integral de dotaciones</li>
+              <li>Implementación, asesoría y optimización en ERPs de personas</li>
+              <li>Servicios orientados al bienestar laboral</li>
+              <li>Gestión y asesoría en bonificación a la contratación de mano de obra en zonas extremas (Leyes de excepción)</li>
+              <li>Estudios de mercado laboral y mano de obra regional</li>
+              <li>Programas y planes de acción tipo semillero de talento</li>
             </ul>
           </motion.div>
         </div>
@@ -198,20 +190,14 @@ export default function ServiciosPage() {
               <h4>Nuestros servicios incluyen:</h4>
             </div>
             <ul className="service-list luxury-list">
-              <li>Diagnósticos organizacionales</li>
-              <li>Desarrollo de liderazgo</li>
-              <li>Programas de formación y capacitación</li>
-              <li>Gestión del cambio</li>
-              <li>Cultura organizacional</li>
-              <li>Programas de innovación interna</li>
-              <li>Diseño de competencias organizacionales</li>
-              <li>Team building</li>
-              <li>Desarrollo de habilidades directivas</li>
-              <li>Evaluaciones de potencial</li>
-              <li>Programas de sucesión</li>
-              <li>Procesos de crecimiento organizacional</li>
-              <li>Facilitación de talleres estratégicos</li>
-              <li>Proyectos de mejora continua</li>
+              <li>Sistemas continuos de evaluación de desempeño</li>
+              <li>Planes de capacitación, carrera y sucesión</li>
+              <li>Estudios y diagnósticos de clima laboral</li>
+              <li>Diseño de estructuras de compensación y beneficios</li>
+              <li>Asesoría laboral y cumplimiento normativo</li>
+              <li>Auditoría de estructuras organizacionales y levantamiento de perfiles de cargo</li>
+              <li>Colaboración en planificaciones estratégicas y pilares corporativos</li>
+              <li>Diseño e implementación del sistema integral de Desarrollo Organizacional</li>
             </ul>
           </motion.div>
         </div>

@@ -1,37 +1,80 @@
 import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
 
-// Helper to create SMTP transporter
+let nodemailerInstance: any = null;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  nodemailerInstance = require('nodemailer');
+} catch {
+  // nodemailer no instalado; se usa API REST nativa de Resend
+}
+
+// Helper para SMTP tradicional
 const getTransporter = () => {
+  if (!nodemailerInstance) return null;
   const host = process.env.SMTP_HOST || 'smtp.gmail.com';
   const port = parseInt(process.env.SMTP_PORT || '465', 10);
   const user = process.env.SMTP_USER || 'Contacto@tailorservicios.cl';
   const pass = process.env.SMTP_PASSWORD;
 
-  if (!pass) {
-    console.warn('SMTP_PASSWORD env variable is not configured.');
-  }
+  if (!pass) return null;
 
-  return nodemailer.createTransport({
+  return nodemailerInstance.createTransport({
     host,
     port,
-    secure: port === 465, // true for port 465, false for other ports
-    auth: {
-      user,
-      pass,
-    },
+    secure: port === 465,
+    auth: { user, pass },
   });
 };
+
+// Envío unificado: Soporte nativo para Resend API + Fallback a SMTP
+async function deliverEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
+  const apiKey = process.env.SMTP_PASSWORD;
+  const isResend = process.env.SMTP_HOST?.includes('resend.com') || apiKey?.startsWith('re_');
+
+  if (isResend && apiKey) {
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'Tailor Servicios <contacto@tailorservicios.cl>',
+          to: [to],
+          subject,
+          html,
+        }),
+      });
+      return res.ok;
+    } catch (apiErr) {
+      console.error('Resend fetch error:', apiErr);
+    }
+  }
+
+  // Fallback a nodemailer
+  const transporter = getTransporter();
+  if (transporter) {
+    await transporter.sendMail({
+      from: `"Tailor Servicios" <${process.env.SMTP_USER || 'Contacto@tailorservicios.cl'}>`,
+      to,
+      subject,
+      html,
+    });
+    return true;
+  }
+
+  console.warn('No hay proveedor de correo activo configurado.');
+  return false;
+}
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { type, nombre, email, empresa, servicio, specialty, cvUrl } = body;
+    const adminEmail = 'Contacto@tailorservicios.cl';
 
-    const transporter = getTransporter();
-    const adminEmail = process.env.SMTP_USER || 'Contacto@tailorservicios.cl';
-
-    // 1. Send Alert to Admin (Contacto@tailorservicios.cl)
+    // 1. Alert to Admin
     let adminSubject = '';
     let adminHtml = '';
 
@@ -95,15 +138,11 @@ export async function POST(request: Request) {
       `;
     }
 
-    // Deliver alert to admin
-    await transporter.sendMail({
-      from: `"Web Alertas Tailor" <${adminEmail}>`,
-      to: adminEmail,
-      subject: adminSubject,
-      html: adminHtml,
-    });
+    if (adminSubject) {
+      await deliverEmail({ to: adminEmail, subject: adminSubject, html: adminHtml });
+    }
 
-    // 2. Send Auto-responder confirmation to User/Candidate
+    // 2. Auto-responder to User/Candidate
     let userSubject = '';
     let userHtml = '';
 
@@ -154,13 +193,9 @@ export async function POST(request: Request) {
       `;
     }
 
-    // Deliver auto-response to user/candidate
-    await transporter.sendMail({
-      from: `"Tailor Servicios" <${adminEmail}>`,
-      to: email,
-      subject: userSubject,
-      html: userHtml,
-    });
+    if (userSubject && email) {
+      await deliverEmail({ to: email, subject: userSubject, html: userHtml });
+    }
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
@@ -168,3 +203,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
+

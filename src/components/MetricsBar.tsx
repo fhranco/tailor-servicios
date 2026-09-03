@@ -47,16 +47,20 @@ export default function MetricsBar() {
         }}
       >
         <motion.div className="metric-item" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-          <AnimatedCounter to={9} prefix="+" colorClass="color-accent-tertiary" />
+          <AnimatedCounter to={20} prefix="+" colorClass="color-accent-tertiary" />
           <span className="metric-text">{t('anos')}</span>
         </motion.div>
         <motion.div className="metric-item" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-          <AnimatedCounter to={45} prefix="+" colorClass="color-accent-tertiary" />
+          <AnimatedCounter to={100} prefix="+" colorClass="color-accent-tertiary" />
           <span className="metric-text">{t('empresas')}</span>
         </motion.div>
         <motion.div className="metric-item" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-          <AnimatedCounter to={12} suffix="k+" colorClass="color-accent-tertiary" />
+          <AnimatedCounter to={25} suffix="k+" colorClass="color-accent-tertiary" />
           <span className="metric-text">{t('profesionales')}</span>
+        </motion.div>
+        <motion.div className="metric-item" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+          <AnimatedCounter to={3} suffix="k+" colorClass="color-accent-tertiary" />
+          <span className="metric-text">{t('seleccionadas')}</span>
         </motion.div>
         <motion.div className="metric-item" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
           <AnimatedCounter to={95} suffix="%" colorClass="color-accent-tertiary" />

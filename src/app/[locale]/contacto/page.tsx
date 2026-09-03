@@ -154,10 +154,15 @@ export default function ContactoPage() {
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <h3>¿Eres un profesional buscando nuevos desafíos?</h3>
-            <p>Este formulario es exclusivo para empresas. Si deseas ser parte de nuestra red de talento y acceder a oportunidades confidenciales en el sur de Chile, te invitamos a dejarnos tus antecedentes.</p>
-            <Link href="/candidatos#subir-cv" className="btn-glass">
-              Subir mi CV
-            </Link>
+            <p>Este formulario es exclusivo para empresas. Si deseas ser parte de nuestra red de talento y acceder a oportunidades confidenciales en el sur de Chile, te invitamos a postular directamente en nuestro portal de empleos.</p>
+            <a 
+              href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="btn-glass"
+            >
+              Postular en Rex+
+            </a>
           </motion.div>
 
         </div>

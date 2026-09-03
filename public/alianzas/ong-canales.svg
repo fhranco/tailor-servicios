@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 100" width="320" height="100">
+  <!-- ONG CANALES LOGO -->
+  <g transform="translate(10, 15)">
+    <!-- Stylized Geometric Channels/Waves Icon -->
+    <path d="M10 55 C25 25, 45 25, 60 55 C75 85, 95 85, 110 55" fill="none" stroke="#0077b6" stroke-width="8" stroke-linecap="round"/>
+    <path d="M20 40 C35 15, 50 15, 65 40 C80 65, 95 65, 105 45" fill="none" stroke="#f77f00" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="60" cy="20" r="7" fill="#0096c7"/>
+    <circle cx="105" cy="45" r="5" fill="#fcbf49"/>
+  </g>
+  <g transform="translate(130, 38)">
+    <text x="0" y="0" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="28" fill="#003566" letter-spacing="1">ONG</text>
+    <text x="70" y="0" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="28" fill="#f77f00" letter-spacing="0.5">CANALES</text>
+    <text x="2" y="24" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="600" font-size="11" fill="#64748b" letter-spacing="0.5">EDUCACIÓN TÉCNICO PROFESIONAL</text>
+    <text x="2" y="38" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="500" font-size="10" fill="#94a3b8" letter-spacing="0.2">PATAGONIA &amp; SUR AUSTRAL</text>
+  </g>
+</svg>

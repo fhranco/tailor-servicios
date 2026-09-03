@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 100" width="320" height="100">
+  <!-- INSTITUTO BRITÁNICO LOGO -->
+  <g transform="translate(15, 20)">
+    <!-- Classic Crest/Shield with British Flag Motif -->
+    <rect x="0" y="0" width="60" height="60" rx="12" fill="#00247d"/>
+    <!-- Crosses -->
+    <path d="M0 30 L60 30 M30 0 L30 60" stroke="#ffffff" stroke-width="8"/>
+    <path d="M0 30 L60 30 M30 0 L30 60" stroke="#cf142b" stroke-width="4"/>
+    <path d="M6 6 L54 54 M54 6 L6 54" stroke="#ffffff" stroke-width="4"/>
+    <path d="M6 6 L54 54 M54 6 L6 54" stroke="#cf142b" stroke-width="2"/>
+  </g>
+  <g transform="translate(90, 38)">
+    <text x="0" y="0" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="20" fill="#00247d" letter-spacing="1">INSTITUTO</text>
+    <text x="112" y="0" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="20" fill="#cf142b" letter-spacing="1">BRITÁNICO</text>
+    <text x="2" y="22" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="10.5" fill="#334155" letter-spacing="0.5">CHILENO BRITÁNICO DE CULTURA</text>
+    <text x="2" y="36" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="600" font-size="10" fill="#64748b" letter-spacing="0.3">SEDE PUNTA ARENAS</text>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 90" width="320" height="90">
+  <!-- THE CORMORANT AT 55 SOUTH -->
+  <g transform="translate(10, 15)">
+    <rect x="0" y="0" width="60" height="60" rx="12" fill="#0b1b2b"/>
+    <!-- Stylized Cormorant flying bird in gold -->
+    <path d="M12 40 C18 36, 24 30, 30 20 C36 28, 44 26, 50 22 C44 32, 34 38, 22 46 C16 48, 12 44, 12 40 Z" fill="#d4af37"/>
+    <circle cx="48" cy="20" r="2.5" fill="#f5d77f"/>
+  </g>
+  <g transform="translate(85, 34)">
+    <text x="0" y="0" font-family="'Playfair Display', serif, system-ui" font-weight="800" font-size="20" fill="#0b1b2b" letter-spacing="1">THE CORMORANT</text>
+    <text x="2" y="20" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="10.5" fill="#d4af37" letter-spacing="1.5">AT 55 SOUTH · PUNTA ARENAS</text>
+  </g>
+</svg>

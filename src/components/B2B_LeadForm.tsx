@@ -149,7 +149,7 @@ export default function B2B_LeadForm() {
   }
 
   return (
-    <form className="b2b-form" action="https://n8n-tailor.com/webhook/fallback" method="POST" onSubmit={handleSubmit}>
+    <form className="b2b-form" onSubmit={handleSubmit}>
       {serverError && (
         <div className="server-error" role="alert">
           {serverError}

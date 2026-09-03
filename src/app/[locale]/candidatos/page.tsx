@@ -1,6 +1,6 @@
 import React from 'react';
 import HeroCandidatos from '@/components/HeroCandidatos';
-import SpecialProject from '@/components/SpecialProject';
+import ClientPortalsSection from '@/components/ClientPortalsSection';
 import JobOffersCarousel from '@/components/JobOffersCarousel';
 import CandidateBenefits from '@/components/CandidateBenefits';
 import CandidateProcess from '@/components/CandidateProcess';
@@ -19,7 +19,7 @@ export default function CandidatosPage() {
   return (
     <main className="min-h-screen">
       <HeroCandidatos />
-      <SpecialProject />
+      <ClientPortalsSection />
       <JobOffersCarousel />
       <CandidateBenefits />
       <CandidateProcess />

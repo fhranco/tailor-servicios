@@ -17,7 +17,7 @@ export default function Footer() {
           <div className="footer-logo-col">
             <Link href="/">
               <img 
-                src="/logo.jpeg" 
+                src="/tailor-logo-white.png" 
                 alt="Tailor Servicios Logo" 
               />
             </Link>
@@ -40,8 +40,8 @@ export default function Footer() {
             <h4>{t('embudos')}</h4>
             <ul className="footer-links">
               <li><Link href="/empresas">{t('empresas')}</Link></li>
-              <li><Link href="/postulantes">{t('postulantes')}</Link></li>
-              <li><Link href="/postulantes#carga-cv">{t('subir_cv')}</Link></li>
+              <li><a href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" target="_blank" rel="noopener noreferrer">{t('postulantes')}</a></li>
+              <li><a href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" target="_blank" rel="noopener noreferrer">{t('subir_cv')}</a></li>
             </ul>
           </div>
 

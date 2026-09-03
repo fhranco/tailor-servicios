@@ -192,6 +192,21 @@
   padding: 1.2rem;
   display: flex;
   justify-content: center;
+  align-items: center;
+  background-color: var(--color-accent);
+  color: var(--color-dark) !important;
+  font-weight: 700;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.c-submit-btn:hover {
+  background-color: var(--color-dark) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.25);
 }
 
 /* Responsive */

@@ -3,10 +3,10 @@
     "sube_cv": "Upload CV",
     "buscas_contratar": "Looking to hire?",
     "inicio": "Home",
-    "especializacion": "Specialization",
-    "candidatos": "Candidates",
-    "servicios": "Services",
     "nosotros": "About Us",
+    "servicios": "Services / Solutions",
+    "candidatos": "Candidates",
+    "blog": "Blog",
     "contacto": "Contact",
     "mi_cuenta": "My Account"
   },
@@ -34,7 +34,7 @@
         "badge": "Executive Search",
         "titleBase": "CONNECTING ",
         "titleAccent": "TALENT",
-        "desc": "Over 9 years of experience providing HR consulting. We optimize your selection processes and empower your team."
+        "desc": "Trust in our experience of over 20 years in the Magallanes region and throughout Chile, to find the talent your organization needs."
       },
       "3": {
         "badge": "Tailored Services",
@@ -50,29 +50,30 @@
   "AboutUsBlock": {
     "title": "About Us",
     "p1": "Tailor Servicios was born in the Magallanes Region with a clear purpose: to raise the standard of human talent in organizations. Today, with operational deployment in Punta Arenas and Santiago, we have become the strategic partner of companies seeking to grow through their people.",
-    "p2": "We understand that every business is unique. That is why we design <em>\"tailor-made\"</em> solutions in Talent Attraction, Organizational Development, and People Management. We don't apply standardized formulas; instead, we immerse ourselves in our clients' culture to find the perfect fit.",
+    "p2": "We understand that every business is unique. That is why we design tailored solutions in Talent Attraction, Organizational Development, and People Management. We don't apply standardized formulas; instead, we immerse ourselves in our clients' culture to find the perfect fit.",
     "features_title": "Why choose us?",
     "f1": "Local knowledge and national vision",
-    "f2": "Design of \"Tailor-made\" solutions",
+    "f2": "Regional consolidation and strategic networking with executives and companies across all industries in the southern zone and nationwide.",
     "f3": "High-level executive talent network",
     "f4": "Results-oriented culture",
     "cta": "Learn more about us"
   },
   "MetricsBar": {
     "anos": "Years in the Market",
-    "empresas": "Companies in Chile",
-    "profesionales": "Professionals in Active Database",
+    "empresas": "Companies",
+    "profesionales": "Professionals in Database",
+    "seleccionadas": "Selected Professionals",
     "efectividad": "Effectiveness"
   },
   "BusinessLines": {
     "title": "Our Services",
     "desc": "Comprehensive Human Resources solutions designed to boost your organization's efficiency and growth.",
     "reclutamiento_title": "Recruitment & Selection",
-    "reclutamiento_desc": "Competency assessment, Assessment Center, and market mapping with cultural fit guarantee.",
-    "gestion_title": "People Management Consulting",
-    "gestion_desc": "Design of compensation models, climate studies, performance evaluations, and change management.",
+    "reclutamiento_desc": "Tailored profile scoping, parallel executive hunting, competency assessments, and nationwide talent network with replacement guarantee.",
+    "gestion_title": "Workforce & Staff Management",
+    "gestion_desc": "Internal HR audits, payroll outsourcing, ERP optimization, labor wellbeing, and extreme zone tax incentive management.",
     "desarrollo_title": "Organizational Development",
-    "desarrollo_desc": "Leadership training, structure design, profile assessment, and succession plans.",
+    "desarrollo_desc": "Performance evaluations, climate diagnostics, compensation design, training programs, structural audits, and regulatory compliance.",
     "busqueda_title": "Executive Search (Headhunting)",
     "busqueda_desc": "Confidential recruitment of C-Level roles and strategic positions with direct methodology.",
     "ver_mas": "View more"
@@ -169,8 +170,8 @@
     "subtitle": "Our Methodology",
     "title": "The path to your next challenge",
     "desc": "Our selection process is transparent, agile, and candidate-centered. We keep you informed at every stage, respecting your time and expectations.",
-    "s1_title": "Confidential Reception",
-    "s1_desc": "You send your resume to our encrypted database. Only our consulting team will have initial access to your information.",
+    "s1_title": "Application on Rex+",
+    "s1_desc": "Submit your resume through our official Rex+ portal. Only our consulting team will have access to your details.",
     "s2_title": "Fit Interview",
     "s2_desc": "When a matching opportunity arises, we conduct an in-depth interview to evaluate not only your skills but also your cultural fit.",
     "s3_title": "Exclusive Presentation",

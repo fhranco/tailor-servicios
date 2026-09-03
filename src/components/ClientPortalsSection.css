@@ -1,0 +1,206 @@
+.client-portals-section {
+  padding: 6rem 0;
+  background-color: #f8fafc;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.client-portals-header {
+  text-align: center;
+  max-width: 840px;
+  margin: 0 auto 4rem;
+}
+
+.client-portals-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.25rem;
+  background: rgba(190, 22, 34, 0.08);
+  color: #be1622;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.25rem;
+}
+
+.client-portals-title {
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  color: var(--color-dark);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.client-portals-title .text-highlight {
+  color: #be1622;
+}
+
+.client-portals-desc {
+  font-size: 1.15rem;
+  color: var(--color-gray-dark);
+  line-height: 1.6;
+}
+
+/* Grid of 4 Client Portals */
+.client-portals-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+}
+
+.client-portal-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 25px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.client-portal-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--portal-accent, #be1622);
+  transition: height 0.3s ease;
+}
+
+.client-portal-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.1);
+  border-color: #cbd5e1;
+}
+
+.client-portal-card:hover::before {
+  height: 6px;
+}
+
+.portal-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.portal-logo-container {
+  height: 55px;
+  display: flex;
+  align-items: center;
+}
+
+.portal-logo-container img {
+  max-height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+
+.portal-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  background-color: #ecfdf5;
+  color: #065f46;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.portal-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.portal-content h3 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--color-dark);
+  margin-bottom: 0.5rem;
+  line-height: 1.25;
+}
+
+.portal-category {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.portal-desc {
+  font-size: 1rem;
+  color: var(--color-gray-dark);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.portal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.25rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.portal-rex-badge {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.portal-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 8px;
+  background-color: var(--portal-btn-bg, #be1622);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.portal-cta-btn:hover {
+  filter: brightness(1.1);
+  transform: translateX(4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsiveness */
+@media (max-width: 900px) {
+  .client-portals-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .client-portal-card {
+    padding: 2rem 1.75rem;
+  }
+}

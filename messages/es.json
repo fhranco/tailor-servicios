@@ -3,10 +3,10 @@
     "sube_cv": "Sube tu CV",
     "buscas_contratar": "¿Buscas contratar?",
     "inicio": "Inicio",
-    "especializacion": "Especialización",
-    "candidatos": "Candidatos",
-    "servicios": "Servicios",
     "nosotros": "Nosotros",
+    "servicios": "Servicios / Soluciones",
+    "candidatos": "Candidatos",
+    "blog": "Blog",
     "contacto": "Contacto",
     "mi_cuenta": "Mi cuenta"
   },
@@ -34,7 +34,7 @@
         "badge": "Selección Ejecutiva",
         "titleBase": "CONECTAMOS ",
         "titleAccent": "TALENTO",
-        "desc": "Más de 9 años de experiencia brindando consultoría en Recursos Humanos. Optimizamos tus procesos de selección y potenciamos a tu equipo."
+        "desc": "Confía en nuestra experiencia de más de 20 años en la región de Magallanes y todo Chile, para encontrar el talento que su organización necesita."
       },
       "3": {
         "badge": "Servicios a Medida",
@@ -50,29 +50,30 @@
   "AboutUsBlock": {
     "title": "Quiénes Somos",
     "p1": "Tailor Servicios nació en la Región de Magallanes con un propósito claro: elevar el estándar del talento humano en las organizaciones. Hoy, con despliegue operativo en Punta Arenas y Santiago, nos hemos convertido en el socio estratégico de empresas que buscan crecer a través de su gente.",
-    "p2": "Entendemos que cada negocio es único. Por eso, diseñamos soluciones <em>\"a medida\"</em> (tailor-made) en Atracción de Talento, Desarrollo Organizacional y Gestión de Personas. No aplicamos fórmulas estandarizadas, sino que nos sumergimos en la cultura de nuestros clientes para encontrar el ajuste perfecto.",
+    "p2": "Entendemos que cada negocio es único. Por eso, diseñamos soluciones a medida en Atracción de Talento, Desarrollo Organizacional y Gestión de Personas. No aplicamos fórmulas estandarizadas, sino que nos sumergimos en la cultura de nuestros clientes para encontrar el ajuste perfecto.",
     "features_title": "¿Por qué nos eligen?",
     "f1": "Conocimiento local y visión nacional",
-    "f2": "Diseño de soluciones \"Tailor-made\"",
+    "f2": "Consolidación regional y red estratégica de networking con ejecutivos y empresas de todos los rubros en la zona austral y el país.",
     "f3": "Red de talento ejecutivo de alto nivel",
     "f4": "Cultura centrada en resultados",
     "cta": "Conoce más de nosotros"
   },
   "MetricsBar": {
     "anos": "Años en el Mercado",
-    "empresas": "Empresas en Chile",
-    "profesionales": "Profesionales en Base Activa",
+    "empresas": "Empresas",
+    "profesionales": "Profesionales en Base de Datos",
+    "seleccionadas": "Personas Seleccionadas",
     "efectividad": "de Efectividad"
   },
   "BusinessLines": {
     "title": "Nuestros Servicios",
     "desc": "Soluciones integrales de Recursos Humanos diseñadas para impulsar la eficiencia y el crecimiento de su organización.",
     "reclutamiento_title": "Reclutamiento y Selección",
-    "reclutamiento_desc": "Evaluación por competencias, Assessment Center y mapeo de mercado con garantía de calce cultural.",
-    "gestion_title": "Consultoría en Gestión de Personas",
-    "gestion_desc": "Diseño de modelos de compensación, estudios de clima, evaluaciones de desempeño y gestión del cambio.",
+    "reclutamiento_desc": "Levantamiento a medida, hunting especializado, evaluaciones por competencias y red de talento nacional con garantía.",
+    "gestion_title": "Gestión de Dotaciones",
+    "gestion_desc": "Auditorías de personal, nómina y remuneraciones, ERPs, bienestar laboral y leyes de excepción en zonas extremas.",
     "desarrollo_title": "Desarrollo Organizacional",
-    "desarrollo_desc": "Formación de líderes, diseño de estructuras, levantamiento de perfiles y planes de sucesión.",
+    "desarrollo_desc": "Evaluación de desempeño, diagnósticos de clima, compensaciones, capacitación, auditoría estructural y cumplimiento normativo.",
     "busqueda_title": "Búsqueda Ejecutiva (Headhunting)",
     "busqueda_desc": "Reclutamiento confidencial de roles C-Level y posiciones estratégicas con metodología directa.",
     "ver_mas": "Ver más"
@@ -121,7 +122,7 @@
   },
   "EmpresasPage": {
     "hero_title": "¿Necesita cubrir un cargo estratégico?",
-    "hero_desc": "Confíe en nuestra experiencia de más de 9 años en la Región de Magallanes y todo Chile para encontrar el talento que su organización necesita.",
+    "hero_desc": "Confía en nuestra experiencia de más de 20 años en la región de Magallanes y todo Chile, para encontrar el talento que su organización necesita.",
     "form_title": "Solicite Presupuesto o Asesoría"
   },
   "PostulantesPage": {
@@ -171,8 +172,8 @@
     "subtitle": "Nuestra Metodología",
     "title": "El camino hacia tu próximo desafío",
     "desc": "Nuestro proceso de selección es transparente, ágil y centrado en el candidato. Te mantenemos informado en cada etapa, respetando tus tiempos y expectativas.",
-    "s1_title": "Recepción Confidencial",
-    "s1_desc": "Envías tu CV a nuestra base de datos encriptada. Solo nuestro equipo de consultores tendrá acceso inicial a tu información.",
+    "s1_title": "Postulación en Rex+",
+    "s1_desc": "Envías tu CV y antecedentes a través de nuestro portal oficial en Rex+. Solo nuestro equipo de consultores tendrá acceso a tu información.",
     "s2_title": "Entrevista de Calce",
     "s2_desc": "Cuando surge una oportunidad afín, realizamos una entrevista profunda para evaluar no solo tus skills, sino también tu fit cultural.",
     "s3_title": "Presentación Exclusiva",

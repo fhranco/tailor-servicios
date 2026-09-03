@@ -18,8 +18,8 @@ export default function HeroDual() {
       titleAccent: t('slides.1.titleAccent'),
       titleEnd: "",
       desc: t('slides.1.desc'),
-      bg: "https://images.unsplash.com/photo-1556761175-4b46a572b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
-      thumb: "https://images.unsplash.com/photo-1556761175-4b46a572b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+      bg: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+      thumb: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
     },
     {
       id: 2,
@@ -28,8 +28,8 @@ export default function HeroDual() {
       titleAccent: t('slides.2.titleAccent'),
       titleEnd: "",
       desc: t('slides.2.desc'),
-      bg: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
-      thumb: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+      bg: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+      thumb: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
     },
     {
       id: 3,
@@ -38,8 +38,8 @@ export default function HeroDual() {
       titleAccent: t('slides.3.titleAccent'),
       titleEnd: "",
       desc: t('slides.3.desc'),
-      bg: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
-      thumb: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+      bg: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+      thumb: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
     }
   ];
 
@@ -90,9 +90,14 @@ export default function HeroDual() {
         </AnimatePresence>
         
         <div className="hero-buttons">
-          <Link href="/postulantes" className="btn btn-primary">
+          <a 
+            href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="btn btn-primary"
+          >
             {t('cta_candidatos')}
-          </Link>
+          </a>
           <Link href="/empresas" className="btn btn-outline">
             {t('cta_empresas')}
           </Link>
