@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { getAuthorizedUser } from '@/lib/auth';
+import { getAuthorizedUser, maskIp } from '@/lib/auth';
 
 // Crea cliente Supabase con Service Role
 function getAdminSupabase() {
@@ -18,14 +18,14 @@ export async function GET(req: NextRequest) {
 
   const supabase = getAdminSupabase();
 
-  // Log the access to candidates table (Audit requirement under Chilean Law)
-  const ip = req.headers.get('x-forwarded-for') || 'unknown';
+  // Log the access to candidates table con IP enmascarada (Ley 21.719)
+  const rawIp = req.headers.get('x-forwarded-for') || 'unknown';
   const ua = req.headers.get('user-agent') || 'unknown';
   try {
     await supabase.from('privacy_audit_logs').insert([{
       action: 'SELECT_CANDIDATES',
-      performed_by: 'ADMIN',
-      ip_address: ip,
+      performed_by: user.email || 'ADMIN',
+      ip_address: maskIp(rawIp),
       user_agent: ua
     }]);
   } catch (logErr) {
@@ -59,15 +59,15 @@ export async function DELETE(req: NextRequest) {
 
   const supabase = getAdminSupabase();
 
-  // Log the delete action (Audit requirement under Chilean Law)
-  const ip = req.headers.get('x-forwarded-for') || 'unknown';
+  // Log the delete action con IP enmascarada (Ley 21.719)
+  const rawIp = req.headers.get('x-forwarded-for') || 'unknown';
   const ua = req.headers.get('user-agent') || 'unknown';
   try {
     await supabase.from('privacy_audit_logs').insert([{
       action: 'DELETE_CANDIDATE',
-      performed_by: 'ADMIN',
+      performed_by: user.email || 'ADMIN',
       target_id: id,
-      ip_address: ip,
+      ip_address: maskIp(rawIp),
       user_agent: ua
     }]);
   } catch (logErr) {

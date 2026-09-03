@@ -456,10 +456,10 @@ export default function AdminDashboard({ session }: { session: any }) {
                   <thead>
                     <tr>
                       <th>Fecha y Hora</th>
-                      <th>Usuario / Rol</th>
+                      <th>Usuario / Operador</th>
                       <th>Acción / Operación</th>
                       <th>ID Registro Afectado</th>
-                      <th>Dirección IP (Hash)</th>
+                      <th>Dirección IP (Enmascarada)</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -469,8 +469,8 @@ export default function AdminDashboard({ session }: { session: any }) {
                         <td><span className="role-badge admin">{log.performed_by}</span></td>
                         <td><strong>{log.action}</strong></td>
                         <td style={{fontFamily: 'monospace', fontSize: '0.85rem'}}>{log.target_id || '-'}</td>
-                        <td style={{fontFamily: 'monospace', fontSize: '0.8rem', color: '#64748b'}} title={log.ip_address}>
-                          {log.ip_address ? log.ip_address.substring(0, 16) + '...' : '-'}
+                        <td style={{fontFamily: 'monospace', fontSize: '0.85rem', color: '#64748b'}} title="IP enmascarada conforme a la Ley 21.719">
+                          {log.ip_address || '-'}
                         </td>
                       </tr>
                     ))}

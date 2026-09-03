@@ -17,3 +17,24 @@ export async function getAuthorizedUser(req: Request) {
   
   return user;
 }
+
+/**
+ * Enmascara direcciones IP para cumplimiento de la Ley 21.719 (Minimización de datos).
+ * Convierte IPv4 ej. 201.215.236.121 -> 201.215.*.*
+ * O IPv6 ej. 2001:0db8:... -> 2001:db8:*:*
+ */
+export function maskIp(rawIp: string | null | undefined): string {
+  if (!rawIp || rawIp === 'unknown') return 'anonymized';
+  const clientIp = rawIp.split(',')[0].trim();
+  if (clientIp.includes('.')) {
+    const parts = clientIp.split('.');
+    if (parts.length >= 2) {
+      return `${parts[0]}.${parts[1]}.*.*`;
+    }
+  }
+  if (clientIp.includes(':')) {
+    const parts = clientIp.split(':');
+    return `${parts.slice(0, 2).join(':')}:*:*`;
+  }
+  return 'anonymized';
+}
