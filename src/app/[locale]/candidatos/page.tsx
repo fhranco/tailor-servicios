@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import HeroCandidatos from '@/components/HeroCandidatos';
 import ClientPortalsSection from '@/components/ClientPortalsSection';
@@ -6,15 +8,6 @@ import CandidateBenefits from '@/components/CandidateBenefits';
 import CandidateProcess from '@/components/CandidateProcess';
 import CandidateUpload from '@/components/CandidateUpload';
 import CandidateVideoModal from '@/components/CandidateVideoModal';
-import { getTranslations } from 'next-intl/server';
-
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
-  const t = await getTranslations({ locale, namespace: 'CandidatosPage' });
-  return {
-    title: t('meta_title'),
-    description: t('meta_desc'),
-  };
-}
 
 export default function CandidatosPage() {
   return (
