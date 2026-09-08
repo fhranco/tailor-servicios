@@ -46,11 +46,11 @@
   line-height: 1.6;
 }
 
-/* Grid of 4 Client Portals */
+/* Grid of Client Portals */
 .client-portals-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
 }
 
 .client-portal-card {
@@ -196,13 +196,20 @@
 }
 
 /* Responsiveness */
-@media (max-width: 900px) {
+@media (max-width: 1150px) {
+  .client-portals-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
   .client-portals-grid {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.75rem;
   }
   
   .client-portal-card {
-    padding: 2rem 1.75rem;
+    padding: 2rem 1.5rem;
   }
 }

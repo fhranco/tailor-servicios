@@ -50,17 +50,6 @@ export default function ClientPortalsSection() {
       status: 'Temporada Abierta',
       desc: 'Vacantes para operaciones hoteleras, guías turísticos, gastronomía y cocina internacional, housekeeping y administración en Hostería El Pionero.',
       btnText: 'Ver Ofertas El Pionero'
-    },
-    {
-      id: 'singular-explora',
-      name: 'Portal The Singular Patagonia',
-      category: 'Hotelería de Lujo & Patrimonio · Puerto Bories',
-      logo: '/portales/the-singular.png',
-      link: 'https://serviciosindustrialetailor.rexmas.com/jobs/the-singular-explora',
-      accent: '#1e293b',
-      status: 'Búsquedas Exclusivas',
-      desc: 'Procesos de reclutamiento para el emblemático hotel de clase mundial en Puerto Bories, Puerto Natales. Estándares globales de servicio, hospitalidad y gastronomía.',
-      btnText: 'Ver Ofertas The Singular'
     }
   ];
 
