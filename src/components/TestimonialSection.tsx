@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import './TestimonialSection.css';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
@@ -18,74 +18,56 @@ export interface TestimonialItem {
 
 export default function TestimonialSection() {
   const t = useTranslations('TestimonialSection');
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [viewMode, setViewMode] = useState<'carousel' | 'grid'>('carousel');
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [viewMode, setViewMode] = useState<'marquee' | 'grid'>('marquee');
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isSlow, setIsSlow] = useState(false);
 
-  // 6 Testimonios preparados con la estructura requerida:
-  // { nombre, cargo, empresa, comentario, avatar/logo }
+  // 4 Testimonios reales de clientes y aliados estratégicos:
   const testimonials: TestimonialItem[] = [
     {
       id: 1,
-      nombre: "Carolina Mendoza",
-      cargo: "Directora de RR.HH.",
-      empresa: "Líder en Energía",
-      comentario: t('t1_quote') || "Tailor entendió nuestra cultura corporativa desde el primer día. Los ejecutivos que reclutaron compartían nuestra visión de negocio. Redujimos nuestra rotación en un 40%.",
-      avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-      logo: "", // Pendiente asset definitivo
+      nombre: t('t1_name') || "Ximena Castro R.",
+      cargo: t('t1_role') || "Gerente General",
+      empresa: t('t1_company') || "Parque del Estrecho",
+      comentario: t('t1_quote') || "Hemos tenido una experiencia altamente positiva al trabajar con Tailor Servicios. Su capacidad para identificar talento y conectarlo con nuestras necesidades ha sido fundamental para cubrir puestos clave y fortalecer nuestro equipo.",
+      avatar: "",
+      logo: "",
       rating: 5
     },
     {
       id: 2,
-      nombre: "Ricardo Álvarez",
-      cargo: "Gerente General",
-      empresa: "Servicios Industriales",
-      comentario: t('t2_quote') || "El diagnóstico de clima laboral fue revelador. Logramos alinear a nuestros líderes y aumentar la productividad de los equipos de forma impresionante.",
-      avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-      logo: "", // Pendiente asset definitivo
+      nombre: t('t2_name') || "Joaquín Vásquez E.",
+      cargo: t('t2_role') || "Gerente General",
+      empresa: t('t2_company') || "IMPA",
+      comentario: t('t2_quote') || "Pudimos liberar muchas horas de los mandos medios para enfocarse en los objetivos del negocio, nos han ayudado a ser más eficientes en el manejo documental de Recursos Humanos. Tailor ha generado un avance tremendo en nuestra área de Recursos Humanos, estamos muy contentos de trabajar con ellos.",
+      avatar: "",
+      logo: "",
       rating: 5
     },
     {
       id: 3,
-      nombre: "Patricia Loyola",
-      cargo: "Gerente de Operaciones",
-      empresa: "Logística y Transporte",
-      comentario: t('t3_quote') || "Buscábamos talento muy específico para operaciones extremas. Tailor Servicios nos entregó candidatos excepcionales en tiempo récord.",
-      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-      logo: "", // Pendiente asset definitivo
+      nombre: t('t3_name') || "Gabriela Peric U.",
+      cargo: t('t3_role') || "Subgerente de Gestión de Personas",
+      empresa: t('t3_company') || "Sánchez y Sánchez",
+      comentario: t('t3_quote') || "El trabajo en conjunto con Tailor nos ha permitido concretar nuestras ideas de la mejor manera, lo que sin duda beneficia a todos nuestros colaboradores. La seriedad, compromiso y responsabilidad de Tailor son sus principales valores demostrados, y que a nosotros como clientes nos da seguridad de que el trabajo será exitoso… cumpliendo nuestras expectativas y las de quienes participan.",
+      avatar: "",
+      logo: "",
       rating: 5
     },
     {
       id: 4,
-      nombre: "Felipe Contreras",
-      cargo: "VP de Personas",
-      empresa: "Holding Financiero",
-      comentario: t('t4_quote') || "Diseñaron un sistema de gestión de desempeño a nuestra medida. Pasamos de evaluaciones anuales burocráticas a un modelo ágil y motivador.",
-      avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-      logo: "", // Pendiente asset definitivo
-      rating: 5
-    },
-    {
-      id: 5,
-      nombre: "Andrea Varas",
-      cargo: "Subgerente de Desarrollo",
-      empresa: "Consumo Masivo",
-      comentario: t('t5_quote') || "El proceso de outplacement que gestionaron para nuestros ejecutivos salientes fue impecable. Muy humanos y orientados a resultados reales en el mercado.",
-      avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-      logo: "", // Pendiente asset definitivo
-      rating: 5
-    },
-    {
-      id: 6,
-      nombre: "Gonzalo Ibarra",
-      cargo: "CEO",
-      empresa: "Start-up Tecnológica",
-      comentario: t('t6_quote') || "Nos ayudaron a estructurar toda la gerencia comercial desde cero. Su conocimiento del mercado laboral y su metodología de evaluación son inigualables.",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
-      logo: "", // Pendiente asset definitivo
+      nombre: t('t4_name') || "Kriss Castro",
+      cargo: t('t4_role') || "Gerente Comercial",
+      empresa: t('t4_company') || "Mutual de Seguridad",
+      comentario: t('t4_quote') || "Con Tailor Servicios contamos con un Convenio de Colaboración, gracias a su conocimiento y experiencia hemos otorgado herramientas a los equipos de trabajo de nuestros adherentes para generar entornos laborales saludables y seguros para evitar enfermedades laborales.",
+      avatar: "",
+      logo: "",
       rating: 5
     }
   ];
+
+  // Duplicamos 4 veces para garantizar un bucle infinito continuo (sin costuras) en monitores 4K / Ultrawide
+  const marqueeCards = [...testimonials, ...testimonials, ...testimonials, ...testimonials];
 
   // Obtener iniciales para avatar de respaldo
   const getInitials = (nombre: string) => {
@@ -98,52 +80,53 @@ export default function TestimonialSection() {
       .toUpperCase();
   };
 
-  // Scroll horizontal en carrusel
-  const scrollToIndex = (index: number) => {
-    if (!scrollRef.current) return;
-    const cards = scrollRef.current.querySelectorAll('.testimonial-card');
-    if (cards[index]) {
-      (cards[index] as HTMLElement).scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center'
-      });
-      setActiveIndex(index);
-    }
-  };
+  const renderCard = (test: TestimonialItem, uniqueKey: string | number) => (
+    <div 
+      className="testimonial-card glass-panel" 
+      key={uniqueKey}
+    >
+      <div className="card-top-row">
+        <div className="quote-icon">“</div>
+        <div className="stars" aria-label={`${test.rating || 5} de 5 estrellas`}>
+          {'★'.repeat(test.rating || 5)}
+        </div>
+      </div>
 
-  const handlePrev = () => {
-    const prev = activeIndex > 0 ? activeIndex - 1 : testimonials.length - 1;
-    scrollToIndex(prev);
-  };
+      <p className="testimonial-text">
+        "{test.comentario}"
+      </p>
+      
+      <div className="testimonial-author">
+        {test.avatar ? (
+          <div 
+            className="author-image" 
+            style={{ backgroundImage: `url(${test.avatar})` }}
+            role="img"
+            aria-label={`Foto de ${test.nombre}`}
+          />
+        ) : (
+          <div className="author-initials" aria-label={`Iniciales de ${test.nombre}`}>
+            {getInitials(test.nombre)}
+          </div>
+        )}
 
-  const handleNext = () => {
-    const next = activeIndex < testimonials.length - 1 ? activeIndex + 1 : 0;
-    scrollToIndex(next);
-  };
-
-  // Detectar card visible al hacer scroll
-  const handleScroll = () => {
-    if (!scrollRef.current) return;
-    const container = scrollRef.current;
-    const center = container.scrollLeft + container.offsetWidth / 2;
-    const cards = container.querySelectorAll('.testimonial-card');
-    
-    let closestIndex = 0;
-    let minDistance = Infinity;
-
-    cards.forEach((card, idx) => {
-      const cardEl = card as HTMLElement;
-      const cardCenter = cardEl.offsetLeft + cardEl.offsetWidth / 2;
-      const distance = Math.abs(center - cardCenter);
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestIndex = idx;
-      }
-    });
-
-    setActiveIndex(closestIndex);
-  };
+        <div className="author-info">
+          <h4 className="author-name">{test.nombre}</h4>
+          <span className="author-role">{test.cargo}</span>
+          <div className="author-company-row">
+            <span className="author-company">{test.empresa}</span>
+            {test.logo && (
+              <img 
+                src={test.logo} 
+                alt={`Logo ${test.empresa}`} 
+                className="company-logo-micro" 
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <section className="testimonial-section" id="testimonios">
@@ -168,25 +151,22 @@ export default function TestimonialSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              {t('subtitle') || "Resultados medibles y relaciones de largo plazo. Desliza para leer más."}
+              {t('subtitle') || "Resultados medibles y relaciones de largo plazo en Magallanes."}
             </motion.p>
           </div>
 
-          {/* Selector de modo y botones de navegación */}
+          {/* Selector de modo y controles de animación */}
           <div className="testimonial-controls">
             <div className="view-toggle" role="group" aria-label="Modo de visualización">
               <button 
-                className={`toggle-btn ${viewMode === 'carousel' ? 'active' : ''}`}
-                onClick={() => setViewMode('carousel')}
-                title="Vista Carrusel"
+                className={`toggle-btn ${viewMode === 'marquee' ? 'active' : ''}`}
+                onClick={() => setViewMode('marquee')}
+                title="Vista Marquesina Continua"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="2" y="5" width="20" height="14" rx="2" />
-                  <path d="M7 15V9" />
-                  <path d="M12 15V9" />
-                  <path d="M17 15V9" />
+                  <path d="M4 12h16M4 12l4-4m-4 4l4 4M20 12l-4-4m4 4l-4 4" />
                 </svg>
-                <span>Carrusel</span>
+                <span>Marquesina</span>
               </button>
               <button 
                 className={`toggle-btn ${viewMode === 'grid' ? 'active' : ''}`}
@@ -203,149 +183,58 @@ export default function TestimonialSection() {
               </button>
             </div>
 
-            {viewMode === 'carousel' && (
-              <div className="carousel-nav-arrows">
+            {viewMode === 'marquee' && (
+              <div className="marquee-controls-group">
                 <button 
-                  className="nav-arrow-btn" 
-                  onClick={handlePrev} 
-                  aria-label="Testimonio anterior"
-                  title="Anterior"
+                  className={`nav-arrow-btn play-pause-btn ${!isPlaying ? 'paused' : ''}`}
+                  onClick={() => setIsPlaying(!isPlaying)} 
+                  aria-label={isPlaying ? "Pausar marquesina" : "Reanudar marquesina"}
+                  title={isPlaying ? "Pausar marquesina" : "Reanudar marquesina"}
                 >
-                  ‹
+                  {isPlaying ? (
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                      <rect x="5" y="4" width="4" height="16" rx="1" />
+                      <rect x="15" y="4" width="4" height="16" rx="1" />
+                    </svg>
+                  ) : (
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{ marginLeft: '2px' }}>
+                      <polygon points="6 4 20 12 6 20 6 4" />
+                    </svg>
+                  )}
                 </button>
                 <button 
-                  className="nav-arrow-btn" 
-                  onClick={handleNext} 
-                  aria-label="Testimonio siguiente"
-                  title="Siguiente"
+                  className={`speed-toggle-btn ${isSlow ? 'active' : ''}`}
+                  onClick={() => setIsSlow(!isSlow)}
+                  title="Cambiar velocidad"
                 >
-                  ›
+                  {isSlow ? "Lenta" : "Normal"}
                 </button>
               </div>
             )}
           </div>
         </div>
 
-        {/* Vista Carrusel */}
-        {viewMode === 'carousel' ? (
-          <div className="carousel-wrapper">
+        {/* Vista Marquesina Sin Fin */}
+        {viewMode === 'marquee' ? (
+          <div className="testimonial-marquee-wrapper">
             <div 
-              ref={scrollRef} 
-              className="carousel-track"
-              onScroll={handleScroll}
+              className={`testimonial-marquee-track ${!isPlaying ? 'is-paused' : ''} ${isSlow ? 'is-slow' : ''}`}
             >
-              {testimonials.map((test, index) => (
-                <div 
-                  className={`testimonial-card glass-panel ${index === activeIndex ? 'is-active' : ''}`} 
-                  key={test.id}
-                  onClick={() => scrollToIndex(index)}
-                >
-                  <div className="card-top-row">
-                    <div className="quote-icon">“</div>
-                    <div className="stars" aria-label={`${test.rating || 5} de 5 estrellas`}>
-                      {'★'.repeat(test.rating || 5)}
-                    </div>
-                  </div>
-
-                  <p className="testimonial-text">
-                    "{test.comentario}"
-                  </p>
-                  
-                  <div className="testimonial-author">
-                    {test.avatar ? (
-                      <div 
-                        className="author-image" 
-                        style={{ backgroundImage: `url(${test.avatar})` }}
-                        role="img"
-                        aria-label={`Foto de ${test.nombre}`}
-                      />
-                    ) : (
-                      <div className="author-initials" aria-label={`Iniciales de ${test.nombre}`}>
-                        {getInitials(test.nombre)}
-                      </div>
-                    )}
-
-                    <div className="author-info">
-                      <h4 className="author-name">{test.nombre}</h4>
-                      <span className="author-role">{test.cargo}</span>
-                      <div className="author-company-row">
-                        <span className="author-company">{test.empresa}</span>
-                        {test.logo && (
-                          <img 
-                            src={test.logo} 
-                            alt={`Logo ${test.empresa}`} 
-                            className="company-logo-micro" 
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+              {marqueeCards.map((test, index) => renderCard(test, `marquee-${test.id}-${index}`))}
             </div>
 
-            {/* Dots indicadores de carrusel */}
-            <div className="carousel-dots" role="tablist" aria-label="Indicadores de testimonios">
-              {testimonials.map((_, idx) => (
-                <button
-                  key={idx}
-                  className={`carousel-dot ${idx === activeIndex ? 'active' : ''}`}
-                  onClick={() => scrollToIndex(idx)}
-                  aria-label={`Ir al testimonio ${idx + 1}`}
-                  role="tab"
-                  aria-selected={idx === activeIndex}
-                />
-              ))}
+            <div className="marquee-hint-wrapper">
+              <span className="marquee-hint-text">
+                💡 Pasa el cursor sobre cualquier testimonio para pausar y leer
+              </span>
             </div>
           </div>
         ) : (
           /* Vista Cuadrícula (Grid) */
           <div className="testimonial-grid">
             {testimonials.map((test) => (
-              <div 
-                className="testimonial-card glass-panel grid-card" 
-                key={test.id}
-              >
-                <div className="card-top-row">
-                  <div className="quote-icon">“</div>
-                  <div className="stars" aria-label={`${test.rating || 5} de 5 estrellas`}>
-                    {'★'.repeat(test.rating || 5)}
-                  </div>
-                </div>
-
-                <p className="testimonial-text">
-                  "{test.comentario}"
-                </p>
-                
-                <div className="testimonial-author">
-                  {test.avatar ? (
-                    <div 
-                      className="author-image" 
-                      style={{ backgroundImage: `url(${test.avatar})` }}
-                      role="img"
-                      aria-label={`Foto de ${test.nombre}`}
-                    />
-                  ) : (
-                    <div className="author-initials" aria-label={`Iniciales de ${test.nombre}`}>
-                      {getInitials(test.nombre)}
-                    </div>
-                  )}
-
-                  <div className="author-info">
-                    <h4 className="author-name">{test.nombre}</h4>
-                    <span className="author-role">{test.cargo}</span>
-                    <div className="author-company-row">
-                      <span className="author-company">{test.empresa}</span>
-                      {test.logo && (
-                        <img 
-                          src={test.logo} 
-                          alt={`Logo ${test.empresa}`} 
-                          className="company-logo-micro" 
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
+              <div key={`grid-${test.id}`} className="grid-item-wrapper">
+                {renderCard(test, `grid-card-${test.id}`)}
               </div>
             ))}
           </div>

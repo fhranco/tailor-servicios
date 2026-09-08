@@ -22,7 +22,7 @@ const servicesData: Record<ServiceKey, any> = {
       "Toma exhaustiva y reforzada de referencias laborales.",
       "Comunicación directa, constante y fluida con el cliente durante todo el proceso."
     ],
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "/reclutamiento-seleccion.webp",
     color: "var(--color-accent)"
   },
   gestion: {
@@ -39,7 +39,7 @@ const servicesData: Record<ServiceKey, any> = {
       "Estudios de mercado laboral y mano de obra regional.",
       "Programas y planes de acción tipo semillero de talento."
     ],
-    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "/gestion-dotaciones.webp",
     color: "var(--color-accent-secondary)"
   },
   desarrollo: {
@@ -56,7 +56,7 @@ const servicesData: Record<ServiceKey, any> = {
       "Colaboración en planificaciones estratégicas y pilares corporativos.",
       "Diseño e implementación del sistema integral de Desarrollo Organizacional."
     ],
-    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "/desarrollo-organizacional.webp",
     color: "var(--color-accent)"
   }
 };

@@ -241,20 +241,28 @@
 
 .video-play-label {
   color: #ffffff;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  background: rgba(15, 23, 42, 0.82);
+  padding: 0.45rem 1.15rem;
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.02em;
 }
 
 .hero-video-card-footer {
-  margin-top: 1.2rem;
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
+  margin-top: 1.25rem;
 }
 
 .hero-video-card-footer p {
   margin: 0;
+  font-size: 0.95rem;
+  color: #f1f5f9;
+  line-height: 1.65;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Responsiveness */

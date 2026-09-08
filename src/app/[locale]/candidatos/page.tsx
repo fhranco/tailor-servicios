@@ -5,6 +5,7 @@ import JobOffersCarousel from '@/components/JobOffersCarousel';
 import CandidateBenefits from '@/components/CandidateBenefits';
 import CandidateProcess from '@/components/CandidateProcess';
 import CandidateUpload from '@/components/CandidateUpload';
+import CandidateVideoModal from '@/components/CandidateVideoModal';
 import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
@@ -24,6 +25,9 @@ export default function CandidatosPage() {
       <CandidateBenefits />
       <CandidateProcess />
       <CandidateUpload />
+      
+      {/* Popup de video para candidatos al iniciar */}
+      <CandidateVideoModal videoSrc="/TAILOR2.mp4" delayMs={1200} />
     </main>
   );
 }

@@ -84,12 +84,22 @@
   "TestimonialSection": {
     "title": "Success Stories",
     "subtitle": "Measurable results and long-term relationships. Swipe to read more.",
-    "t1_quote": "Tailor understood our corporate culture from day one. The executives they recruited shared our business vision. We reduced our turnover by 40%.",
-    "t2_quote": "The work climate diagnosis was revealing. We managed to align our leaders and increase team productivity impressively.",
-    "t3_quote": "We were looking for very specific talent for extreme operations. Tailor Servicios delivered exceptional candidates in record time.",
-    "t4_quote": "They designed a custom performance management system. We went from bureaucratic annual evaluations to an agile and motivating model.",
-    "t5_quote": "The outplacement process they managed for our departing executives was impeccable. Very human and oriented to real market results.",
-    "t6_quote": "They helped us structure the entire commercial management from scratch. Their knowledge of the labor market and their evaluation methodology are unmatched."
+    "t1_name": "Ximena Castro R.",
+    "t1_role": "General Manager",
+    "t1_company": "Parque del Estrecho",
+    "t1_quote": "We have had a highly positive experience working with Tailor Servicios. Their ability to identify talent and match it with our needs has been fundamental for filling key positions and strengthening our team.",
+    "t2_name": "Joaquín Vásquez E.",
+    "t2_role": "General Manager",
+    "t2_company": "IMPA",
+    "t2_quote": "We were able to free up many hours for middle management to focus on business objectives; they have helped us be more efficient in HR document management. Tailor has driven tremendous progress in our HR area, and we are very happy to work with them.",
+    "t3_name": "Gabriela Peric U.",
+    "t3_role": "Assistant Manager of People Management",
+    "t3_company": "Sánchez y Sánchez",
+    "t3_quote": "Working together with Tailor has allowed us to bring our ideas to fruition in the best way, which undoubtedly benefits all our collaborators. The seriousness, commitment, and responsibility of Tailor are their demonstrated core values, giving us as clients confidence that the work will be successful… meeting our expectations and those of everyone involved.",
+    "t4_name": "Kriss Castro",
+    "t4_role": "Commercial Manager",
+    "t4_company": "Mutual de Seguridad",
+    "t4_quote": "We have a Collaboration Agreement with Tailor Servicios; thanks to their knowledge and experience, we have provided our member companies' work teams with tools to foster healthy and safe work environments to prevent occupational diseases."
   },
   "SpecialProject": {
     "badge": "Exclusive Project",

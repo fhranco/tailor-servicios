@@ -105,8 +105,10 @@
 
 .portal-logo-container img {
   max-height: 50px;
+  max-width: 170px;
   width: auto;
   object-fit: contain;
+  display: block;
 }
 
 .portal-status-pill {

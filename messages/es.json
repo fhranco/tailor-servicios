@@ -84,12 +84,22 @@
   "TestimonialSection": {
     "title": "Casos de Éxito",
     "subtitle": "Resultados medibles y relaciones de largo plazo. Desliza para leer más.",
-    "t1_quote": "Tailor entendió nuestra cultura corporativa desde el primer día. Los ejecutivos que reclutaron compartían nuestra visión de negocio. Redujimos nuestra rotación en un 40%.",
-    "t2_quote": "El diagnóstico de clima laboral fue revelador. Logramos alinear a nuestros líderes y aumentar la productividad de los equipos de forma impresionante.",
-    "t3_quote": "Buscábamos talento muy específico para operaciones extremas. Tailor Servicios nos entregó candidatos excepcionales en tiempo récord.",
-    "t4_quote": "Diseñaron un sistema de gestión de desempeño a nuestra medida. Pasamos de evaluaciones anuales burocráticas a un modelo ágil y motivador.",
-    "t5_quote": "El proceso de outplacement que gestionaron para nuestros ejecutivos salientes fue impecable. Muy humanos y orientados a resultados reales en el mercado.",
-    "t6_quote": "Nos ayudaron a estructurar toda la gerencia comercial desde cero. Su conocimiento del mercado laboral y su metodología de evaluación son inigualables."
+    "t1_name": "Ximena Castro R.",
+    "t1_role": "Gerente General",
+    "t1_company": "Parque del Estrecho",
+    "t1_quote": "Hemos tenido una experiencia altamente positiva al trabajar con Tailor Servicios. Su capacidad para identificar talento y conectarlo con nuestras necesidades ha sido fundamental para cubrir puestos clave y fortalecer nuestro equipo.",
+    "t2_name": "Joaquín Vásquez E.",
+    "t2_role": "Gerente General",
+    "t2_company": "IMPA",
+    "t2_quote": "Pudimos liberar muchas horas de los mandos medios para enfocarse en los objetivos del negocio, nos han ayudado a ser más eficientes en el manejo documental de Recursos Humanos. Tailor ha generado un avance tremendo en nuestra área de Recursos Humanos, estamos muy contentos de trabajar con ellos.",
+    "t3_name": "Gabriela Peric U.",
+    "t3_role": "Subgerente de Gestión de Personas",
+    "t3_company": "Sánchez y Sánchez",
+    "t3_quote": "El trabajo en conjunto con Tailor nos ha permitido concretar nuestras ideas de la mejor manera, lo que sin duda beneficia a todos nuestros colaboradores. La seriedad, compromiso y responsabilidad de Tailor son sus principales valores demostrados, y que a nosotros como clientes nos da seguridad de que el trabajo será exitoso… cumpliendo nuestras expectativas y las de quienes participan.",
+    "t4_name": "Kriss Castro",
+    "t4_role": "Gerente Comercial",
+    "t4_company": "Mutual de Seguridad",
+    "t4_quote": "Con Tailor Servicios contamos con un Convenio de Colaboración, gracias a su conocimiento y experiencia hemos otorgado herramientas a los equipos de trabajo de nuestros adherentes para generar entornos laborales saludables y seguros para evitar enfermedades laborales."
   },
   "SpecialProject": {
     "badge": "Proyecto Exclusivo",

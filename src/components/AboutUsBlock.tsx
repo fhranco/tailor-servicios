@@ -24,10 +24,10 @@ export default function AboutUsBlock() {
         {/* Full background image */}
         <div className="about-image-wrapper">
           <motion.img 
-            src="https://images.unsplash.com/photo-1542744094-3a31f272c490?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" 
-            alt="Equipo de Tailor Servicios" 
+            src="/quienes-somos.webp" 
+            alt="Equipo de Tailor Servicios en Magallanes" 
             style={{
-              scale: 1.2,
+              scale: 1.1,
               y: yImage // Parallax effect
             }}
           />

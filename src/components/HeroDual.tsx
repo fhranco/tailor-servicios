@@ -18,8 +18,8 @@ export default function HeroDual() {
       titleAccent: t('slides.1.titleAccent'),
       titleEnd: "",
       desc: t('slides.1.desc'),
-      bg: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
-      thumb: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+      bg: "/impulsando-el-desarrollo.webp",
+      thumb: "/impulsando-el-desarrollo.webp"
     },
     {
       id: 2,
@@ -28,8 +28,8 @@ export default function HeroDual() {
       titleAccent: t('slides.2.titleAccent'),
       titleEnd: "",
       desc: t('slides.2.desc'),
-      bg: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
-      thumb: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+      bg: "/conectamos-talento.webp",
+      thumb: "/conectamos-talento.webp"
     },
     {
       id: 3,
@@ -38,8 +38,8 @@ export default function HeroDual() {
       titleAccent: t('slides.3.titleAccent'),
       titleEnd: "",
       desc: t('slides.3.desc'),
-      bg: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
-      thumb: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+      bg: "/soluciones-realidad.webp",
+      thumb: "/soluciones-realidad.webp"
     }
   ];
 
@@ -67,44 +67,46 @@ export default function HeroDual() {
       </AnimatePresence>
       <div className="hero-overlay"></div>
       
-      {/* Center Content Block (Glassmorphism) */}
-      <div className="hero-content-block">
-        <AnimatePresence mode="wait">
-          <motion.div 
-            key={slides[currentSlide].id}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.4 }}
-            className="hero-slide-content"
-          >
-            <div className="hero-accent-shape"></div>
-            <div className="hero-badge">{slides[currentSlide].badge}</div>
-            <h1 className="hero-title" style={{ marginTop: '1rem' }}>
-              {slides[currentSlide].titleBase}
-              <span className="text-accent">{slides[currentSlide].titleAccent}</span>
-              {slides[currentSlide].titleEnd}
-            </h1>
-            <p className="hero-desc">{slides[currentSlide].desc}</p>
-          </motion.div>
-        </AnimatePresence>
-        
-        <div className="hero-buttons">
-          <a 
-            href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="btn btn-primary"
-          >
-            {t('cta_candidatos')}
-          </a>
-          <Link href="/empresas" className="btn btn-outline">
-            {t('cta_empresas')}
-          </Link>
-        </div>
-        
-        <div className="hero-footer-text">
-          {t('footer_text')}
+      {/* Left Content Block (Glassmorphism) */}
+      <div className="fluid-container hero-container-layout">
+        <div className="hero-content-block">
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={slides[currentSlide].id}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.4 }}
+              className="hero-slide-content"
+            >
+              <div className="hero-accent-shape"></div>
+              <div className="hero-badge">{slides[currentSlide].badge}</div>
+              <h1 className="hero-title" style={{ marginTop: '1rem' }}>
+                {slides[currentSlide].titleBase}
+                <span className="text-accent">{slides[currentSlide].titleAccent}</span>
+                {slides[currentSlide].titleEnd}
+              </h1>
+              <p className="hero-desc">{slides[currentSlide].desc}</p>
+            </motion.div>
+          </AnimatePresence>
+          
+          <div className="hero-buttons">
+            <a 
+              href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="btn btn-primary"
+            >
+              {t('cta_candidatos')}
+            </a>
+            <Link href="/empresas" className="btn btn-outline">
+              {t('cta_empresas')}
+            </Link>
+          </div>
+          
+          <div className="hero-footer-text">
+            {t('footer_text')}
+          </div>
         </div>
       </div>
       

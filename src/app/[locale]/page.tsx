@@ -3,7 +3,6 @@ import ClientLogos from "@/components/ClientLogos";
 import MetricsBar from "@/components/MetricsBar";
 import BusinessLines from "@/components/BusinessLines";
 import TestimonialSection from "@/components/TestimonialSection";
-import SpecialProject from "@/components/SpecialProject";
 import AboutUsBlock from "@/components/AboutUsBlock";
 
 import LocationMap from "@/components/LocationMap";
@@ -27,8 +26,6 @@ export default function Home({params: {locale}}: {params: {locale: string}}) {
       <ClientLogos />
       
       <TestimonialSection />
-
-      <SpecialProject />
 
       <ContactSection />
 

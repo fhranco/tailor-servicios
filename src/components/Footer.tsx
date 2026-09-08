@@ -15,9 +15,9 @@ export default function Footer() {
         <div className="footer-grid">
           
           <div className="footer-logo-col">
-            <Link href="/">
+            <Link href="/" title="Tailor Servicios - Inicio">
               <img 
-                src="/tailor-logo-white.png" 
+                src="/logowebwhite.png" 
                 alt="Tailor Servicios Logo" 
               />
             </Link>

@@ -11,14 +11,8 @@ export default function HeroCandidatos() {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const toggleVideo = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        videoRef.current.play();
-        setIsPlaying(true);
-      }
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('open-candidate-video'));
     }
   };
 
@@ -92,18 +86,18 @@ export default function HeroCandidatos() {
             <div className="hero-video-card">
               <div className="hero-video-card-header">
                 <div className="video-header-left">
-                  <span className="video-pill">Video Tutorial</span>
-                  <span className="video-card-title">Guía para Postulantes</span>
+                  <span className="video-pill">✨ Mensaje para Ti</span>
+                  <span className="video-card-title">Tu Talento en Primer Lugar</span>
                 </div>
-                <span className="video-duration">Tutorial Oficial</span>
+                <span className="video-duration">Inspiración & Futuro</span>
               </div>
 
               <div className="hero-video-player-wrapper" onClick={toggleVideo}>
                 <video 
                   ref={videoRef}
                   className="hero-video-element"
-                  src="/hero-video.mp4"
-                  poster="/scratch/hero_frame.jpg"
+                  src="/TAILOR2.mp4"
+                  poster="/tailor2_cover.jpg"
                   controls={isPlaying}
                   playsInline
                   onEnded={() => setIsPlaying(false)}
@@ -111,19 +105,19 @@ export default function HeroCandidatos() {
 
                 {!isPlaying && (
                   <div className="video-play-overlay">
-                    <button className="video-play-btn" aria-label="Reproducir video tutorial">
+                    <button className="video-play-btn" aria-label="Reproducir mensaje para postulantes">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <polygon points="6 3 20 12 6 21 6 3"></polygon>
                       </svg>
                     </button>
-                    <span className="video-play-label">Haz clic para reproducir el video explicativo</span>
+                    <span className="video-play-label">Haz clic para ver este mensaje</span>
                   </div>
                 )}
               </div>
 
               <div className="hero-video-card-footer">
                 <p>
-                  Conoce cómo explorar nuestras vacantes, crear tu perfil en Rex+ y postular a cargos directivos, técnicos y operativos en el sur de Chile.
+                  Cada postulación representa una meta y una vocación de superación. En Tailor Servicios acompañamos tu trayectoria conectándote con las mejores empresas de la región.
                 </p>
               </div>
             </div>

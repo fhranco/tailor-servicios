@@ -63,9 +63,9 @@ export default function Header() {
       {/* Main Navigation */}
       <header className={`main-header light-theme ${isScrolled ? 'scrolled-glass' : ''}`}>
         <div className="fluid-container nav-container">
-          <Link href="/" className="logo-link">
+          <Link href="/" className="logo-link" title="Tailor Servicios - Inicio">
             <img 
-              src="/tailor-logo-official.png" 
+              src="/logoweb.png" 
               alt="Tailor Servicios" 
               className="logo-img"
             />

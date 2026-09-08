@@ -22,7 +22,7 @@ export default function ClientPortalsSection() {
       id: 'dap',
       name: 'Portal Grupo DAP',
       category: 'Aviación, Logística & Conectividad Antártica',
-      logo: '/portales/dap.svg',
+      logo: '/portales/dap.png',
       link: 'https://serviciosindustrialetailor.rexmas.com/jobs/dap',
       accent: '#cf142b',
       status: 'Convocatoria Activa',
@@ -33,7 +33,7 @@ export default function ClientPortalsSection() {
       id: 'cormoran',
       name: 'Portal The Cormorant at 55 South',
       category: 'Hotelería Boutique de Lujo · Punta Arenas',
-      logo: '/portales/cormoran.svg',
+      logo: '/portales/cormoran.png',
       link: 'https://serviciosindustrialetailor.rexmas.com/jobs/the-cormorant-at-55-south',
       accent: '#b89025',
       status: 'Proyecto Especial',
@@ -44,7 +44,7 @@ export default function ClientPortalsSection() {
       id: 'cerro-castillo',
       name: 'Portal Hotel Cerro Castillo',
       category: 'Turismo de Naturaleza · Torres del Paine',
-      logo: '/portales/hotel-cerro-castillo.svg',
+      logo: '/portales/hotel-cerro-castillo.png',
       link: 'https://serviciosindustrialetailor.rexmas.com/jobs/hotel-cerro-castillo',
       accent: '#2d6a4f',
       status: 'Temporada Abierta',
@@ -53,14 +53,14 @@ export default function ClientPortalsSection() {
     },
     {
       id: 'singular-explora',
-      name: 'Portal The Singular · Explora',
-      category: 'Hoteles de Expedición & Destinos Emblemáticos',
-      logo: '/portales/the-singular-explora.svg',
+      name: 'Portal The Singular Patagonia',
+      category: 'Hotelería de Lujo & Patrimonio · Puerto Bories',
+      logo: '/portales/the-singular.png',
       link: 'https://serviciosindustrialetailor.rexmas.com/jobs/the-singular-explora',
-      accent: '#8c5835',
+      accent: '#1e293b',
       status: 'Búsquedas Exclusivas',
-      desc: 'Procesos de reclutamiento para complejos turísticos y lodges de expedición de clase mundial en Puerto Bories y Torres del Paine. Estándares globales de servicio.',
-      btnText: 'Ver Ofertas Hotelería de Lujo'
+      desc: 'Procesos de reclutamiento para el emblemático hotel de clase mundial en Puerto Bories, Puerto Natales. Estándares globales de servicio, hospitalidad y gastronomía.',
+      btnText: 'Ver Ofertas The Singular'
     }
   ];
 

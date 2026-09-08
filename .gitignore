@@ -39,3 +39,9 @@ next-env.d.ts
 # scratch and temp files
 scratch/
 test-supabase.js
+
+# root media uploads (assets belong in /public)
+/*.mp4
+/*.png
+/*.webp
+/*.jpg
