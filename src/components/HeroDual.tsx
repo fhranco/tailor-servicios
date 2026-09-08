@@ -91,14 +91,12 @@ export default function HeroDual() {
           </AnimatePresence>
           
           <div className="hero-buttons">
-            <a 
-              href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <Link 
+              href="/candidatos" 
               className="btn btn-primary"
             >
               {t('cta_candidatos')}
-            </a>
+            </Link>
             <Link href="/empresas" className="btn btn-outline">
               {t('cta_empresas')}
             </Link>
