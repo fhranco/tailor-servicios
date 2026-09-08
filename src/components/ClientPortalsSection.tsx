@@ -41,15 +41,15 @@ export default function ClientPortalsSection() {
       btnText: 'Ver Ofertas The Cormorant'
     },
     {
-      id: 'cerro-castillo',
-      name: 'Portal Hotel Cerro Castillo',
+      id: 'hosteria-el-pionero',
+      name: 'Portal de empleo Hostería el Pionero',
       category: 'Turismo de Naturaleza · Torres del Paine',
-      logo: '/portales/hotel-cerro-castillo.png',
-      link: 'https://serviciosindustrialetailor.rexmas.com/jobs/hotel-cerro-castillo',
+      logo: '/portales/hosteria-el-pionero.png',
+      link: 'https://serviciosindustrialetailor.rexmas.com/jobs/hosteria-el-pionero',
       accent: '#2d6a4f',
       status: 'Temporada Abierta',
-      desc: 'Vacantes para operaciones hoteleras, guías turísticos, cocina internacional, housekeeping y administración en Villa Cerro Castillo y accesos al Parque Nacional.',
-      btnText: 'Ver Ofertas Cerro Castillo'
+      desc: 'Vacantes para operaciones hoteleras, guías turísticos, gastronomía y cocina internacional, housekeeping y administración en Hostería El Pionero.',
+      btnText: 'Ver Ofertas El Pionero'
     },
     {
       id: 'singular-explora',
