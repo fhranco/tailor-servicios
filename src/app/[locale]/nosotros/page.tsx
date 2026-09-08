@@ -14,28 +14,28 @@ export default function NosotrosPage() {
       name: 'ONG Canales',
       desc: 'Educación Técnico Profesional y vinculación formativo-laboral para potenciar el talento juvenil en la Patagonia y sur austral.',
       tag: 'Educación & Empleabilidad',
-      logo: '/alianzas/ong-canales.svg'
+      logo: '/alianzas/ong-canales.png'
     },
     {
       id: 'ist',
       name: 'IST',
       desc: 'Instituto de Seguridad del Trabajo. Alianza orientada a la prevención de riesgos laborales, cuidado y bienestar de las personas.',
       tag: 'Seguridad y Salud Laboral',
-      logo: '/alianzas/ist.svg'
+      logo: '/alianzas/ist.png'
     },
     {
       id: 'austro',
       name: 'Austro Chile',
       desc: 'Asociación Magallánica de Empresas de Turismo y Servicios. Impulso gremial al capital humano para el desarrollo turístico regional.',
       tag: 'Asociación Gremial Austral',
-      logo: '/alianzas/austro.svg'
+      logo: '/alianzas/austro.png'
     },
     {
       id: 'britanico',
       name: 'Instituto Británico',
       desc: 'Instituto Chileno Británico de Cultura (Punta Arenas). Convenio de capacitación idiomática y fortalecimiento de competencias globales.',
       tag: 'Capacitación e Idiomas',
-      logo: '/alianzas/instituto-britanico.svg'
+      logo: '/alianzas/instituto-britanico.png'
     }
   ];
 
