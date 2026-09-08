@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
 import VisitLogger from "@/components/VisitLogger";
+import JobTicker from "@/components/JobTicker";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://tailorservicios.cl'),
@@ -49,6 +50,7 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider messages={messages}>
           <VisitLogger />
+          <JobTicker />
           <Header />
           {children}
           <Footer />

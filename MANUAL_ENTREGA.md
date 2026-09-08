@@ -1,16 +1,17 @@
 # Manual de Presentación y Entrega Técnica: Tailor Servicios Web
 
-Este documento resume la arquitectura, funcionalidades implementadas, cumplimiento normativo y la infraestructura técnica del nuevo sitio web de **Tailor Servicios**. Está diseñado para servir como bitácora de entrega técnica y base para futuras mantenciones o escalados.
+Este documento resume la arquitectura, funcionalidades implementadas, cumplimiento normativo y la infraestructura técnica del sitio web de **Tailor Servicios**. Está diseñado para servir como bitácora de entrega técnica, guía operativa y base para futuras mantenciones o escalados.
 
 ---
 
 ## 1. Resumen Ejecutivo del Proyecto
 
 El sitio web de Tailor Servicios ha sido transformado en una plataforma digital moderna para una consultora boutique de Recursos Humanos (B2B y B2C). Cuenta con:
-*   **Arquitectura de vanguardia:** Desarrollado sobre **Next.js 14** (App Router) y TypeScript, garantizando carga instantánea, optimización SEO y escalabilidad.
-*   **Base de Datos en la Nube:** Integración completa con **Supabase** para registro de leads y postulantes.
-*   **Cumplimiento Legal Chileno (Ley 21.719):** Implementación rigurosa de protección de datos personales.
-*   **Panel de Administración Privado:** Un dashboard seguro para visualizar leads de empresas y descargar currículums de candidatos.
+*   **Arquitectura de vanguardia:** Desarrollado sobre **Next.js 14** (App Router) y TypeScript, garantizando carga instantánea, optimización SEO y máxima escalabilidad.
+*   **Integración y Sincronización con Rex+:** Sincronización automatizada de ofertas laborales en tiempo real con el portal oficial de Rex+, actuando este último como la **única fuente de verdad** del portal.
+*   **Cero Retención de CVs (Privacidad por Diseño):** Cumplimiento riguroso de la **Ley 21.719** de Protección de Datos Personales en Chile. No se almacenan archivos ni currículums en bases de datos locales; las postulaciones se derivan directamente al portal oficial de selección de Rex+.
+*   **Base de Datos en la Nube:** Integración con **Supabase** para registro de leads corporativos B2B y trazabilidad de sincronizaciones.
+*   **Panel de Administración Privado:** Un dashboard seguro para visualizar leads de empresas y gestionar/monitorear la sincronización de ofertas con Rex+.
 
 ---
 
@@ -20,12 +21,12 @@ El sitio se estructuró de manera desacoplada para optimizar el posicionamiento 
 
 ```
 Rutas principales del sitio:
-├── / (Inicio)
-├── /nosotros (La Empresa)
-├── /servicios (Nuestros Servicios)
+├── / (Inicio - Incluye Marquesina Ticker de Ofertas Rex+ en tiempo real)
+├── /nosotros (La Empresa y Valores)
+├── /servicios (Nuestros Servicios de Consultoría)
 ├── /especializacion (Áreas de Foco)
 ├── /contacto (Formulario B2B para Empresas)
-├── /candidatos (Portal de Postulantes/Candidatos)
+├── /candidatos (Portal de Empleo - Carrusel Dinámico conectado a Rex+)
 ├── /empresas (Portal de Soluciones para Empresas)
 │
 ├── [Páginas Legales de Cumplimiento]
@@ -34,105 +35,105 @@ Rutas principales del sitio:
 │   └── /cookies (Políticas de Cookies)
 │
 └── [Área Privada de Gestión]
-    └── /admin/privacidad (Dashboard de leads y candidatos)
+    └── /admin (Dashboard de leads y sincronización Rex+)
 ```
 
 ---
 
-## 3. Características y Funcionalidades Clave
+## 3. Módulo de Integración y Sincronización con Rex+
+
+### A. Rex+ como Única Fuente de Verdad
+*   **URL Fuente:** `https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios`
+*   **Endpoint API:** `https://api.rexmas.com/seleccion/public/jobs_portal/5/publications`
+*   **Principio Operativo:** Toda vacante creada, modificada o cerrada en Rex+ se refleja automáticamente en el sitio web sin requerir doble digitación manual.
+
+### B. Ciclo de Actualización Automática (Cada 12 horas)
+1.  **Auto-Sincronización Inteligente en Segundo Plano (SWR):** Al recibir visitas en el sitio, si los datos tienen más de 12 horas de antigüedad, el servidor consulta automáticamente a Rex+ en segundo plano sin ralentizar la navegación del usuario.
+2.  **Cron Job en la Nube (`vercel.json`):** Programado para ejecutarse dos veces al día (a las 08:00 y a las 20:00 UTC) mediante Vercel Crons.
+3.  **Sincronización Manual Inmediata:** Si el equipo de Selección publica una oferta urgente, puede presionar el botón *"🔄 Sincronizar Ahora con Rex+"* en el panel administrativo `/admin` para verla reflejada en 2 segundos.
+4.  **Comando de Consola:** También se puede forzar desde la terminal con `npm run sync-jobs`.
+
+### C. Salvaguardas y Resiliencia
+*   **Desactivación Lógica (Soft-Delete):** Las ofertas eliminadas en Rex+ se marcan como `active = false`. Nunca se borran registros físicos para mantener la trazabilidad histórica.
+*   **Bloqueo ante Anomalías:** Si Rex+ devuelve 0 ofertas de forma anómala (por ejemplo, por una caída temporal del servicio de Rex+), el sistema congela la base de datos para no dar de baja las ofertas activas por error.
+*   **Caché Local de Respaldo:** El sistema almacena una copia local en `scratch/jobs_cache.json` para responder con latencia cero (0 ms) ante cualquier eventualidad.
+
+---
+
+## 4. Características y Funcionalidades Clave
 
 ### A. Formularios Inteligentes y Base de Datos (Supabase)
 1.  **Formulario de Contacto B2B (Empresas):** 
-    *   Captura datos de empresas interesadas en consultoría.
-    *   Guarda automáticamente en la tabla `leads` de Supabase.
-2.  **Formulario de Carga de CV (Candidatos):**
-    *   Sube los currículums de forma segura a un **Storage Bucket** privado en Supabase.
-    *   Guarda la información de contacto y el enlace al documento en la tabla `candidates`.
-    *   Incluye validación estricta de archivos (máximo 5MB, solo formatos PDF, DOC, DOCX).
+    *   Captura datos de empresas interesadas en consultoría y servicios.
+    *   Registra en la tabla `leads` y despacha notificación inmediata vía correo corporativo.
+2.  **Portal de Candidatos (Postulantes):**
+    *   Muestra dinámicamente las vacantes activas sincronizadas desde Rex+.
+    *   Al hacer clic en cualquier oferta (*"Ver Oferta y Postular"*), el postulante es redirigido directamente al formulario oficial de Rex+.
+    *   **Cero Almacenamiento de CVs:** No se capturan ni retienen archivos en el servidor web de Tailor Servicios, eliminando riesgos de fuga de información de personas.
 
-### B. Panel de Administración Privado (Dashboard)
-Ubicado en `/admin/privacidad`, este panel permite al equipo interno de Tailor:
-*   Visualizar los mensajes y datos de contacto de empresas interesadas (leads).
-*   Ver las postulaciones de candidatos en tiempo real.
-*   **Descargar directamente los archivos de CV** con un solo clic de forma segura.
-*   **Acceso Protegido:** Implementado con seguridad HTTP Basic Auth basada en credenciales encriptadas en Vercel.
+### B. Panel de Administración Privado (Dashboard `/admin`)
+Permite al equipo interno de Tailor:
+*   Visualizar y dar seguimiento a los mensajes de empresas interesadas (leads).
+*   Monitorear el estado de las ofertas de empleo de Rex+ (activas, inactivas, fecha de publicación).
+*   Forzar la sincronización instantánea con Rex+ con un solo clic.
+*   Revisar el registro de auditoría (`job_sync_logs`) con fecha, hora y resultado de cada sincronización.
+*   **Acceso Protegido:** Autenticación segura mediante credenciales administrativas.
 
 ### C. Cumplimiento de la Ley 21.719 (Protección de Datos en Chile)
-El sitio fue auditado y ajustado para cumplir con la legislación de datos personales:
-*   **Banner de Cookies:** Banner interactivo que bloquea/acepta cookies según la preferencia del usuario y la recuerda.
-*   **Consentimiento Explícito:** Casillas obligatorias de aceptación en los formularios de contacto y postulación antes de permitir el envío de datos.
-*   **Páginas Legales Desacopladas:** Cada política tiene su propia ruta limpia con vigencia actualizada a **Julio 2026**.
+*   **Banner de Cookies:** Bloquea o permite cookies analíticas según la decisión del usuario.
+*   **Minimización Estricta:** Solo se recaban datos B2B proporcionales a la finalidad de contacto comercial.
+*   **Consentimiento Informado:** Checkbox obligatorio antes de enviar cualquier formulario.
+*   **Páginas Legales:** Términos, Privacidad y Cookies actualizadas a normativa vigente.
 
 ---
 
-## 4. Identidad Visual, SEO y Favicon
+## 5. Identidad Visual, SEO y Favicon
 
-*   **Favicon Personalizado:** Se extrajo el imagotipo oficial del archivo corporativo `2.png`, eliminando el fondo blanco para crear un icono transparente que se adapta perfectamente a navegadores en modo claro y oscuro.
-*   **Previsualizaciones en Redes Sociales (Open Graph):** Cuando el link se comparte en plataformas como WhatsApp, Slack o LinkedIn, se genera una tarjeta de previsualización con:
+*   **Marquesina Ticker de Ofertas:** Cintillo visual dinámico en la parte superior con indicador de vacantes en vivo (*pulse animation*), que se oculta automáticamente si no hay vacantes activas y se pausa al pasar el cursor.
+*   **Favicon Personalizado:** Imagotipo oficial corporativo con fondo transparente optimizado para temas claro y oscuro.
+*   **Previsualizaciones en Redes Sociales (Open Graph):** Metadatos optimizados para WhatsApp, LinkedIn y buscadores:
     *   **Título:** *Tailor Servicios | Soluciones de Recursos Humanos*
     *   **Descripción:** *Consultoría estratégica en Reclutamiento, Gestión de Personas y Desarrollo Organizacional con despliegue operativo en Punta Arenas y Santiago.*
-    *   **Miniatura:** Imagen corporativa transparente integrada.
 
 ---
 
-## 5. Infraestructura y Despliegue Técnico
+## 6. Infraestructura y Despliegue Técnico
 
-La plataforma quedó desplegada bajo la siguiente arquitectura en la nube:
+La plataforma está preparada para operar bajo la siguiente infraestructura:
 
-1.  **Código Fuente (GitHub):** Alojado en el repositorio privado de control de cambios: `https://github.com/fhranco/tailor-servicios`
-2.  **Servidor de Aplicación (Vercel):** Conexión CI/CD directa. Cada vez que se sube un cambio a la rama `main` de GitHub, Vercel compila y actualiza la web de forma automática en menos de 1 minuto sin caídas de servicio.
-3.  **Variables de Entorno Clave (Configuradas en Vercel):**
-    *   `NEXT_PUBLIC_SUPABASE_URL`: Endpoint de la API de base de datos.
-    *   `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Llave pública de acceso a Supabase.
-    *   `SUPABASE_SERVICE_ROLE_KEY`: Llave de bypass para el almacenamiento seguro de archivos.
-    *   `ADMIN_PASSWORD`: Contraseña de acceso al Dashboard.
-
----
-
-## 6. Siguientes Pasos Recomendados para el Cliente
-
-Cuando el cliente revise la web y decida pasar a producción bajo su dominio definitivo (`tailorservicios.cl`), los pasos a seguir son:
-
-1.  **Cambio de DNS en cPanel:** 
-    Modificar el registro `A` de `tailorservicios.cl` y el `CNAME` de `www` en el cPanel (Zone Editor) para que apunten a los servidores de Vercel (Vercel proveerá los valores exactos, usualmente `76.76.21.21`).
-    *Nota: Esto NO afectará sus correos corporativos en Google Workspace.*
-2.  **Añadir Dominio en Vercel:**
-    Ingresar al panel del proyecto en Vercel, ir a *Settings -> Domains* y agregar `tailorservicios.cl`. Vercel generará e instalará el certificado SSL (HTTPS) de forma automática y gratuita.
+1.  **Código Fuente (GitHub):** Alojado en el repositorio de control de versiones `fhranco/tailor-servicios`.
+2.  **Alojamiento y Servidor de Aplicación (Vercel):**
+    *   Despliegue continuo (CI/CD) automático al subir cambios a la rama principal.
+    *   Ejecución de Cron Jobs automáticos cada 12 horas según [`vercel.json`](file:///Users/patagoniacoach/.gemini/antigravity-ide/scratch/Tailor%20Servicio/vercel.json).
+3.  **Variables de Entorno Clave:**
+    *   `NEXT_PUBLIC_SUPABASE_URL`: URL del proyecto en Supabase.
+    *   `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Llave pública anónima de Supabase.
+    *   `SUPABASE_SERVICE_ROLE_KEY`: Llave de administración para tareas internas del servidor.
+    *   `ADMIN_PASSWORD`: Contraseña de acceso al Dashboard `/admin`.
+    *   `SMTP_*`: Credenciales para el despacho de correos de contacto corporativo.
 
 ---
 
-## 7. Justificación Tecnológica y Negocio (Para el Cliente)
+## 7. Configuración de Dominio para Paso a Producción (`tailorservicios.cl`)
 
-### ¿Por qué elegimos esta Arquitectura y no WordPress?
-Tradicionalmente, las webs corporativas se creaban sobre WordPress. Para un negocio boutique de consultoría estratégica y manejo de datos de personas, **desarrollar con código moderno (Next.js) es una decisión crítica de negocio:**
+Para apuntar el dominio final a la plataforma en Vercel:
 
-| Criterio | Solución a Medida (Código) | WordPress Tradicional |
+1.  **En cPanel / DNS Provider:**
+    *   Registro `A` para `tailorservicios.cl` apuntando a la IP de Vercel: `76.76.21.21`
+    *   Registro `CNAME` para `www.tailorservicios.cl` apuntando a `cname.vercel-dns.com`
+    *(Esto no altera la operación de correos corporativos en Google Workspace ni otros servicios MX).*
+2.  **En el Panel de Vercel:**
+    *   Ir a *Settings -> Domains*, ingresar `tailorservicios.cl` y `www.tailorservicios.cl`. Vercel gestionará el certificado SSL/HTTPS de forma automática.
+
+---
+
+## 8. Verificación y Pruebas Realizadas
+
+| Caso de Prueba | Descripción | Resultado |
 | :--- | :--- | :--- |
-| **Seguridad de Datos** | **Máxima.** La base de datos (Supabase) está aislada de la web. Cumple con encriptación avanzada estándar de la industria. | **Baja-Media.** Al usar plantillas y plugins de terceros, es vulnerable a hackeos constantes de bases de datos de spam. |
-| **Velocidad y Carga** | **Instantánea (0.5s).** El código está compilado para cargar solo lo que el usuario ve, lo que mejora drásticamente el posicionamiento SEO. | **Lenta (3s+).** Carga excesiva de código innecesario, fuentes lentas y plugins obsoletos. |
-| **Protección contra Caídas** | **Inmune.** Alojado de forma distribuida a nivel global mediante Vercel CDN. Tolera picos masivos de tráfico. | **Dependiente.** Si el servidor básico de hosting falla o se sobrecarga, la página se cae por completo. |
-| **Mantención** | **Cero costo de mantención.** No requiere actualizaciones manuales de plugins que rompan la página web. | **Alta.** Requiere actualizar plugins semanalmente con el riesgo constante de romper el diseño o la base de datos. |
-
-### La Importancia del Cumplimiento Legal (Ley 21.719 en Chile)
-Recibir currículums de candidatos (CVs) y almacenar datos de empresas no es un tema ligero. Con la nueva Ley 21.719, las multas por mal manejo o filtración de datos de titulares son muy elevadas. 
-Esta web fue construida bajo el principio de **Privacidad por Diseño**:
-1.  **Consentimiento Demostrable:** Los formularios no permiten enviar datos a menos que el usuario marque activamente que leyó y aceptó las políticas.
-2.  **Seguridad en el Storage:** Los CVs no quedan flotando en carpetas públicas del hosting; se guardan en un almacenamiento encriptado y restringido (Supabase Storage).
-3.  **Trazabilidad:** Cada postulación queda auditada con fecha y hora en el panel administrativo.
-
-### Futura Autoadministración (Escalabilidad a CMS)
-El sitio está preparado para crecer. Si a futuro el cliente desea **autoadministrar** (cambiar textos, fotos o agregar servicios él mismo desde un panel visual sin programar), la arquitectura en Next.js permite conectar un **Headless CMS** (como *Sanity* o *Contentful*). Esto le dará la misma facilidad de edición de un Word, pero manteniendo el 100% de la velocidad, seguridad y robustez del código a medida.
-
----
-
-## 8. Guía de Revisión de Contenidos para el Cliente
-
-Para proponer cambios en esta versión candidata de entrega, sugerimos al cliente realizar la revisión en las siguientes áreas clave:
-
-1.  **Revisión de Textos Legales:** Validar los párrafos de las páginas de *Privacidad*, *Términos* y *Cookies* con su asesor legal interno (fechados a Julio 2026).
-2.  **Líneas de Negocio y Servicios:** Revisar si las descripciones y beneficios de las pestañas en "/servicios" y "/especializacion" se alineen exactamente con su portafolio comercial actual.
-3.  **Configuración de Canales de Contacto (Emails, Teléfonos y WhatsApp):**
-    *   **Correos de Recepción:** Definir a qué cuentas corporativas deben llegar los mensajes. Actualmente, los datos quedan almacenados en la base de datos segura de Supabase. Si desean que el sistema envíe una notificación directa por email cada vez que entra una postulación o un contacto, deben indicar las casillas destino (por ejemplo, `contacto@tailorservicios.cl` o `seleccion@tailorservicios.cl`).
-    *   **Teléfonos y Botón de WhatsApp:** Indicar los números oficiales de contacto. Si desean añadir un botón flotante de WhatsApp o enlaces telefónicos rápidos (del tipo `tel:+569...`), sugerimos definir los números y el mensaje predeterminado con el que se iniciará la conversación (ej. *"Hola Tailor Servicios, me gustaría solicitar una asesoría..."*).
-    *   **Direcciones y Oficinas:** Validar las descripciones de las oficinas de Punta Arenas y Santiago para asegurar que reflejen la dirección o formato de atención al cliente deseado.
-4.  **Pruebas de Formularios:** Realizar una postulación de prueba en "/candidatos" subiendo un CV y un contacto en "/contacto" para verificar que los datos se reciban correctamente en su panel administrativo.
+| **API Rex+ Connection** | Consulta al endpoint REST con cabecera `X-Tenant-Subdomain` | **Exitoso (2 ofertas reales extraídas)** |
+| **Job Ticker (Home)** | Marquesina animada visible con pausa en hover | **Operativo** |
+| **Job Carousel (/candidatos)** | Tarjetas con título, ubicación, área y redirección Rex+ | **Operativo** |
+| **Admin Dashboard (/admin)** | Pestaña *💼 Ofertas Rex+* y botón de sincronización | **Operativo** |
+| **Protección contra Anomalías** | Bloqueo de desactivación masiva si Rex+ reporta 0 | **Verificado (Test suite 100%)** |
+| **Compilación TypeScript** | Verificación estática con `npx tsc --noEmit` | **0 Errores** |

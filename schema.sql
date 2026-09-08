@@ -71,3 +71,52 @@ CREATE TABLE IF NOT EXISTS public.web_visits (
 ALTER TABLE public.web_visits ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Allow public inserts for web_visits" ON public.web_visits FOR INSERT WITH CHECK (true);
 CREATE POLICY "Allow admin to select web_visits" ON public.web_visits FOR SELECT USING (true);
+
+-- =========================================================================
+-- 6. Ofertas Laborales Sincronizadas desde Rex+ (Ley 21.719 / Privacidad)
+-- NOTA: NO se retienen CVs ni postulaciones de candidatos en Supabase.
+-- La postulación se realiza 100% en el portal externo oficial de Rex+.
+-- Supabase sólo almacena el catálogo público de vacantes para visualización.
+-- =========================================================================
+CREATE TABLE IF NOT EXISTS public.jobs (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  external_id TEXT UNIQUE NOT NULL, -- UUID de Rex+
+  rex_id INTEGER,
+  title TEXT NOT NULL,
+  location TEXT,
+  area TEXT,
+  work_type TEXT,
+  description TEXT,
+  url TEXT NOT NULL,
+  published_at TIMESTAMP WITH TIME ZONE,
+  active BOOLEAN DEFAULT true NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- RLS para jobs
+ALTER TABLE public.jobs ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow public reads for active jobs" ON public.jobs FOR SELECT USING (true);
+CREATE POLICY "Allow admin to manage jobs" ON public.jobs FOR ALL USING (true);
+
+-- =========================================================================
+-- 7. Registro de Auditoría de Sincronización Rex+ (job_sync_logs)
+-- Registra trazabilidad de cada extracción (status, found, created, updated, deactivated)
+-- =========================================================================
+CREATE TABLE IF NOT EXISTS public.job_sync_logs (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  synced_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  status TEXT NOT NULL, -- 'success', 'partial', 'failed'
+  found_count INTEGER DEFAULT 0 NOT NULL,
+  created_count INTEGER DEFAULT 0 NOT NULL,
+  updated_count INTEGER DEFAULT 0 NOT NULL,
+  deactivated_count INTEGER DEFAULT 0 NOT NULL,
+  error_details TEXT,
+  is_suspicious BOOLEAN DEFAULT false NOT NULL
+);
+
+-- RLS para job_sync_logs
+ALTER TABLE public.job_sync_logs ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow service to insert job sync logs" ON public.job_sync_logs FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow admin to select job sync logs" ON public.job_sync_logs FOR SELECT USING (true);
+

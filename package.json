@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sync-jobs": "node scripts/sync-jobs.js",
+    "test:jobs": "node scripts/test-sync-cases.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.0",

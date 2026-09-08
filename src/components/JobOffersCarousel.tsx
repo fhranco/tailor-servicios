@@ -1,119 +1,57 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 import './JobOffersCarousel.css';
 import { useTranslations } from 'next-intl';
 
-// Ejemplo de datos estructurados para las ofertas
-// En el futuro, esto podría venir de una API de Rexmas
-const jobOffers = [
-  {
-    id: 1,
-    title: "Analista de Selección y Desarrollo Junior",
-    location: "Punta Arenas, Chile",
-    type: "Tiempo completo",
-    department: "Administración de Personal",
-    link: "https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios"
-  },
-  {
-    id: 2,
-    title: "Analista de Facturación",
-    location: "Punta Arenas, Chile",
-    type: "Tiempo completo",
-    department: "Facturación",
-    link: "https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios"
-  },
-  {
-    id: 3,
-    title: "Jefe de Contabilidad",
-    location: "Punta Arenas, Chile",
-    type: "Tiempo completo",
-    department: "Contabilidad",
-    link: "https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios"
-  },
-  {
-    id: 4,
-    title: "Encargado de Administración y Control",
-    location: "Punta Arenas, Chile",
-    type: "Tiempo completo",
-    department: "Administración",
-    link: "https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios"
-  },
-  {
-    id: 5,
-    title: "Ejecutivo/a de Venta Automotriz",
-    location: "Punta Arenas, Chile",
-    type: "Tiempo completo",
-    department: "Ventas",
-    link: "https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios"
-  },
-  {
-    id: 6,
-    title: "Vendedor/a de Sala Ferretería",
-    location: "Punta Arenas, Chile",
-    type: "Tiempo completo",
-    department: "Ventas",
-    link: "https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios"
-  },
-  {
-    id: 7,
-    title: "Operador/a de Planta GLP - Puerto Williams",
-    location: "Cabo de Hornos, Chile",
-    type: "Tiempo completo",
-    department: "Operaciones",
-    link: "https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios"
-  },
-  {
-    id: 8,
-    title: "Operador/a Mantenedor/a Mecánico y Electromecánico",
-    location: "Coyhaique, Chile",
-    type: "Tiempo completo",
-    department: "Operaciones",
-    link: "https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios"
-  },
-  {
-    id: 9,
-    title: "Asistente de Recursos Humanos",
-    location: "Punta Arenas, Chile",
-    type: "Tiempo completo",
-    department: "Recursos Humanos",
-    link: "https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios"
-  },
-  {
-    id: 10,
-    title: "Jefe/a de Operaciones",
-    location: "Punta Arenas, Chile",
-    type: "Tiempo completo",
-    department: "Operaciones",
-    link: "https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios"
-  },
-  {
-    id: 11,
-    title: "Coordinador/a Gestión de Personas",
-    location: "Punta Arenas, Chile",
-    type: "Tiempo completo",
-    department: "Recursos Humanos",
-    link: "https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios"
-  },
-  {
-    id: 12,
-    title: "Gerente/a de Operaciones",
-    location: "Punta Arenas, Chile",
-    type: "Tiempo completo",
-    department: "Gerencia / Dirección General",
-    link: "https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios"
-  }
-];
+interface JobOffer {
+  id: string;
+  external_id: string;
+  title: string;
+  location: string;
+  area: string;
+  work_type: string;
+  url: string;
+  active: boolean;
+}
 
 export default function JobOffersCarousel() {
   const t = useTranslations('JobOffersCarousel');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  // Duplicamos el array para el efecto de scroll infinito sin saltos
-  const marqueeItems = [...jobOffers, ...jobOffers];
+  const [jobs, setJobs] = useState<JobOffer[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function loadJobs() {
+      try {
+        const res = await fetch('/api/jobs');
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted && data.success && Array.isArray(data.jobs)) {
+            const activeJobs = data.jobs.filter((j: JobOffer) => j.active);
+            setJobs(activeJobs);
+          }
+        }
+      } catch (err) {
+        console.warn('Error al cargar ofertas en carrusel:', err);
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    }
+
+    loadJobs();
+  }, []);
+
+  // Si no hay ofertas activas (y ya cargó), no renderizar la sección para evitar ruidos visuales
+  if (!isLoading && jobs.length === 0) {
+    return null;
+  }
+
+  // Duplicamos el array para el efecto de scroll continuo infinito
+  const displayItems = jobs.length > 0 ? [...jobs, ...jobs, ...jobs] : [];
 
   return (
-    <section className="c-jobs-section">
+    <section className="c-jobs-section" id="ofertas-laborales">
       <div className="fluid-container">
         <div className="c-jobs-header">
           <div>
@@ -121,9 +59,14 @@ export default function JobOffersCarousel() {
             <h2 className="c-jobs-title">{t('featuredOffers')}</h2>
           </div>
           <div className="c-jobs-controls">
-             <a href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" target="_blank" rel="noopener noreferrer" className="c-jobs-all-btn">
-               {t('viewAll')} &rarr;
-             </a>
+            <a 
+              href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="c-jobs-all-btn"
+            >
+              {t('viewAll')} &rarr;
+            </a>
           </div>
         </div>
       </div>
@@ -131,18 +74,19 @@ export default function JobOffersCarousel() {
       {/* Marquee Container (Full width) */}
       <div className="c-jobs-marquee-wrapper">
         <div className="c-jobs-marquee-track">
-          {marqueeItems.map((job, index) => (
+          {displayItems.map((job, index) => (
             <a 
-              key={`${job.id}-${index}`} 
-              href={job.link} 
+              key={`${job.external_id || job.id}-${index}`} 
+              href={job.url} 
               target="_blank" 
               rel="noopener noreferrer"
               className="c-job-card-marquee"
               style={{ textDecoration: 'none' }}
+              title={`Postular a ${job.title} en Rex+`}
             >
               <div className="c-job-card-header">
-                <span className="c-job-department">{job.department}</span>
-                <span className="c-job-type">{job.type}</span>
+                <span className="c-job-department">{job.area || 'General'}</span>
+                <span className="c-job-type">{job.work_type || 'Tiempo completo'}</span>
               </div>
               
               <h3 className="c-job-title">{job.title}</h3>

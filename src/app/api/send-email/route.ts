@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 
 let nodemailerInstance: any = null;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  nodemailerInstance = require('nodemailer');
+  const req = eval('require');
+  nodemailerInstance = req('nodemailer');
 } catch {
   // nodemailer no instalado; se usa API REST nativa de Resend
 }

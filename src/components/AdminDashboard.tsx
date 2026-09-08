@@ -52,7 +52,7 @@ type PageStat = {
 };
 
 export default function AdminDashboard({ session }: { session: any }) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'candidates' | 'leads' | 'traffic' | 'audit'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'candidates' | 'leads' | 'traffic' | 'audit' | 'jobs'>('overview');
   const [loading, setLoading] = useState(true);
 
   // States for data
@@ -61,6 +61,8 @@ export default function AdminDashboard({ session }: { session: any }) {
   const [visits, setVisits] = useState<Visit[]>([]);
   const [pageStats, setPageStats] = useState<PageStat[]>([]);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
+  const [jobs, setJobs] = useState<any[]>([]);
+  const [isSyncing, setIsSyncing] = useState(false);
   const [totalVisits, setTotalVisits] = useState(0);
 
   useEffect(() => {
@@ -103,10 +105,37 @@ export default function AdminDashboard({ session }: { session: any }) {
         const aData = await aRes.json();
         setAuditLogs(aData);
       }
+
+      // 5. Fetch Rex+ Jobs
+      const jRes = await fetch('/api/jobs?includeInactive=true');
+      if (jRes.ok) {
+        const jData = await jRes.json();
+        if (jData.success && Array.isArray(jData.jobs)) {
+          setJobs(jData.jobs);
+        }
+      }
     } catch (err) {
       console.error('Error fetching dashboard data:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSyncJobs = async () => {
+    setIsSyncing(true);
+    try {
+      const res = await fetch('/api/jobs/sync', { method: 'POST' });
+      const data = await res.json();
+      if (data.success && data.result) {
+        alert(`Sincronización completada con éxito:\n\n• Ofertas encontradas: ${data.result.found_count}\n• Nuevas creadas: ${data.result.created_count}\n• Actualizadas: ${data.result.updated_count}\n• Desactivadas: ${data.result.deactivated_count}`);
+        fetchDashboardData();
+      } else {
+        alert(`Fallo en la sincronización: ${data.result?.error_details || data.error || 'Error desconocido'}`);
+      }
+    } catch (err: any) {
+      alert(`Error de red al sincronizar: ${err.message}`);
+    } finally {
+      setIsSyncing(false);
     }
   };
 
@@ -204,6 +233,15 @@ export default function AdminDashboard({ session }: { session: any }) {
           >
             🛡️ Auditoría (Ley 21.719)
           </button>
+          <button 
+            className={`admin-nav-item ${activeTab === 'jobs' ? 'active' : ''}`}
+            onClick={() => setActiveTab('jobs')}
+          >
+            💼 Ofertas Rex+
+            {jobs.filter(j => j.active).length > 0 && (
+              <span className="tab-badge">{jobs.filter(j => j.active).length}</span>
+            )}
+          </button>
         </nav>
         <div className="admin-footer-actions">
           <button className="btn-logout" onClick={handleLogout}>
@@ -221,6 +259,7 @@ export default function AdminDashboard({ session }: { session: any }) {
             {activeTab === 'leads' && 'Bandeja de Contactos B2B (Empresas)'}
             {activeTab === 'traffic' && 'Análisis de Tráfico Anónimo'}
             {activeTab === 'audit' && 'Bitácora de Auditoría Legal'}
+            {activeTab === 'jobs' && 'Gestión y Sincronización de Ofertas (Rex+)'}
           </h1>
           <button className="btn-refresh" onClick={fetchDashboardData}>
             🔄 Actualizar Datos
@@ -477,6 +516,94 @@ export default function AdminDashboard({ session }: { session: any }) {
                     {auditLogs.length === 0 && (
                       <tr>
                         <td colSpan={5} className="empty-row">No hay registros de auditoría de privacidad.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 6: REX+ JOBS */}
+          {activeTab === 'jobs' && (
+            <div className="table-view-tab">
+              <div className="table-header-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '16px' }}>
+                <div>
+                  <p style={{ margin: 0, color: '#334155' }}>
+                    Ofertas laborales sincronizadas directamente desde la fuente oficial de verdad en <strong>Rex+</strong>.
+                  </p>
+                  <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                    🔒 Cumplimiento Ley 21.719: No retenemos CVs ni postulaciones de candidatos en la web; los postulantes son derivados a Rex+.
+                  </span>
+                </div>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <button 
+                    className="btn-action" 
+                    onClick={handleSyncJobs}
+                    disabled={isSyncing}
+                    style={{ background: '#00b4ff', color: '#091726', fontWeight: 'bold' }}
+                  >
+                    {isSyncing ? '⏳ Sincronizando...' : '🔄 Sincronizar Ahora con Rex+'}
+                  </button>
+                  <a 
+                    href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="btn-action"
+                    style={{ background: '#1e5591', color: '#fff', textDecoration: 'none' }}
+                  >
+                    ↗️ Abrir Portal Rex+
+                  </a>
+                </div>
+              </div>
+
+              <div className="table-container">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Cargo / Título</th>
+                      <th>Área</th>
+                      <th>Ubicación</th>
+                      <th>Jornada</th>
+                      <th>Estado</th>
+                      <th>Publicado</th>
+                      <th>Enlace Rex+</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {jobs.map((job) => (
+                      <tr key={job.external_id || job.id}>
+                        <td><strong>{job.title}</strong></td>
+                        <td>{job.area || '-'}</td>
+                        <td>{job.location || '-'}</td>
+                        <td>{job.work_type || '-'}</td>
+                        <td>
+                          {job.active ? (
+                            <span className="status-badge active" style={{ background: '#dcfce7', color: '#15803d', padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>
+                              ● Activa
+                            </span>
+                          ) : (
+                            <span className="status-badge inactive" style={{ background: '#f1f5f9', color: '#64748b', padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem' }}>
+                              Cerrada
+                            </span>
+                          )}
+                        </td>
+                        <td>{job.published_at ? new Date(job.published_at).toLocaleDateString('es-CL') : '-'}</td>
+                        <td>
+                          <a 
+                            href={job.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            style={{ color: '#00b4ff', textDecoration: 'underline', fontSize: '0.85rem' }}
+                          >
+                            Ver en Rex+ ↗
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+                    {jobs.length === 0 && (
+                      <tr>
+                        <td colSpan={7} className="empty-row">No hay ofertas sincronizadas aún. Haz clic en "Sincronizar Ahora con Rex+".</td>
                       </tr>
                     )}
                   </tbody>
