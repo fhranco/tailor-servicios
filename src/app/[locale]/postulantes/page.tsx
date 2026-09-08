@@ -61,10 +61,11 @@ export default function PostulantesPage() {
               fontSize: '1.05rem',
               fontWeight: 600,
               textDecoration: 'none',
-              borderRadius: '6px'
+              borderRadius: '6px',
+              marginBottom: '1.25rem'
             }}
           >
-            Postular y Subir CV en Rex+
+            Postular en Portal Rex+
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
               <polyline points="15 3 21 3 21 9"/>
@@ -72,7 +73,17 @@ export default function PostulantesPage() {
             </svg>
           </a>
 
-          <p style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '1.5rem' }}>
+          <div style={{ padding: '1rem', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', textAlign: 'left', fontSize: '0.88rem' }}>
+            <strong>¿Prefieres enviar tu CV por correo?</strong>
+            <p style={{ margin: '0.25rem 0 0.5rem', color: '#64748b' }}>
+              Si no encuentras una vacante activa, envía tus antecedentes directamente desde tu correo a:
+            </p>
+            <div style={{ fontWeight: 700, color: '#0f172a', fontFamily: 'monospace' }}>
+              ✉️ seleccion@tailorservicios.cl
+            </div>
+          </div>
+
+          <p style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '1.25rem' }}>
             Serás redirigido a un entorno seguro administrado por Rex+ Talento.
           </p>
         </div>

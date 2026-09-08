@@ -1,6 +1,6 @@
 {
   "Header": {
-    "sube_cv": "Sube tu CV",
+    "sube_cv": "Envía tu CV",
     "buscas_contratar": "¿Buscas contratar?",
     "inicio": "Inicio",
     "nosotros": "Nosotros",
@@ -124,7 +124,7 @@
     "contacto": "Contacto",
     "empresas": "Para Empresas",
     "postulantes": "Para Postulantes",
-    "subir_cv": "Subir CV",
+    "subir_cv": "Enviar CV",
     "privacidad": "Política de Privacidad",
     "terminos": "Términos y Condiciones",
     "cookies": "Política de Cookies",
@@ -138,7 +138,7 @@
   "PostulantesPage": {
     "hero_title": "Tu próximo gran paso profesional",
     "hero_desc": "Las mejores oportunidades laborales en Magallanes y Chile pasan por nuestras manos. Únete a nuestra red de talentos y accede a ofertas exclusivas.",
-    "form_title": "Sube tu Currículum",
+    "form_title": "Envía tu Currículum",
     "form_subtitle": "Regístrate en nuestra base de datos para futuras búsquedas."
   },
   "B2C_Dropzone": {

@@ -124,6 +124,54 @@ export default function ClientPortalsSection() {
             </motion.div>
           ))}
         </div>
+
+        {/* Banner de alternativa cuando no hay vacante en los portales */}
+        <div style={{
+          marginTop: '2.5rem',
+          padding: '1.25rem 1.75rem',
+          backgroundColor: '#ffffff',
+          borderRadius: '12px',
+          border: '1px solid #e2e8f0',
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '1rem',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.03)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+            <span style={{ fontSize: '1.5rem' }}>💡</span>
+            <div>
+              <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>
+                ¿No encuentras una convocatoria activa para tu perfil?
+              </div>
+              <p style={{ margin: 0, color: '#64748b', fontSize: '0.85rem' }}>
+                Puedes enviar tu currículum de forma espontánea directamente a nuestra casilla de selección por correo.
+              </p>
+            </div>
+          </div>
+          <a
+            href="#envia-tu-cv"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              backgroundColor: '#0f172a',
+              color: '#ffffff',
+              padding: '0.65rem 1.25rem',
+              borderRadius: '8px',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              textDecoration: 'none'
+            }}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+            Instrucciones para Enviar CV
+          </a>
+        </div>
       </div>
     </section>
   );

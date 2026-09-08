@@ -45,19 +45,45 @@ export default function HeroCandidatos() {
             {/* Acceso Primario Destacado: Portal General de Ofertas Laborales (Rex+) */}
             {/* Se elimina cualquier botón secundario confuso ("Postular con Taylor Servicios") */}
             <div className="hero-candidatos-actions">
-              <a 
-                href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="hero-cta-btn-primary"
-              >
-                <span>Acceder al Portal General de Empleos (Rex+)</span>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                  <polyline points="15 3 21 3 21 9"/>
-                  <line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-              </a>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+                <a 
+                  href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="hero-cta-btn-primary"
+                >
+                  <span>Portal General de Empleos (Rex+)</span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                </a>
+                <a 
+                  href="#envia-tu-cv"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    padding: '1.2rem 1.8rem',
+                    borderRadius: '10px',
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    backdropFilter: 'blur(10px)',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255, 255, 255, 0.25)',
+                    fontWeight: 700,
+                    fontSize: '1rem',
+                    textDecoration: 'none',
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                  <span>¿Sin vacante activa? Envía tu CV</span>
+                </a>
+              </div>
             </div>
 
             <div className="hero-features-strip">

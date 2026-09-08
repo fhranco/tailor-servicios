@@ -40,8 +40,8 @@ export default function Footer() {
             <h4>{t('embudos')}</h4>
             <ul className="footer-links">
               <li><Link href="/empresas">{t('empresas')}</Link></li>
-              <li><a href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" target="_blank" rel="noopener noreferrer">{t('postulantes')}</a></li>
-              <li><a href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" target="_blank" rel="noopener noreferrer">{t('subir_cv')}</a></li>
+              <li><Link href="/candidatos">{t('postulantes')}</Link></li>
+              <li><Link href="/candidatos#envia-tu-cv">{t('subir_cv')}</Link></li>
             </ul>
           </div>
 
