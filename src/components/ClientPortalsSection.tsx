@@ -23,7 +23,7 @@ export default function ClientPortalsSection() {
       name: 'Portal Grupo DAP',
       category: 'Aviación, Logística & Conectividad Antártica',
       logo: '/portales/dap.png',
-      link: 'https://serviciosindustrialetailor.rexmas.com/jobs/dap',
+      link: 'https://serviciosindustrialetailor.rexmas.com/jobs/aerovias-dap',
       accent: '#cf142b',
       status: 'Convocatoria Activa',
       desc: 'Búsquedas de talento para pilotos, tripulantes de cabina, técnicos en mantenimiento aeronáutico y especialistas en logística aérea antártica y patagónica.',
