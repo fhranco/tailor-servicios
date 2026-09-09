@@ -17,13 +17,6 @@ export default function NosotrosPage() {
       logo: '/alianzas/ong-canales.png'
     },
     {
-      id: 'ist',
-      name: 'IST',
-      desc: 'Instituto de Seguridad del Trabajo. Alianza orientada a la prevención de riesgos laborales, cuidado y bienestar de las personas.',
-      tag: 'Seguridad y Salud Laboral',
-      logo: '/alianzas/ist.png'
-    },
-    {
       id: 'austro',
       name: 'Austro Chile',
       desc: 'Asociación Magallánica de Empresas de Turismo y Servicios. Impulso gremial al capital humano para el desarrollo turístico regional.',
@@ -232,7 +225,7 @@ export default function NosotrosPage() {
             <span className="alliances-badge">Alianzas y Convenios</span>
             <h2 className="alliances-title">Alianzas Estratégicas</h2>
             <p className="alliances-subtitle">
-              Trabajamos en estrecha colaboración con entidades líderes para fortalecer la formación técnica, la empleabilidad y la seguridad en el trabajo en la Región de Magallanes y en todo Chile.
+              Trabajamos en estrecha colaboración con entidades líderes para fortalecer la formación técnica, el impulso gremial y la capacitación continua en la Región de Magallanes y en todo Chile.
             </p>
           </div>
 
