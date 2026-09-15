@@ -5,15 +5,10 @@ import './ClientLogos.css';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 
+import { CLIENT_LOGOS } from '@/data/clientLogos';
+
 export default function ClientLogos() {
   const t = useTranslations('ClientLogos');
-  
-  // Create an array of all 71 logos in public/Logos
-  const totalLogosCount = 71;
-  const logoPaths = Array.from(
-    { length: totalLogosCount },
-    (_, i) => `/Logos/${i + 1}.jpg`
-  );
 
   return (
     <section className="client-logos-section">
@@ -36,14 +31,29 @@ export default function ClientLogos() {
           transition={{ duration: 1, delay: 0.2 }}
         >
           <div className="marquee-track">
-            {/* Render two sets for infinite scrolling marquee */}
-            {[...logoPaths, ...logoPaths].map((path, index) => (
-              <div className="logo-item" key={index}>
+            {CLIENT_LOGOS.map((logo, index) => (
+              <div className="logo-item" key={`track1-${logo.name}-${index}`}>
                 <img 
-                  src={path} 
-                  alt={`Cliente ${index % totalLogosCount + 1}`}
+                  src={logo.src} 
+                  alt={logo.name}
+                  title={logo.name}
                   className="premium-logo-img"
-                  loading="lazy"
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+            ))}
+          </div>
+          <div className="marquee-track" aria-hidden="true">
+            {CLIENT_LOGOS.map((logo, index) => (
+              <div className="logo-item" key={`track2-${logo.name}-${index}`}>
+                <img 
+                  src={logo.src} 
+                  alt={logo.name}
+                  title={logo.name}
+                  className="premium-logo-img"
+                  loading="eager"
+                  decoding="async"
                 />
               </div>
             ))}

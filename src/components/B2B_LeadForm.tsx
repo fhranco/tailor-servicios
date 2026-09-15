@@ -56,12 +56,6 @@ export default function B2B_LeadForm() {
       if (!v) error = t('err_email');
       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
         error = t('err_email_invalid');
-      } else {
-        const freeDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com'];
-        const domain = v.split('@')[1];
-        if (freeDomains.includes(domain)) {
-          error = t('err_email_free');
-        }
       }
     }
     if (name === 'servicio' && !value) error = t('err_service');
@@ -142,8 +136,15 @@ export default function B2B_LeadForm() {
 
   if (isSuccess) {
     return (
-      <div className="b2b-success-state">
-        <p>{t('success_msg')}</p>
+      <div className="b2b-success-state" role="status" aria-live="polite">
+        <div className="b2b-success-icon" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <h3 className="b2b-success-title">{t('success_title')}</h3>
+        <p className="b2b-success-desc">{t('success_msg')}</p>
       </div>
     );
   }

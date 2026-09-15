@@ -45,3 +45,5 @@ test-supabase.js
 /*.png
 /*.webp
 /*.jpg
+.env*
+!.env.example

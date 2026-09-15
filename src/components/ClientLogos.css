@@ -25,62 +25,79 @@
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%);
-  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%);
+  user-select: none;
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
 }
 
 .marquee-track {
   display: flex;
-  white-space: nowrap;
-  animation: marquee 120s linear infinite;
+  flex-shrink: 0;
   align-items: center;
+  animation: marquee-scroll 160s linear infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
-.marquee-track:hover {
+.marquee-container:hover .marquee-track {
   animation-play-state: paused;
 }
 
 .logo-item {
-  flex-shrink: 0;
-  padding: 0 3rem;
-  opacity: 0.85;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  width: 210px;
+  height: 95px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  padding: 0 1.25rem;
+  cursor: pointer;
 }
-
-/* On hover, scale up by 30% (equivalent to +30px) */
-.logo-item:hover {
-  opacity: 1;
-  transform: scale(1.3);
-}
-
 
 .premium-logo-img {
-  height: 100px;
+  max-height: 75px;
+  max-width: 175px;
   width: auto;
+  height: auto;
   object-fit: contain;
   mix-blend-mode: multiply;
+  filter: contrast(1.04);
+  opacity: 0.88;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1), opacity 0.3s ease;
+  transform: translateZ(0);
 }
 
-@keyframes marquee {
+.logo-item:hover .premium-logo-img {
+  opacity: 1;
+  transform: scale(1.15) translateZ(0);
+}
+
+@keyframes marquee-scroll {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-100%, 0, 0);
   }
 }
 
 @media (max-width: 768px) {
   .logo-item {
-    padding: 0 1.5rem;
+    width: 150px;
+    height: 70px;
+    padding: 0 0.75rem;
   }
   
   .premium-logo-img {
-    height: 60px;
+    max-height: 52px;
+    max-width: 125px;
   }
 }
 
-
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation-play-state: paused;
+  }
+}

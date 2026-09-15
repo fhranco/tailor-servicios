@@ -47,7 +47,7 @@ export default function SpecialProject() {
               <div className="sp-badge">{t('badge')}</div>
               
               <div className="sp-logo-wrapper">
-                <img src="/logo oscuro.png" alt="The Cormorant at 55 South" className="sp-hotel-logo" />
+                <img src="/logo-the-cormorant-dark.png" alt="The Cormorant at 55 South" className="sp-hotel-logo" />
               </div>
               
               <h2 className="sp-title">{t('title')}</h2>

@@ -24,6 +24,20 @@ export default function NosotrosPage() {
       logo: '/alianzas/austro.png'
     },
     {
+      id: 'hyst',
+      name: 'HYST',
+      desc: 'Asociación de Hoteles y Servicios Turísticos de Torres del Paine. Alianza estratégica para la atracción, desarrollo y dotación de talento en el sector hotelero y turístico austral.',
+      tag: 'Turismo y Hotelería Torres del Paine',
+      logo: '/alianzas/hyst.png'
+    },
+    {
+      id: 'mutual',
+      name: 'Mutual de Seguridad CChC',
+      desc: 'Alianza y asesoría técnica en prevención de riesgos laborales, seguridad ocupacional y programas de bienestar y salud integral para nuestros trabajadores y empresas clientes.',
+      tag: 'Seguridad y Salud Laboral',
+      logo: '/alianzas/mutual-de-seguridad.png'
+    },
+    {
       id: 'britanico',
       name: 'Instituto Británico',
       desc: 'Instituto Chileno Británico de Cultura (Punta Arenas). Convenio de capacitación idiomática y fortalecimiento de competencias globales.',

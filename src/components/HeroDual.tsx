@@ -19,7 +19,9 @@ export default function HeroDual() {
       titleEnd: "",
       desc: t('slides.1.desc'),
       bg: "/impulsando-el-desarrollo.webp",
-      thumb: "/impulsando-el-desarrollo.webp"
+      thumb: "/impulsando-el-desarrollo.webp",
+      align: "left",
+      objectPosition: "center right"
     },
     {
       id: 2,
@@ -29,7 +31,9 @@ export default function HeroDual() {
       titleEnd: "",
       desc: t('slides.2.desc'),
       bg: "/conectamos-talento.webp",
-      thumb: "/conectamos-talento.webp"
+      thumb: "/conectamos-talento.webp",
+      align: "left",
+      objectPosition: "center right"
     },
     {
       id: 3,
@@ -39,11 +43,13 @@ export default function HeroDual() {
       titleEnd: "",
       desc: t('slides.3.desc'),
       bg: "/soluciones-realidad.webp",
-      thumb: "/soluciones-realidad.webp"
+      thumb: "/soluciones-realidad.webp",
+      align: "right",
+      objectPosition: "20% center"
     }
   ];
 
-
+  const currentAlign = slides[currentSlide].align || "left";
 
   return (
     <section className="hero-robert-wrapper">
@@ -56,20 +62,21 @@ export default function HeroDual() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.8 }}
         >
           <img 
             src={slides[currentSlide].bg} 
             alt="Fondo Tailor" 
             className="hero-bg-image"
+            style={{ objectPosition: slides[currentSlide].objectPosition || "center right" }}
           />
         </motion.div>
       </AnimatePresence>
-      <div className="hero-overlay"></div>
+      <div className={`hero-overlay overlay-${currentAlign}`}></div>
       
-      {/* Left Content Block (Glassmorphism) */}
-      <div className="fluid-container hero-container-layout">
-        <div className="hero-content-block">
+      {/* Content Block (Glassmorphism) */}
+      <div className={`fluid-container hero-container-layout layout-${currentAlign}`}>
+        <div className={`hero-content-block ${currentAlign === 'right' ? 'hero-content-right' : ''}`}>
           <AnimatePresence mode="wait">
             <motion.div 
               key={slides[currentSlide].id}

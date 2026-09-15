@@ -22,7 +22,8 @@ const servicesData: Record<ServiceKey, any> = {
       "Toma exhaustiva y reforzada de referencias laborales.",
       "Comunicación directa, constante y fluida con el cliente durante todo el proceso."
     ],
-    image: "/reclutamiento-seleccion.webp",
+    image: "/reclutamiento-seleccion.jpg",
+    bgPosition: "center 22%",
     color: "var(--color-accent)"
   },
   gestion: {
@@ -127,7 +128,7 @@ export default function BusinessLines() {
           const isSecondary = index === 1;
           return (
             <motion.div key={key} className={`service-card ${isSecondary ? 'secondary' : ''}`} variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}>
-              <div className="card-bg" style={{ backgroundImage: `url(${service.image})` }}></div>
+              <div className="card-bg" style={{ backgroundImage: `url(${service.image})`, backgroundPosition: service.bgPosition || 'center' }}></div>
               <div className="card-overlay"></div>
               <div className="card-accent" style={{ backgroundColor: service.color }}></div>
               <div className="card-content">
@@ -172,7 +173,7 @@ export default function BusinessLines() {
                 <button className="service-modal-close" onClick={closeModal}>×</button>
                 
                 <div className="modal-header">
-                  <div className="modal-image" style={{ backgroundImage: `url(${servicesData[selectedService].image})` }}></div>
+                  <div className="modal-image" style={{ backgroundImage: `url(${servicesData[selectedService].image})`, backgroundPosition: servicesData[selectedService].bgPosition || 'center' }}></div>
                   <div className="modal-accent" style={{ backgroundColor: servicesData[selectedService].color }}></div>
                 </div>
                 

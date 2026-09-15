@@ -33,6 +33,7 @@ async function deliverEmail({ to, subject, html }: { to: string; subject: string
 
   if (isResend && apiKey) {
     try {
+      const fromAddress = process.env.EMAIL_FROM || 'Tailor Servicios <onboarding@resend.dev>';
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -40,15 +41,21 @@ async function deliverEmail({ to, subject, html }: { to: string; subject: string
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'Tailor Servicios <contacto@tailorservicios.cl>',
+          from: fromAddress,
           to: [to],
           subject,
           html,
         }),
       });
-      return res.ok;
+      const data = await res.json();
+      if (!res.ok) {
+        console.warn(`[Send-Email] Error de envío Resend (${res.status}):`, data);
+        return false;
+      }
+      console.log(`[Send-Email] Correo enviado exitosamente a ${to}:`, data.id);
+      return true;
     } catch (apiErr) {
-      console.error('Resend fetch error:', apiErr);
+      console.error('[Send-Email] Resend fetch exception:', apiErr);
     }
   }
 
@@ -72,7 +79,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { type, nombre, email, empresa, servicio, specialty, cvUrl } = body;
-    const adminEmail = 'Contacto@tailorservicios.cl';
+    const adminEmail = process.env.LEADS_NOTIFICATION_EMAIL || 'contacto@tailorservicios.cl';
 
     // 1. Alert to Admin
     let adminSubject = '';

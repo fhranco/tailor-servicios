@@ -128,13 +128,55 @@
 }
 
 .b2b-success-state {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  padding: 2rem;
-  border-radius: 4px;
-  border: 1px solid var(--color-verde);
+  background: linear-gradient(135deg, rgba(46, 125, 50, 0.05), rgba(46, 125, 50, 0.1));
+  color: #1b5e20;
+  padding: 2.5rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(46, 125, 50, 0.25);
   text-align: center;
-  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  animation: fadeInSuccess 0.4s ease-out;
+}
+
+.b2b-success-icon {
+  color: #2e7d32;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(46, 125, 50, 0.12);
+  margin-bottom: 0.25rem;
+}
+
+.b2b-success-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1b5e20;
+}
+
+.b2b-success-desc {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #2e7d32;
+  max-width: 440px;
+}
+
+@keyframes fadeInSuccess {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .submit-container {
