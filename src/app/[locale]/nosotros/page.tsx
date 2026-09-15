@@ -195,8 +195,10 @@ export default function NosotrosPage() {
         <div className="fluid-container team-grid">
           <div className="team-image-placeholder">
             <img 
-              src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-              alt="Reunión de equipo profesional" 
+              src="/Images/team-nosotros.webp" 
+              alt="Reunión de equipo profesional Tailor Servicios" 
+              loading="lazy"
+              decoding="async"
             />
           </div>
           

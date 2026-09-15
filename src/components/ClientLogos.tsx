@@ -38,7 +38,7 @@ export default function ClientLogos() {
                   alt={logo.name}
                   title={logo.name}
                   className="premium-logo-img"
-                  loading="eager"
+                  loading="lazy"
                   decoding="async"
                 />
               </div>
@@ -52,7 +52,7 @@ export default function ClientLogos() {
                   alt={logo.name}
                   title={logo.name}
                   className="premium-logo-img"
-                  loading="eager"
+                  loading="lazy"
                   decoding="async"
                 />
               </div>

@@ -14,8 +14,9 @@ export default function ContactoPage() {
       <section className="contact-hero">
         <div className="contact-hero-bg">
           <img 
-            src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+            src="/Images/hero-contacto.webp" 
             alt="Contacto Tailor Servicios" 
+            decoding="async"
           />
         </div>
         <div className="fluid-container">

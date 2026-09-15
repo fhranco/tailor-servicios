@@ -75,18 +75,89 @@ async function deliverEmail({ to, subject, html }: { to: string; subject: string
   return false;
 }
 
+function sanitizeInput(val: any, maxLength = 150): string {
+  if (typeof val !== 'string') return '';
+  return val
+    .trim()
+    .slice(0, maxLength)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + 60_000 * 15 }); // 15 min window
+    return true;
+  }
+  if (entry.count >= 10) {
+    return false;
+  }
+  entry.count += 1;
+  return true;
+}
+
 export async function POST(request: Request) {
   try {
+    const rawIp = request.headers.get('x-forwarded-for') || 'local';
+    const clientIp = rawIp.split(',')[0].trim();
+
+    // 1. Rate limiting
+    if (!checkRateLimit(clientIp)) {
+      return NextResponse.json(
+        { success: false, error: 'Demasiadas solicitudes. Por favor, intenta más tarde.' },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
-    const { type, nombre, email, empresa, servicio, specialty, cvUrl } = body;
+
+    // 2. Honeypot check (detección silenciosa de bots spam)
+    if (body._hp || body.honeypot || body.website) {
+      return NextResponse.json({ success: true });
+    }
+
+    // 3. Validación de tipo de solicitud
+    const { type } = body;
+    if (!type || !['lead', 'candidate'].includes(type)) {
+      return NextResponse.json({ success: false, error: 'Tipo de solicitud inválido.' }, { status: 400 });
+    }
+
+    // 4. Sanitización y validación de campos obligatorios
+    const safeNombre = sanitizeInput(body.nombre, 100);
+    const rawEmail = typeof body.email === 'string' ? body.email.trim() : '';
+    const safeEmail = sanitizeInput(rawEmail, 120);
+    const safeEmpresa = sanitizeInput(body.empresa, 100);
+    const safeServicio = sanitizeInput(body.servicio, 100);
+    const safeSpecialty = sanitizeInput(body.specialty, 100);
+
+    if (!safeNombre || safeNombre.length < 2) {
+      return NextResponse.json({ success: false, error: 'Nombre requerido (mínimo 2 caracteres).' }, { status: 400 });
+    }
+
+    if (!safeEmail || !EMAIL_REGEX.test(rawEmail) || rawEmail.length > 120) {
+      return NextResponse.json({ success: false, error: 'Correo electrónico inválido.' }, { status: 400 });
+    }
+
     const adminEmail = process.env.LEADS_NOTIFICATION_EMAIL || 'contacto@tailorservicios.cl';
 
-    // 1. Alert to Admin
+    // 5. Alert to Admin
     let adminSubject = '';
     let adminHtml = '';
 
     if (type === 'lead') {
-      adminSubject = `[Nuevo Lead B2B] ${empresa} - ${nombre}`;
+      if (!safeEmpresa || safeEmpresa.length < 2) {
+        return NextResponse.json({ success: false, error: 'Nombre de empresa requerido.' }, { status: 400 });
+      }
+
+      adminSubject = `[Nuevo Lead B2B] ${safeEmpresa} - ${safeNombre}`;
       adminHtml = `
         <div style="font-family: sans-serif; max-width: 600px; color: #334155; line-height: 1.6;">
           <h2 style="color: #ed4240; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">Nuevo Contacto de Empresa</h2>
@@ -94,19 +165,19 @@ export async function POST(request: Request) {
           <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid #f1f5f9; font-weight: bold; width: 150px;">Nombre:</td>
-              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9;">${nombre}</td>
+              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9;">${safeNombre}</td>
             </tr>
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid #f1f5f9; font-weight: bold;">Empresa:</td>
-              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9;">${empresa}</td>
+              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9;">${safeEmpresa}</td>
             </tr>
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid #f1f5f9; font-weight: bold;">Correo:</td>
-              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9;"><a href="mailto:${email}">${email}</a></td>
+              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9;"><a href="mailto:${safeEmail}">${safeEmail}</a></td>
             </tr>
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid #f1f5f9; font-weight: bold;">Servicio de Interés:</td>
-              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9; color: #8ec53c; font-weight: bold;">${servicio}</td>
+              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9; color: #8ec53c; font-weight: bold;">${safeServicio || 'No especificado'}</td>
             </tr>
           </table>
           <p style="margin-top: 30px; font-size: 0.85rem; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 15px;">
@@ -115,7 +186,9 @@ export async function POST(request: Request) {
         </div>
       `;
     } else if (type === 'candidate') {
-      adminSubject = `[Nueva Postulación] ${nombre} - ${specialty}`;
+      const safeCvUrl = sanitizeInput(body.cvUrl, 300);
+
+      adminSubject = `[Nueva Postulación] ${safeNombre} - ${safeSpecialty}`;
       adminHtml = `
         <div style="font-family: sans-serif; max-width: 600px; color: #334155; line-height: 1.6;">
           <h2 style="color: #31ade3; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">Nueva Postulación de Candidato</h2>
@@ -123,20 +196,22 @@ export async function POST(request: Request) {
           <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid #f1f5f9; font-weight: bold; width: 150px;">Nombre:</td>
-              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9;">${nombre}</td>
+              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9;">${safeNombre}</td>
             </tr>
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid #f1f5f9; font-weight: bold;">Correo:</td>
-              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9;"><a href="mailto:${email}">${email}</a></td>
+              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9;"><a href="mailto:${safeEmail}">${safeEmail}</a></td>
             </tr>
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid #f1f5f9; font-weight: bold;">Especialidad:</td>
-              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9; font-weight: bold;">${specialty}</td>
+              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9; font-weight: bold;">${safeSpecialty}</td>
             </tr>
+            ${safeCvUrl ? `
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid #f1f5f9; font-weight: bold;">Enlace al CV:</td>
-              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9;"><a href="${cvUrl}" target="_blank" style="color: #31ade3; font-weight: bold; text-decoration: underline;">Descargar Archivo CV</a></td>
+              <td style="padding: 8px; border-bottom: 1px solid #f1f5f9;"><a href="${safeCvUrl}" target="_blank" style="color: #31ade3; font-weight: bold; text-decoration: underline;">Descargar Archivo CV</a></td>
             </tr>
+            ` : ''}
           </table>
           <p style="margin-top: 30px; font-size: 0.85rem; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 15px;">
             Este mensaje fue generado automáticamente por el sitio web de Tailor Servicios.
@@ -161,9 +236,9 @@ export async function POST(request: Request) {
             <h1 style="color: #ed4240; margin: 0; font-size: 1.8rem;">Tailor Servicios</h1>
             <p style="color: #94a3b8; margin: 5px 0 0;">Asesoría y Consultoría a tu Medida</p>
           </div>
-          <p>Estimado/a <strong>${nombre}</strong>,</p>
-          <p>Agradecemos sinceramente su interés en nuestros servicios estratégicos de Recursos Humanos para <strong>${empresa}</strong>.</p>
-          <p>Hemos recibido correctamente su solicitud para el área de <strong>${servicio}</strong>. Un consultor experto de nuestro equipo se pondrá en contacto con usted a la brevedad para agendar una reunión o enviar la información correspondiente.</p>
+          <p>Estimado/a <strong>${safeNombre}</strong>,</p>
+          <p>Agradecemos sinceramente su interés en nuestros servicios estratégicos de Recursos Humanos para <strong>${safeEmpresa}</strong>.</p>
+          <p>Hemos recibido correctamente su solicitud para el área de <strong>${safeServicio}</strong>. Un consultor experto de nuestro equipo se pondrá en contacto con usted a la brevedad para agendar una reunión o enviar la información correspondiente.</p>
           <p>Si tiene alguna duda urgente, puede responder a este correo o escribirnos directamente a <a href="mailto:${adminEmail}">${adminEmail}</a>.</p>
           <br />
           <p>Atentamente,</p>
@@ -183,9 +258,9 @@ export async function POST(request: Request) {
             <h1 style="color: #31ade3; margin: 0; font-size: 1.8rem;">Tailor Servicios</h1>
             <p style="color: #94a3b8; margin: 5px 0 0;">Búsqueda y Selección de Talento</p>
           </div>
-          <p>Hola <strong>${nombre}</strong>,</p>
+          <p>Hola <strong>${safeNombre}</strong>,</p>
           <p>Queremos confirmarte que hemos recibido tu Currículum Vitae correctamente para formar parte de nuestros procesos de selección y base de datos de talentos.</p>
-          <p>Tu CV ha sido ingresado bajo la especialidad de <strong>${specialty}</strong>. En caso de que se abra una oferta laboral alineada con tu perfil y experiencia, nos comunicaremos contigo de inmediato.</p>
+          <p>Tu CV ha sido ingresado bajo la especialidad de <strong>${safeSpecialty}</strong>. En caso de que se abra una oferta laboral alineada con tu perfil y experiencia, nos comunicaremos contigo de inmediato.</p>
           <p>Te deseamos el mayor de los éxitos en tu búsqueda y crecimiento profesional.</p>
           <br />
           <p>Saludos cordiales,</p>
@@ -200,8 +275,8 @@ export async function POST(request: Request) {
       `;
     }
 
-    if (userSubject && email) {
-      await deliverEmail({ to: email, subject: userSubject, html: userHtml });
+    if (userSubject && safeEmail) {
+      await deliverEmail({ to: safeEmail, subject: userSubject, html: userHtml });
     }
 
     return NextResponse.json({ success: true });

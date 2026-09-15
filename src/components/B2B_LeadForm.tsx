@@ -119,6 +119,7 @@ export default function B2B_LeadForm() {
             email: formData.correo.value,
             empresa: formData.empresa.value,
             servicio: formData.servicio.value,
+            privacyAccepted: formData.legal.value,
           }),
         });
       } catch (mailErr) {
