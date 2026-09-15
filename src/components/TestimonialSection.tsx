@@ -120,6 +120,8 @@ export default function TestimonialSection() {
                 src={test.logo} 
                 alt={`Logo ${test.empresa}`} 
                 className="company-logo-micro" 
+                loading="lazy"
+                decoding="async"
               />
             )}
           </div>

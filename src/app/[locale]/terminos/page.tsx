@@ -5,9 +5,18 @@ import './Terminos.css';
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
   const t = await getTranslations({ locale, namespace: 'TerminosPage' });
+  const isEn = locale === 'en';
   return {
-    title: t('meta_title'),
+    title: isEn ? 'Terms and Conditions' : t('meta_title'),
     description: t('meta_desc'),
+    alternates: {
+      canonical: isEn ? 'https://tailorservicios.cl/en/terminos' : 'https://tailorservicios.cl/terminos',
+      languages: {
+        'es': 'https://tailorservicios.cl/terminos',
+        'en': 'https://tailorservicios.cl/en/terminos',
+        'x-default': 'https://tailorservicios.cl/terminos',
+      },
+    },
   };
 }
 

@@ -54,8 +54,10 @@ export async function GET(req: NextRequest) {
       totalVisits: totalVisits || 0,
       pageStats: formattedPageStats,
       recentVisits
+    }, {
+      headers: { 'Cache-Control': 'no-store, private' }
     });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ error: err.message }, { status: 500, headers: { 'Cache-Control': 'no-store, private' } });
   }
 }

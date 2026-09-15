@@ -5,9 +5,18 @@ import '../terminos/Terminos.css';
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
   const t = await getTranslations({ locale, namespace: 'TerminosPage' });
+  const isEn = locale === 'en';
   return {
-    title: 'Política de Cookies | Tailor Servicios',
+    title: isEn ? 'Cookie Policy' : 'Política de Cookies',
     description: t('meta_desc'),
+    alternates: {
+      canonical: isEn ? 'https://tailorservicios.cl/en/cookies' : 'https://tailorservicios.cl/cookies',
+      languages: {
+        'es': 'https://tailorservicios.cl/cookies',
+        'en': 'https://tailorservicios.cl/en/cookies',
+        'x-default': 'https://tailorservicios.cl/cookies',
+      },
+    },
   };
 }
 

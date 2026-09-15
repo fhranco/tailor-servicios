@@ -19,6 +19,10 @@ export default function Footer() {
               <img 
                 src="/logowebwhite.png" 
                 alt="Tailor Servicios Logo" 
+                loading="lazy"
+                decoding="async"
+                width={134}
+                height={52}
               />
             </Link>
             <p>

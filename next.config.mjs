@@ -11,12 +11,12 @@ const nextConfig = {
   async headers() {
     const cspDirectives = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com",
+      "script-src 'self' 'unsafe-inline' https://maps.googleapis.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "img-src 'self' data: blob: https://images.unsplash.com https://*.rexmas.com https://maps.gstatic.com https://*.googleapis.com",
+      "img-src 'self' data: blob: https://images.unsplash.com https://maps.gstatic.com https://*.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com data:",
       "frame-src 'self' https://maps.google.com https://www.google.com",
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.rexmas.com https://api.resend.com",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

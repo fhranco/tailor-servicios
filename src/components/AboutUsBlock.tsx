@@ -26,6 +26,8 @@ export default function AboutUsBlock() {
           <motion.img 
             src="/quienes-somos.webp" 
             alt="Equipo de Tailor Servicios en Magallanes" 
+            loading="lazy"
+            decoding="async"
             style={{
               scale: 1.1,
               y: yImage // Parallax effect

@@ -38,10 +38,12 @@ export async function GET(req: NextRequest) {
     .order('created_at', { ascending: false });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500, headers: { 'Cache-Control': 'no-store, private' } });
   }
 
-  return NextResponse.json(data);
+  return NextResponse.json(data, {
+    headers: { 'Cache-Control': 'no-store, private' }
+  });
 }
 
 export async function DELETE(req: NextRequest) {

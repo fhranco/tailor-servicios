@@ -5,9 +5,18 @@ import '../terminos/Terminos.css';
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
   const t = await getTranslations({ locale, namespace: 'TerminosPage' });
+  const isEn = locale === 'en';
   return {
-    title: 'Política de Privacidad | Tailor Servicios',
+    title: isEn ? 'Privacy Policy' : 'Política de Privacidad',
     description: t('meta_desc'),
+    alternates: {
+      canonical: isEn ? 'https://tailorservicios.cl/en/privacidad' : 'https://tailorservicios.cl/privacidad',
+      languages: {
+        'es': 'https://tailorservicios.cl/privacidad',
+        'en': 'https://tailorservicios.cl/en/privacidad',
+        'x-default': 'https://tailorservicios.cl/privacidad',
+      },
+    },
   };
 }
 

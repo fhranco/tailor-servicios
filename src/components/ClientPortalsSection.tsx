@@ -85,7 +85,12 @@ export default function ClientPortalsSection() {
               <div>
                 <div className="portal-top-bar">
                   <div className="portal-logo-container">
-                    <img src={portal.logo} alt={`Logo ${portal.name}`} />
+                    <img 
+                      src={portal.logo} 
+                      alt={`Logo ${portal.name}`} 
+                      loading="lazy" 
+                      decoding="async" 
+                    />
                   </div>
                   <span className="portal-status-pill">
                     <span className="portal-status-dot"></span>

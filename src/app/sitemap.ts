@@ -19,14 +19,15 @@ const routes = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const currentDate = new Date().toISOString().split('T')[0];
+  // Fecha real de la última actualización mayor verificada
+  const LAST_MODIFIED_RELEASE = '2026-09-14';
   const entries: MetadataRoute.Sitemap = [];
 
   routes.forEach((route) => {
     // Versión en Español (por defecto, as-needed)
     entries.push({
       url: `${BASE_URL}${route}`,
-      lastModified: currentDate,
+      lastModified: LAST_MODIFIED_RELEASE,
       changeFrequency: route === '' ? 'weekly' : 'monthly',
       priority: route === '' ? 1.0 : route === '/servicios' || route === '/candidatos' ? 0.9 : 0.7,
       alternates: {
@@ -40,7 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Versión en Inglés
     entries.push({
       url: `${BASE_URL}/en${route}`,
-      lastModified: currentDate,
+      lastModified: LAST_MODIFIED_RELEASE,
       changeFrequency: route === '' ? 'weekly' : 'monthly',
       priority: route === '' ? 0.9 : route === '/servicios' || route === '/candidatos' ? 0.8 : 0.6,
       alternates: {

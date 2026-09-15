@@ -68,6 +68,9 @@ export default function HeroDual() {
             src={slides[currentSlide].bg} 
             alt="Fondo Tailor" 
             className="hero-bg-image"
+            fetchPriority={currentSlide === 0 ? "high" : "auto"}
+            loading={currentSlide === 0 ? "eager" : "lazy"}
+            decoding="async"
             style={{ objectPosition: slides[currentSlide].objectPosition || "center right" }}
           />
         </motion.div>
@@ -124,7 +127,14 @@ export default function HeroDual() {
             onClick={() => setCurrentSlide(idx)}
             aria-label={`Ver slide ${idx + 1}`}
           >
-            <img src={slide.thumb} alt={`Miniatura ${idx + 1}`} />
+            <img 
+              src={slide.thumb} 
+              alt={`Miniatura ${idx + 1}`} 
+              loading="lazy"
+              decoding="async"
+              width={90}
+              height={54}
+            />
             <div className="hero-thumb-progress">
               {idx === currentSlide && (
                 <motion.div 

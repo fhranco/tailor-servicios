@@ -61,8 +61,8 @@ export async function generateMetadata({
       images: [
         {
           url: "/tailor-servicios-horizontal.jpeg",
-          width: 1200,
-          height: 630,
+          width: 1080,
+          height: 564,
           alt: "Tailor Servicios - Soluciones en Recursos Humanos",
         },
       ],

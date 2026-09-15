@@ -6,7 +6,15 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin', '/admin/', '/api/', '/_next/'],
+        disallow: [
+          '/admin',
+          '/admin/',
+          '/es/admin',
+          '/es/admin/',
+          '/en/admin',
+          '/en/admin/',
+          '/api/',
+        ],
       },
     ],
     sitemap: 'https://tailorservicios.cl/sitemap.xml',

@@ -66,6 +66,9 @@ export default function Header() {
               src="/logoweb.png" 
               alt="Tailor Servicios" 
               className="logo-img"
+              width={130}
+              height={50}
+              decoding="async"
             />
           </Link>
 
