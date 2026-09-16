@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import './CandidateVideoModal.css';
 
 interface CandidateVideoModalProps {
@@ -13,6 +14,7 @@ export default function CandidateVideoModal({
   videoSrc = '/TAILOR2.mp4',
   delayMs = 1200,
 }: CandidateVideoModalProps) {
+  const t = useTranslations('CandidateVideoModal');
   const [isOpen, setIsOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -66,19 +68,19 @@ export default function CandidateVideoModal({
             transition={{ duration: 0.35, ease: "easeOut" }}
             role="dialog"
             aria-modal="true"
-            aria-label="Mensaje inspiracional para postulantes"
+            aria-label={t('dialog_aria')}
           >
             {/* Header del modal */}
             <div className="candidate-modal-header">
               <div className="modal-title-box">
-                <span className="modal-badge">✨ Mensaje para Ti</span>
-                <h3 className="modal-title">Tu talento puede transformar tu futuro</h3>
+                <span className="modal-badge">{t('badge')}</span>
+                <h3 className="modal-title">{t('title')}</h3>
               </div>
               <button 
                 className="modal-close-btn" 
                 onClick={handleClose}
-                aria-label="Cerrar video"
-                title="Cerrar ventana"
+                aria-label={t('close_aria')}
+                title={t('close_title')}
               >
                 ✕
               </button>
@@ -100,11 +102,11 @@ export default function CandidateVideoModal({
             {/* Footer con CTA directo al portal de empleo Rex+ */}
             <div className="candidate-modal-footer">
               <p className="modal-footer-text">
-                Detrás de cada oportunidad laboral hay personas comprometidas con su crecimiento. Da el siguiente gran paso en tu carrera junto a Tailor Servicios.
+                {t('desc')}
               </p>
               <div className="modal-footer-actions">
                 <button className="modal-btn-secondary" onClick={handleClose}>
-                  Continuar explorando
+                  {t('btn_continue')}
                 </button>
                 <a 
                   href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" 
@@ -113,7 +115,7 @@ export default function CandidateVideoModal({
                   className="modal-btn-primary"
                   onClick={handleClose}
                 >
-                  Ver Oportunidades Laborales →
+                  {t('btn_jobs')}
                 </a>
               </div>
             </div>

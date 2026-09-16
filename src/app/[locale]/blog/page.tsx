@@ -1,41 +1,44 @@
 "use client";
 
 import React from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { motion } from 'framer-motion';
 import './page.css';
-
-const blogPosts = [
-  {
-    id: 1,
-    title: "Estrategias de atracción de talento en zonas extremas de Chile",
-    category: "Atracción de Talento",
-    date: "Septiembre 2024",
-    readTime: "4 min de lectura",
-    summary: "Descubre cómo las organizaciones en Magallanes y la Patagonia están superando la escasez de perfiles técnicos y directivos mediante propuestas de valor atractivas.",
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    id: 2,
-    title: "Implementación efectiva de la Ley Karin en la cultura organizacional",
-    category: "Gestión de Personas",
-    date: "Agosto 2024",
-    readTime: "6 min de lectura",
-    summary: "Aspectos clave, protocolos preventivos y buenas prácticas para fomentar ambientes laborales seguros, respetuosos y en pleno cumplimiento de la nueva normativa.",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    id: 3,
-    title: "El impacto del Desarrollo Organizacional en la retención del talento clave",
-    category: "Desarrollo Organizacional",
-    date: "Julio 2024",
-    readTime: "5 min de lectura",
-    summary: "Planes de carrera, liderazgo empático y medición continua de clima laboral como pilares para reducir la rotación no deseada en empresas del sur.",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-  }
-];
+import { useTranslations } from 'next-intl';
 
 export default function BlogPage() {
+  const t = useTranslations('BlogPage');
+
+  const blogPosts = [
+    {
+      id: 1,
+      title: t('post1_title'),
+      category: t('post1_cat'),
+      date: t('post1_date'),
+      readTime: t('post1_time'),
+      summary: t('post1_summary'),
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      id: 2,
+      title: t('post2_title'),
+      category: t('post2_cat'),
+      date: t('post2_date'),
+      readTime: t('post2_time'),
+      summary: t('post2_summary'),
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      id: 3,
+      title: t('post3_title'),
+      category: t('post3_cat'),
+      date: t('post3_date'),
+      readTime: t('post3_time'),
+      summary: t('post3_summary'),
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    }
+  ];
+
   return (
     <main className="blog-page">
       <section className="inner-hero">
@@ -46,12 +49,12 @@ export default function BlogPage() {
             transition={{ duration: 0.8 }}
             className="hero-content"
           >
-            <div className="hero-badge">Actualidad & Insights</div>
+            <div className="hero-badge">{t('badge')}</div>
             <h1 className="hero-title">
-              NUESTRO <span className="text-accent">BLOG</span>
+              {t('title_prefix')} <span className="text-accent">{t('title_accent')}</span>
             </h1>
             <p className="hero-subtitle">
-              Tendencias, análisis del mercado laboral y reflexiones sobre gestión de personas y talento en el sur de Chile.
+              {t('subtitle')}
             </p>
           </motion.div>
         </div>
@@ -82,7 +85,7 @@ export default function BlogPage() {
                   <h2 className="blog-card-title">{post.title}</h2>
                   <p className="blog-card-summary">{post.summary}</p>
                   <Link href="/contacto" className="blog-card-link">
-                    Conversar sobre este tema →
+                    {t('card_link')}
                   </Link>
                 </div>
               </motion.article>
@@ -90,10 +93,10 @@ export default function BlogPage() {
           </div>
 
           <div className="blog-cta-box">
-            <h3>¿Quieres mantenerte actualizado en gestión de personas?</h3>
-            <p>Contáctanos para conocer nuestros estudios de rentas, diagnósticos de clima y consultoría personalizada.</p>
+            <h3>{t('cta_title')}</h3>
+            <p>{t('cta_desc')}</p>
             <Link href="/contacto" className="btn-luxury-solid">
-              Contactar con un consultor
+              {t('cta_btn')}
             </Link>
           </div>
         </div>

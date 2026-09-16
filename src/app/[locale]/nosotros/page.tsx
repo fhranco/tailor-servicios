@@ -2,46 +2,49 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import './page.css';
 import ValuesSection from '@/components/ValuesSection';
 import TestimonialSection from '@/components/TestimonialSection';
 import IndustriesMarquee from '@/components/IndustriesMarquee';
 
 export default function NosotrosPage() {
+  const t = useTranslations('NosotrosPage');
+
   const alliances = [
     {
       id: 'canales',
       name: 'ONG Canales',
-      desc: 'Educación Técnico Profesional y vinculación formativo-laboral para potenciar el talento juvenil en la Patagonia y sur austral.',
-      tag: 'Educación & Empleabilidad',
+      desc: t('canales_desc'),
+      tag: t('canales_tag'),
       logo: '/alianzas/ong-canales.png'
     },
     {
       id: 'austro',
       name: 'Austro Chile',
-      desc: 'Asociación Magallánica de Empresas de Turismo y Servicios. Impulso gremial al capital humano para el desarrollo turístico regional.',
-      tag: 'Asociación Gremial Austral',
+      desc: t('austro_desc'),
+      tag: t('austro_tag'),
       logo: '/alianzas/austro.png'
     },
     {
       id: 'hyst',
       name: 'HYST',
-      desc: 'Asociación de Hoteles y Servicios Turísticos de Torres del Paine. Alianza estratégica para la atracción, desarrollo y dotación de talento en el sector hotelero y turístico austral.',
-      tag: 'Turismo y Hotelería Torres del Paine',
+      desc: t('hyst_desc'),
+      tag: t('hyst_tag'),
       logo: '/alianzas/hyst.png'
     },
     {
       id: 'mutual',
       name: 'Mutual de Seguridad CChC',
-      desc: 'Alianza y asesoría técnica en prevención de riesgos laborales, seguridad ocupacional y programas de bienestar y salud integral para nuestros trabajadores y empresas clientes.',
-      tag: 'Seguridad y Salud Laboral',
+      desc: t('mutual_desc'),
+      tag: t('mutual_tag'),
       logo: '/alianzas/mutual-de-seguridad.png'
     },
     {
       id: 'britanico',
       name: 'Instituto Británico',
-      desc: 'Instituto Chileno Británico de Cultura (Punta Arenas). Convenio de capacitación idiomática y fortalecimiento de competencias globales.',
-      tag: 'Capacitación e Idiomas',
+      desc: t('britanico_desc'),
+      tag: t('britanico_tag'),
       logo: '/alianzas/instituto-britanico.png'
     }
   ];
@@ -56,12 +59,12 @@ export default function NosotrosPage() {
             transition={{ duration: 0.8 }}
             className="hero-content"
           >
-            <div className="hero-badge">Acerca de Tailor</div>
+            <div className="hero-badge">{t('badge')}</div>
             <h1 className="hero-title">
-              SOBRE <span className="text-accent">NOSOTROS</span>
+              {t('title')} <span className="text-accent">{t('title_accent')}</span>
             </h1>
             <p className="hero-subtitle">
-              Conocimiento local y visión nacional para transformar la gestión de personas en su organización.
+              {t('subtitle')}
             </p>
           </motion.div>
         </div>
@@ -70,30 +73,30 @@ export default function NosotrosPage() {
       {/* Quiénes Somos / Nuestra Historia */}
       <section className="story-section">
         <div className="fluid-container story-container">
-          <h2>Nuestra Historia</h2>
+          <h2>{t('story_title')}</h2>
           <p className="lead-text" style={{ fontWeight: 600, color: 'var(--color-dark)', fontSize: '1.4rem' }}>
-            En Tailor Servicios creemos que las <span className="text-accent">organizaciones crecen</span> cuando las <span className="text-accent">personas crecen</span> con ellas.
+            {t('lead_1')} <span className="text-accent">{t('lead_accent1')}</span> {t('lead_2')} <span className="text-accent">{t('lead_accent2')}</span> {t('lead_3')}
           </p>
           <p>
-            Somos una consultora especializada en Recursos Humanos con más de 20 años acompañando a empresas de distintos tamaños e industrias en la Región de Magallanes y en todo Chile. Desde nuestras oficinas en Punta Arenas y Santiago, hemos construido relaciones de largo plazo con más de 100 clientes, transformándonos en un socio estratégico para organizaciones que buscan atraer talento, fortalecer sus equipos y desarrollar culturas organizacionales sostenibles.
+            {t('story_p1')}
           </p>
           <p>
-            Nuestro trabajo combina conocimiento técnico, experiencia práctica y una profunda comprensión de las realidades de cada territorio, especialmente de los desafíos que implica gestionar personas en zonas extremas, industrias complejas y mercados laborales altamente competitivos.
+            {t('story_p2')}
           </p>
           <p>
-            Nos diferenciamos por entregar soluciones personalizadas, cercanas y orientadas a resultados. No creemos en las recetas estándar ni en los servicios genéricos. Cada cliente posee una realidad distinta, una cultura única y objetivos específicos que requieren respuestas diseñadas a medida.
+            {t('story_p3')}
           </p>
           <p>
-            Hoy acompañamos a empresas de sectores tan diversos como turismo, hotelería, energía, transporte, logística, retail, servicios, industria, construcción, salmonicultura, sector público y organizaciones sin fines de lucro, aportando valor en cada etapa de la gestión de personas.
+            {t('story_p4')}
           </p>
           <div className="quote-box" style={{ marginTop: '3rem', marginBottom: '1rem' }}>
             <svg className="quote-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 11L8 15H11V19H5V15L7 11H5V7H11V11H10ZM20 11L18 15H21V19H15V15L17 11H15V7H21V11H20Z" fill="currentColor"/></svg>
             <p>
-              Nuestro propósito es simple pero desafiante: ayudar a las organizaciones a construir equipos más sólidos, culturas más saludables y procesos más eficientes.
+              {t('quote')}
             </p>
           </div>
           <p style={{ fontWeight: 'bold', color: 'var(--color-dark)', fontSize: '1.25rem', marginTop: '2rem' }}>
-            Impulsando el Desarrollo desde Magallanes.
+            {t('motto')}
           </p>
         </div>
       </section>
@@ -117,10 +120,10 @@ export default function NosotrosPage() {
                     <circle cx="12" cy="12" r="2"></circle>
                   </svg>
                 </div>
-                <h2>Misión</h2>
+                <h2>{t('mission_title')}</h2>
               </div>
               <p className="mv-text">
-                Agregar valor a nuestros clientes contribuyendo al logro de sus objetivos organizacionales, mediante la realización de trabajos diseñados e implementados a la medida de cada compañía.
+                {t('mission_text')}
               </p>
             </motion.div>
 
@@ -138,10 +141,10 @@ export default function NosotrosPage() {
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
                 </div>
-                <h2>Visión</h2>
+                <h2>{t('vision_title')}</h2>
               </div>
               <p className="mv-text">
-                Proporcionar a nuestros clientes servicios de asesorías y consultorías de calidad, a la medida de sus propias necesidades e impulsando el desarrollo en <span className="text-highlight">Magallanes</span>.
+                {t('vision_text')} <span className="text-highlight">{t('vision_highlight')}</span>.
               </p>
             </motion.div>
           </div>
@@ -156,35 +159,35 @@ export default function NosotrosPage() {
       {/* Por qué nos eligen */}
       <section className="why-section">
         <div className="fluid-container">
-          <h2 style={{textAlign: 'center', fontSize: '2.5rem', color: 'var(--color-dark)'}}>¿Por qué Tailor Servicios?</h2>
+          <h2 style={{textAlign: 'center', fontSize: '2.5rem', color: 'var(--color-dark)'}}>{t('why_title')}</h2>
           <p style={{textAlign: 'center', fontSize: '1.25rem', color: 'var(--color-gray-dark)', marginTop: '1rem', maxWidth: '800px', margin: '1rem auto 0'}}>
-            Porque conocemos las personas, comprendemos las organizaciones y entendemos los desafíos de los distintos sectores productivos.
+            {t('why_subtitle')}
           </p>
 
           <div className="why-grid">
             <div className="why-card">
-              <h3>Conocimiento y Visión</h3>
-              <p>Conocimiento local y visión nacional, con experiencia regional comprobada.</p>
+              <h3>{t('why_1_title')}</h3>
+              <p>{t('why_1_desc')}</p>
             </div>
             <div className="why-card">
-              <h3>Atención Personalizada</h3>
-              <p>Cercanía y acompañamiento permanente en todas las etapas del proceso.</p>
+              <h3>{t('why_2_title')}</h3>
+              <p>{t('why_2_desc')}</p>
             </div>
             <div className="why-card">
-              <h3>Experiencia Comprobada</h3>
-              <p>Años de trayectoria respaldando la calidad de nuestro trabajo.</p>
+              <h3>{t('why_3_title')}</h3>
+              <p>{t('why_3_desc')}</p>
             </div>
             <div className="why-card">
-              <h3>Soluciones a Medida</h3>
-              <p>No usamos recetas genéricas, adaptamos nuestras herramientas a su realidad.</p>
+              <h3>{t('why_4_title')}</h3>
+              <p>{t('why_4_desc')}</p>
             </div>
             <div className="why-card">
-              <h3>Foco en Resultados</h3>
-              <p>Relaciones de largo plazo basadas en la confianza y el impacto real en su organización.</p>
+              <h3>{t('why_5_title')}</h3>
+              <p>{t('why_5_desc')}</p>
             </div>
             <div className="why-card">
-              <h3>Respuesta Rápida</h3>
-              <p>Agilidad y compromiso profesional para resolver sus necesidades a tiempo.</p>
+              <h3>{t('why_6_title')}</h3>
+              <p>{t('why_6_desc')}</p>
             </div>
           </div>
         </div>
@@ -197,20 +200,20 @@ export default function NosotrosPage() {
             <img 
               src="/Images/team-nosotros.webp" 
               alt="Reunión de equipo profesional Tailor Servicios" 
-              loading="lazy"
-              decoding="async"
+              loading="lazy" 
+              decoding="async" 
             />
           </div>
           
           <div className="team-content">
-            <h2>Las personas detrás de Tailor Servicios</h2>
+            <h2>{t('team_title')}</h2>
             <ul className="team-list">
-              <li><strong>Más de 40 profesionales especializados</strong> dedicados a potenciar su organización.</li>
-              <li><strong>Equipo multidisciplinario</strong> que aporta diversas perspectivas y soluciones innovadoras.</li>
-              <li><strong>Experiencia acumulada de más de 20 años</strong> en distintas especialidades de recursos humanos.</li>
-              <li><strong>Presencia regional y nacional</strong>, entendiendo las realidades de cada zona.</li>
-              <li><strong>Conocimiento profundo</strong> de las industrias donde participamos y sus dinámicas.</li>
-              <li><strong>Cercanía y acompañamiento permanente</strong> a clientes y candidatos, humanizando cada proceso.</li>
+              <li><strong>{t('team_li1_bold')}</strong> {t('team_li1_text')}</li>
+              <li><strong>{t('team_li2_bold')}</strong> {t('team_li2_text')}</li>
+              <li><strong>{t('team_li3_bold')}</strong> {t('team_li3_text')}</li>
+              <li><strong>{t('team_li4_bold')}</strong> {t('team_li4_text')}</li>
+              <li><strong>{t('team_li5_bold')}</strong> {t('team_li5_text')}</li>
+              <li><strong>{t('team_li6_bold')}</strong> {t('team_li6_text')}</li>
             </ul>
 
             {/* Identificador de Marca Oficial Vigente en el pie de la sección */}
@@ -223,8 +226,8 @@ export default function NosotrosPage() {
                 />
               </div>
               <div className="team-brand-text">
-                <span className="team-brand-title">Identificador de Marca Oficial Vigente</span>
-                <span className="team-brand-sub">Tailor Servicios · Consultora Estratégica de Personas</span>
+                <span className="team-brand-title">{t('team_badge_title')}</span>
+                <span className="team-brand-sub">{t('team_badge_sub')}</span>
               </div>
             </div>
           </div>
@@ -238,10 +241,10 @@ export default function NosotrosPage() {
       <section className="alliances-section">
         <div className="fluid-container">
           <div className="alliances-header">
-            <span className="alliances-badge">Alianzas y Convenios</span>
-            <h2 className="alliances-title">Alianzas Estratégicas</h2>
+            <span className="alliances-badge">{t('alliances_badge')}</span>
+            <h2 className="alliances-title">{t('alliances_title')}</h2>
             <p className="alliances-subtitle">
-              Trabajamos en estrecha colaboración con entidades líderes para fortalecer la formación técnica, el impulso gremial y la capacitación continua en la Región de Magallanes y en todo Chile.
+              {t('alliances_subtitle')}
             </p>
           </div>
 

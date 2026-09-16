@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Link } from '../i18n/routing';
+import LanguageSwitcher from './LanguageSwitcher';
 import './Footer.css';
 import { useTranslations } from 'next-intl';
 
@@ -53,9 +54,9 @@ export default function Footer() {
             <h4>{t('oficinas')}</h4>
             <ul className="footer-links">
               <li><span style={{color: '#fff'}}>Punta Arenas</span></li>
-              <li>Región de Magallanes</li>
+              <li>{t('magallanes_region')}</li>
               <li style={{marginTop: '0.5rem'}}><span style={{color: '#fff'}}>Santiago</span></li>
-              <li>Región Metropolitana</li>
+              <li>{t('metropolitana_region')}</li>
             </ul>
           </div>
 
@@ -82,6 +83,7 @@ export default function Footer() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
             </a>
           </div>
+          <LanguageSwitcher variant="footer" />
           <div>
             © {currentYear} {t('derechos')}
           </div>

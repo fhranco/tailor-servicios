@@ -11,6 +11,7 @@ type Candidate = {
   phone: string;
   specialty: string;
   cv_path: string;
+  cv_download_url?: string;
 };
 
 type Lead = {
@@ -341,10 +342,7 @@ export default function AdminDashboard({ session }: { session: any }) {
                   </thead>
                   <tbody>
                     {candidates.map((c) => {
-                      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-                      const cvDownloadUrl = c.cv_path 
-                        ? `${supabaseUrl}/storage/v1/object/public/cvs/${c.cv_path}` 
-                        : '';
+                      const cvDownloadUrl = c.cv_download_url || '';
                       return (
                         <tr key={c.id}>
                           <td>{new Date(c.created_at).toLocaleDateString('es-CL')}</td>
@@ -352,10 +350,12 @@ export default function AdminDashboard({ session }: { session: any }) {
                           <td>{c.email}</td>
                           <td>{c.phone || '-'}</td>
                           <td>
-                            {c.cv_path ? (
+                            {cvDownloadUrl ? (
                               <a href={cvDownloadUrl} target="_blank" rel="noopener noreferrer" className="btn-table-action download">
                                 📄 Descargar CV
                               </a>
+                            ) : c.cv_path ? (
+                              <span style={{ fontSize: '0.85rem', color: '#64748b' }}>Archivo protegido</span>
                             ) : 'No cargado'}
                           </td>
                           <td>

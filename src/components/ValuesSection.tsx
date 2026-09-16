@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import './ValuesSection.css';
 
 interface ValueItem {
@@ -13,6 +14,7 @@ interface ValueItem {
 }
 
 export default function ValuesSection() {
+  const t = useTranslations('ValuesSection');
   const [selectedValue, setSelectedValue] = useState<ValueItem | null>(null);
   const [activeMobileIndex, setActiveMobileIndex] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -20,7 +22,7 @@ export default function ValuesSection() {
   const values: ValueItem[] = [
     {
       id: 1,
-      title: "Socio Estratégico",
+      title: t('v1_title'),
       colorClass: "red",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="value-icon">
@@ -29,11 +31,11 @@ export default function ValuesSection() {
           <circle cx="12" cy="12" r="2"></circle>
         </svg>
       ),
-      definition: "Nuestro compromiso es con la productividad y la rentabilidad de nuestros clientes, a quienes asesoramos para mejorar sus resultados desde su propia cultura organizacional y las necesidades del mercado, velando por sus objetivos e intereses organizacionales."
+      definition: t('v1_def')
     },
     {
       id: 2,
-      title: "Profesionalismo",
+      title: t('v2_title'),
       colorClass: "green",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="value-icon">
@@ -41,11 +43,11 @@ export default function ValuesSection() {
           <path d="m9 11 2 2 4-4"></path>
         </svg>
       ),
-      definition: "Consideramos a los mejores profesionales para conformar nuestro equipo de trabajo, cada uno experto en su área y con la preparación y años de experiencia que avalan su trabajo."
+      definition: t('v2_def')
     },
     {
       id: 3,
-      title: "Innovación",
+      title: t('v3_title'),
       colorClass: "blue",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="value-icon">
@@ -54,33 +56,33 @@ export default function ValuesSection() {
           <path d="M10 22h4"></path>
         </svg>
       ),
-      definition: "En los planes de trabajo que generamos para nuestros clientes, buscamos incorporar instrumentos o técnicas innovadoras que sean tendencia en otros lugares, y que, claramente, entreguen los resultados esperados."
+      definition: t('v3_def')
     },
     {
       id: 4,
-      title: "Calidad de Servicio",
+      title: t('v4_title'),
       colorClass: "yellow",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="value-icon">
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
         </svg>
       ),
-      definition: "Compromiso de responder a nuestros clientes con los mejores estándares y la optimización de sus propios procesos, agregando valor a sus organizaciones and colaborando en la gestión del cambio de cada una de ellas."
+      definition: t('v4_def')
     },
     {
       id: 5,
-      title: "Comunicación",
+      title: t('v5_title'),
       colorClass: "orange",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="value-icon">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
       ),
-      definition: "Para un trabajo impecable, será siempre vital el mantener una constante y fluida comunicación con nuestros clientes."
+      definition: t('v5_def')
     },
     {
       id: 6,
-      title: "Compromiso y Confidencialidad",
+      title: t('v6_title'),
       colorClass: "gray",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="value-icon">
@@ -88,7 +90,7 @@ export default function ValuesSection() {
           <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
         </svg>
       ),
-      definition: "Nos comprometemos con las metas de nuestros clientes, sus resultados, pero también con el resguardo de la información a la cual tenemos acceso."
+      definition: t('v6_def')
     }
   ];
 
@@ -119,10 +121,10 @@ export default function ValuesSection() {
     <section className="values-section">
       <div className="fluid-container">
         <div className="values-header">
-          <span className="values-badge">Nuestros Pilares</span>
-          <h2 className="values-main-title">Nuestros Valores</h2>
+          <span className="values-badge">{t('badge')}</span>
+          <h2 className="values-main-title">{t('title')}</h2>
           <p className="values-intro-text">
-            Principios que orientan nuestra forma de trabajar y nuestra relación con cada organización.
+            {t('subtitle')}
           </p>
         </div>
 
@@ -132,8 +134,8 @@ export default function ValuesSection() {
             {/* Elemento Central */}
             <div className="center-motto-circle">
               <div className="motto-content">
-                <span className="motto-small">Propósito</span>
-                <span className="motto-large">Impulsando el Desarrollo desde Magallanes</span>
+                <span className="motto-small">{t('purpose')}</span>
+                <span className="motto-large">{t('motto')}</span>
               </div>
             </div>
 
@@ -185,7 +187,7 @@ export default function ValuesSection() {
                       ? `${value.definition.substring(0, 70)}...` 
                       : value.definition}
                   </p>
-                  <span className="value-card-action">Ver definición completa →</span>
+                  <span className="value-card-action">{t('card_action')}</span>
                 </div>
               </div>
             ))}
@@ -198,13 +200,13 @@ export default function ValuesSection() {
                 key={index}
                 className={`slider-dot ${activeMobileIndex === index ? 'active' : ''}`}
                 onClick={() => scrollToCard(index)}
-                aria-label={`Ir al valor ${index + 1}`}
+                aria-label={t('dot_aria', { index: index + 1 })}
               />
             ))}
           </div>
 
           <div className="mobile-motto-banner">
-            <span>Propósito: Impulsando el Desarrollo desde Magallanes</span>
+            <span>{t('purpose')}: {t('motto')}</span>
           </div>
         </div>
       </div>
@@ -227,7 +229,12 @@ export default function ValuesSection() {
               transition={{ type: "spring", duration: 0.5 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <button className="popup-close-btn" onClick={() => setSelectedValue(null)}>
+              <button 
+                className="popup-close-btn" 
+                onClick={() => setSelectedValue(null)}
+                title={t('close_popup')}
+                aria-label={t('close_popup')}
+              >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="close-icon">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
                   <line x1="6" y1="6" x2="18" y2="18"></line>

@@ -3,26 +3,29 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import './MethodologyBlock.css';
-
-const steps = [
-  {
-    number: "01",
-    title: "Levantamiento Técnico",
-    description: "Inmersión en tu operación para entender no solo el perfil, sino el ecosistema y los desafíos técnicos del cargo."
-  },
-  {
-    number: "02",
-    title: "Búsqueda Dirigida",
-    description: "Headhunting especializado y mapeo de mercado. Buscamos talento pasivo que encaje perfectamente con la cultura."
-  },
-  {
-    number: "03",
-    title: "Evaluación Integral",
-    description: "Filtros técnicos, entrevistas por competencias y evaluación de adaptabilidad para la región de Magallanes."
-  }
-];
+import { useTranslations } from 'next-intl';
 
 export default function MethodologyBlock() {
+  const t = useTranslations('MethodologyBlock');
+
+  const steps = [
+    {
+      number: t('step1_num'),
+      title: t('step1_title'),
+      description: t('step1_desc')
+    },
+    {
+      number: t('step2_num'),
+      title: t('step2_title'),
+      description: t('step2_desc')
+    },
+    {
+      number: t('step3_num'),
+      title: t('step3_title'),
+      description: t('step3_desc')
+    }
+  ];
+
   return (
     <section className="methodology-section">
       <div className="fluid-container">
@@ -34,7 +37,7 @@ export default function MethodologyBlock() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            Nuestra Metodología
+            {t('title')}
           </motion.h2>
           <motion.p 
             className="methodology-subtitle"
@@ -43,7 +46,7 @@ export default function MethodologyBlock() {
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
           >
-            No somos una plataforma de currículums. Somos un socio estratégico que utiliza un proceso riguroso para asegurar contrataciones exitosas a largo plazo.
+            {t('subtitle')}
           </motion.p>
         </div>
 

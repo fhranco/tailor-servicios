@@ -3,6 +3,7 @@
 import React, { useState, FocusEvent, FormEvent, useEffect } from 'react';
 import './B2B_LeadForm.css';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { supabase } from '../lib/supabase';
 
 interface FormState {
@@ -236,7 +237,7 @@ export default function B2B_LeadForm() {
           required
         />
         <label htmlFor="b2b-legal">
-          {t('lbl_legal_1')}<a href="/privacidad" target="_blank" rel="noopener noreferrer">{t('lbl_legal_link')}</a>
+          {t('lbl_legal_1')}<Link href="/privacidad" target="_blank" rel="noopener noreferrer">{t('lbl_legal_link')}</Link>
         </label>
         {formData.legal.error && <span className="error-msg" role="alert">{formData.legal.error}</span>}
       </div>

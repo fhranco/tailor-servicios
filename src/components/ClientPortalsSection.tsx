@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import './ClientPortalsSection.css';
 
 interface PortalItem {
@@ -17,39 +18,41 @@ interface PortalItem {
 }
 
 export default function ClientPortalsSection() {
+  const t = useTranslations('ClientPortalsSection');
+
   const portals: PortalItem[] = [
     {
       id: 'dap',
-      name: 'Portal Grupo DAP',
-      category: 'Aviación, Logística & Conectividad Antártica',
+      name: t('dap_name'),
+      category: t('dap_category'),
       logo: '/portales/dap.png',
       link: 'https://serviciosindustrialetailor.rexmas.com/jobs/aerovias-dap',
       accent: '#cf142b',
-      status: 'Convocatoria Activa',
-      desc: 'Búsquedas de talento para pilotos, tripulantes de cabina, técnicos en mantenimiento aeronáutico y especialistas en logística aérea antártica y patagónica.',
-      btnText: 'Acceder a Convocatorias DAP'
+      status: t('dap_status'),
+      desc: t('dap_desc'),
+      btnText: t('dap_btn')
     },
     {
       id: 'cormoran',
-      name: 'Portal The Cormorant at 55 South',
-      category: 'Hotelería Boutique de Lujo · Punta Arenas',
+      name: t('cormoran_name'),
+      category: t('cormoran_category'),
       logo: '/portales/cormoran.png',
       link: 'https://serviciosindustrialetailor.rexmas.com/jobs/the-cormorant-at-55-south',
       accent: '#b89025',
-      status: 'Proyecto Especial',
-      desc: 'Proceso de selección exclusivo para el nuevo hotel boutique de alta gama frente al Estrecho de Magallanes. Oportunidades en servicio, hospitalidad, gastronomía y gestión.',
-      btnText: 'Ver Ofertas The Cormorant'
+      status: t('cormoran_status'),
+      desc: t('cormoran_desc'),
+      btnText: t('cormoran_btn')
     },
     {
       id: 'hosteria-el-pionero',
-      name: 'Portal de empleo Hostería el Pionero',
-      category: 'Turismo de Naturaleza · Torres del Paine',
+      name: t('pionero_name'),
+      category: t('pionero_category'),
       logo: '/portales/hosteria-el-pionero.png',
       link: 'https://serviciosindustrialetailor.rexmas.com/jobs/hosteria-el-pionero',
       accent: '#2d6a4f',
-      status: 'Temporada Abierta',
-      desc: 'Vacantes para operaciones hoteleras, guías turísticos, gastronomía y cocina internacional, housekeeping y administración en Hostería El Pionero.',
-      btnText: 'Ver Ofertas El Pionero'
+      status: t('pionero_status'),
+      desc: t('pionero_desc'),
+      btnText: t('pionero_btn')
     }
   ];
 
@@ -61,13 +64,13 @@ export default function ClientPortalsSection() {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
             </svg>
-            Clientes Activos & Proyectos Especiales
+            {t('badge')}
           </div>
           <h2 className="client-portals-title">
-            Portales de Selección <span className="text-highlight">Exclusivos</span>
+            {t('title_prefix')} <span className="text-highlight">{t('title_accent')}</span>
           </h2>
           <p className="client-portals-desc">
-            Accede a las plataformas oficiales de postulación dedicadas para cada uno de nuestros clientes y consorcios estratégicos en la Región de Magallanes.
+            {t('subtitle')}
           </p>
         </div>
 
@@ -111,7 +114,7 @@ export default function ClientPortalsSection() {
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                   </svg>
-                  Plataforma Rex+
+                  {t('rex_badge')}
                 </span>
                 
                 <a 
@@ -148,10 +151,10 @@ export default function ClientPortalsSection() {
             <span style={{ fontSize: '1.5rem' }}>💡</span>
             <div>
               <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>
-                ¿No encuentras una convocatoria activa para tu perfil?
+                {t('help_title')}
               </div>
               <p style={{ margin: 0, color: '#64748b', fontSize: '0.85rem' }}>
-                Puedes enviar tu currículum de forma espontánea directamente a nuestra casilla de selección por correo.
+                {t('help_desc')}
               </p>
             </div>
           </div>
@@ -174,7 +177,7 @@ export default function ClientPortalsSection() {
               <line x1="22" y1="2" x2="11" y2="13"></line>
               <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
             </svg>
-            Instrucciones para Enviar CV
+            {t('help_btn')}
           </a>
         </div>
       </div>

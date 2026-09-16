@@ -27,7 +27,7 @@ export default function CookiesPage() {
     <main className="terminos-page min-h-screen">
       <section className="terminos-header">
         <div className="fluid-container text-center">
-          <h1 className="terminos-title" style={{ color: '#ffffff' }}>Política de Cookies</h1>
+          <h1 className="terminos-title" style={{ color: '#ffffff' }}>{t('cookies_page_title')}</h1>
           <p className="terminos-subtitle">{t('page_subtitle')}</p>
         </div>
       </section>

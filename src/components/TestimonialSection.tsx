@@ -87,7 +87,7 @@ export default function TestimonialSection() {
     >
       <div className="card-top-row">
         <div className="quote-icon">“</div>
-        <div className="stars" aria-label={`${test.rating || 5} de 5 estrellas`}>
+        <div className="stars" aria-label={t('stars_label', { rating: test.rating || 5 })}>
           {'★'.repeat(test.rating || 5)}
         </div>
       </div>
@@ -102,10 +102,10 @@ export default function TestimonialSection() {
             className="author-image" 
             style={{ backgroundImage: `url(${test.avatar})` }}
             role="img"
-            aria-label={`Foto de ${test.nombre}`}
+            aria-label={t('photo_of', { name: test.nombre })}
           />
         ) : (
-          <div className="author-initials" aria-label={`Iniciales de ${test.nombre}`}>
+          <div className="author-initials" aria-label={t('initials_of', { name: test.nombre })}>
             {getInitials(test.nombre)}
           </div>
         )}
@@ -159,21 +159,21 @@ export default function TestimonialSection() {
 
           {/* Selector de modo y controles de animación */}
           <div className="testimonial-controls">
-            <div className="view-toggle" role="group" aria-label="Modo de visualización">
+            <div className="view-toggle" role="group" aria-label={t('view_mode_label')}>
               <button 
                 className={`toggle-btn ${viewMode === 'marquee' ? 'active' : ''}`}
                 onClick={() => setViewMode('marquee')}
-                title="Vista Marquesina Continua"
+                title={t('tab_marquee_title')}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M4 12h16M4 12l4-4m-4 4l4 4M20 12l-4-4m4 4l-4 4" />
                 </svg>
-                <span>Marquesina</span>
+                <span>{t('tab_marquee')}</span>
               </button>
               <button 
                 className={`toggle-btn ${viewMode === 'grid' ? 'active' : ''}`}
                 onClick={() => setViewMode('grid')}
-                title="Vista Cuadrícula"
+                title={t('tab_grid_title')}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <rect x="3" y="3" width="7" height="7" />
@@ -181,7 +181,7 @@ export default function TestimonialSection() {
                   <rect x="3" y="14" width="7" height="7" />
                   <rect x="14" y="14" width="7" height="7" />
                 </svg>
-                <span>Cuadrícula</span>
+                <span>{t('tab_grid')}</span>
               </button>
             </div>
 
@@ -190,8 +190,8 @@ export default function TestimonialSection() {
                 <button 
                   className={`nav-arrow-btn play-pause-btn ${!isPlaying ? 'paused' : ''}`}
                   onClick={() => setIsPlaying(!isPlaying)} 
-                  aria-label={isPlaying ? "Pausar marquesina" : "Reanudar marquesina"}
-                  title={isPlaying ? "Pausar marquesina" : "Reanudar marquesina"}
+                  aria-label={isPlaying ? t('pause_marquee') : t('resume_marquee')}
+                  title={isPlaying ? t('pause_marquee') : t('resume_marquee')}
                 >
                   {isPlaying ? (
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
@@ -207,9 +207,9 @@ export default function TestimonialSection() {
                 <button 
                   className={`speed-toggle-btn ${isSlow ? 'active' : ''}`}
                   onClick={() => setIsSlow(!isSlow)}
-                  title="Cambiar velocidad"
+                  title={t('speed_title')}
                 >
-                  {isSlow ? "Lenta" : "Normal"}
+                  {isSlow ? t('speed_slow') : t('speed_normal')}
                 </button>
               </div>
             )}
@@ -227,7 +227,7 @@ export default function TestimonialSection() {
 
             <div className="marquee-hint-wrapper">
               <span className="marquee-hint-text">
-                💡 Pasa el cursor sobre cualquier testimonio para pausar y leer
+                {t('marquee_hint')}
               </span>
             </div>
           </div>

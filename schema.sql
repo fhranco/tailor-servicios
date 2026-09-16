@@ -9,11 +9,27 @@ CREATE TABLE IF NOT EXISTS public.candidates (
   phone TEXT
 );
 
--- Enable Row Level Security (RLS) but allow anonymous inserts (for the public form)
+-- =========================================================================
+-- 1. Tabla 'candidates': Bloqueo de Acceso Directo (anon y authenticated)
+-- Toda la gestión se realiza exclusivamente desde el backend vía Service Role
+-- bajo autorización explícita de sesión de administrador.
+-- =========================================================================
 ALTER TABLE public.candidates ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Allow public inserts for candidates" ON public.candidates FOR INSERT WITH CHECK (true);
-CREATE POLICY "Allow public reads for dashboard" ON public.candidates FOR SELECT USING (true);
-CREATE POLICY "Allow public deletes for dashboard" ON public.candidates FOR DELETE USING (true);
+
+-- Eliminar cualquier política previa permisiva
+DROP POLICY IF EXISTS "Allow public inserts for candidates" ON public.candidates;
+DROP POLICY IF EXISTS "Allow public reads for dashboard" ON public.candidates;
+DROP POLICY IF EXISTS "Allow public deletes for dashboard" ON public.candidates;
+DROP POLICY IF EXISTS "Allow authenticated admins to read candidates" ON public.candidates;
+DROP POLICY IF EXISTS "Allow authenticated admins to delete candidates" ON public.candidates;
+
+-- Revocar privilegios directos a nivel SQL para los roles 'anon' y 'authenticated'
+REVOKE ALL ON public.candidates FROM anon, authenticated;
+
+-- NOTA: Al activar RLS y NO definir políticas para anon ni authenticated,
+-- Postgres aplica por defecto la denegación total (Default Deny).
+-- Únicamente el backend Next.js con SUPABASE_SERVICE_ROLE_KEY puede consultar
+-- y gestionar candidatos, previa validación de administrador en getAuthorizedUser.
 
 -- 2. Create b2b_leads table
 CREATE TABLE IF NOT EXISTS public.b2b_leads (
@@ -27,18 +43,28 @@ CREATE TABLE IF NOT EXISTS public.b2b_leads (
   message TEXT
 );
 
--- Enable Row Level Security (RLS) but allow anonymous inserts (for the public form)
+-- Enable Row Level Security (RLS) for b2b_leads
 ALTER TABLE public.b2b_leads ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Allow public inserts for b2b_leads" ON public.b2b_leads FOR INSERT WITH CHECK (true);
-CREATE POLICY "Allow public reads for dashboard" ON public.b2b_leads FOR SELECT USING (true);
-CREATE POLICY "Allow public deletes for dashboard" ON public.b2b_leads FOR DELETE USING (true);
+CREATE POLICY "Allow authenticated admins to read b2b_leads" ON public.b2b_leads FOR SELECT TO authenticated USING (true);
+CREATE POLICY "Allow authenticated admins to delete b2b_leads" ON public.b2b_leads FOR DELETE TO authenticated USING (true);
 
--- 3. Create Storage Bucket for CVs
-INSERT INTO storage.buckets (id, name, public) VALUES ('cvs', 'cvs', false) ON CONFLICT DO NOTHING;
+-- =========================================================================
+-- 3. Storage Bucket 'cvs': Privado y Bloqueo Total de Acceso Directo
+-- Conserva íntegros los archivos históricos sin acceso directo para anon ni authenticated.
+-- =========================================================================
+INSERT INTO storage.buckets (id, name, public) VALUES ('cvs', 'cvs', false) 
+ON CONFLICT (id) DO UPDATE SET public = false;
 
--- Storage Policies for 'cvs' bucket
-CREATE POLICY "Allow public uploads to cvs bucket" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'cvs');
-CREATE POLICY "Allow public reads of cvs" ON storage.objects FOR SELECT USING (bucket_id = 'cvs');
+-- Eliminar cualquier política que conceda lectura o subida a anon o authenticated
+DROP POLICY IF EXISTS "Allow public uploads to cvs bucket" ON storage.objects;
+DROP POLICY IF EXISTS "Allow public reads of cvs" ON storage.objects;
+DROP POLICY IF EXISTS "Allow authenticated admins to read cvs" ON storage.objects;
+
+-- NOTA: No se crean políticas RLS sobre storage.objects para el bucket 'cvs'.
+-- Ni usuarios anónimos ni usuarios con sesión iniciada pueden listar, descargar o subir archivos.
+-- La descarga administrativa se realiza exclusivamente mediante URLs firmadas temporales
+-- generadas por el backend con Service Role (createSignedUrl). Otros buckets no se ven afectados.
 
 -- 4. Create Privacy Audit Logs table (Compliance for Ley 21.719 / Ley 19.628)
 CREATE TABLE IF NOT EXISTS public.privacy_audit_logs (

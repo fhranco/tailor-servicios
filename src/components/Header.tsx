@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link, usePathname } from '../i18n/routing';
+import LanguageSwitcher from './LanguageSwitcher';
 import './Header.css';
 
 export default function Header() {
@@ -92,19 +93,15 @@ export default function Header() {
                   {t('contacto')}
                 </Link>
               </li>
-              <li className="mobile-only-account">
-                <Link href="/admin" className="nav-item">
-                  {t('mi_cuenta')}
-                </Link>
+              <li className="mobile-only-lang">
+                <LanguageSwitcher variant="mobile" />
               </li>
             </ul>
           </nav>
 
-          {/* Desktop Account icon (moved outside the main ul for better layout) */}
+          {/* Desktop Language Switcher */}
           <div className="desktop-actions">
-            <Link href="/admin" className="account-link">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            </Link>
+            <LanguageSwitcher variant="header" />
           </div>
 
         </div>

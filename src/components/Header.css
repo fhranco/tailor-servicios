@@ -236,7 +236,8 @@
   color: var(--color-accent);
 }
 
-.mobile-only-account {
+.mobile-only-account,
+.mobile-only-lang {
   display: none;
 }
 
@@ -273,7 +274,8 @@
     display: none;
   }
   
-  .mobile-only-account {
+  .mobile-only-account,
+  .mobile-only-lang {
     display: block;
     margin-top: 1rem;
     padding-top: 1rem;

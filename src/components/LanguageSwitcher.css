@@ -1,0 +1,111 @@
+/* Language Switcher Base */
+.lang-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  user-select: none;
+}
+
+.lang-btn {
+  color: #475569; /* Slate-600: Contraste WCAG AA > 4.5:1 sobre fondo claro */
+  text-decoration: none;
+  padding: 0.25rem 0.4rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.lang-btn:hover {
+  color: #0f172a; /* Slate-900 */
+}
+
+.lang-btn:focus-visible {
+  outline: 2px solid var(--color-accent, #008080);
+  outline-offset: 2px;
+}
+
+.lang-btn.active {
+  color: #0f172a; /* Slate-900: Contraste > 12:1 */
+  font-weight: 700;
+  border-bottom: 2px solid var(--color-accent, #008080);
+}
+
+.lang-sep {
+  color: #94a3b8; /* Slate-400 */
+  font-weight: 400;
+  font-size: 0.75rem;
+}
+
+/* Header Variant */
+.lang-switcher-header {
+  margin-left: 1.25rem;
+  padding-left: 1.25rem;
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 992px) {
+  .lang-switcher-header {
+    display: none !important;
+  }
+}
+
+/* Mobile Drawer Variant - Área táctil mínima 44x44px conforme a WCAG 2.5.5 / 2.5.8 */
+.lang-switcher-mobile {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-gray-light, #f1f5f9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+}
+
+@media (min-width: 993px) {
+  .lang-switcher-mobile {
+    display: none !important;
+  }
+}
+
+.lang-switcher-mobile .lang-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  touch-action: manipulation;
+  background-color: rgba(241, 245, 249, 0.6); /* Slate-100 suave */
+}
+
+.lang-switcher-mobile .lang-btn.active {
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid var(--color-accent, #008080);
+}
+
+/* Footer Variant - Optimizado para fondo oscuro #0f172a */
+.lang-switcher-footer {
+  font-size: 0.8rem;
+}
+
+.lang-switcher-footer .lang-btn {
+  color: #cbd5e1; /* Slate-300: Contraste > 7:1 sobre fondo oscuro */
+}
+
+.lang-switcher-footer .lang-btn:hover {
+  color: #ffffff;
+}
+
+.lang-switcher-footer .lang-btn.active {
+  color: #ffffff;
+  border-bottom-color: var(--color-accent, #008080);
+}
+
+.lang-switcher-footer .lang-sep {
+  color: rgba(255, 255, 255, 0.35);
+}

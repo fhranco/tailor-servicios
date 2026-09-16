@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import './HeroDual.css';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 

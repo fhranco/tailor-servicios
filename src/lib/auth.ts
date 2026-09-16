@@ -15,6 +15,25 @@ export async function getAuthorizedUser(req: Request) {
     return null;
   }
   
+  // Verificación estricta de privilegios de administrador (Ley 21.719 - Control de acceso)
+  // Reglas:
+  // 1. user_metadata NO se utiliza para autorización (es manipulable por el usuario en el cliente).
+  // 2. No existen correos predeterminados ni fallbacks a casillas comerciales.
+  // 3. Si no existe un administrador explícitamente autorizado en la configuración o claims protegidos, se deniega el acceso.
+  const rawAdminEmails = process.env.ADMIN_ALLOWED_EMAILS || '';
+  const adminEmails = rawAdminEmails
+    ? rawAdminEmails.split(',').map(e => e.trim().toLowerCase()).filter(Boolean)
+    : [];
+
+  const userEmail = (user.email || '').toLowerCase();
+  const hasAdminRole = user.app_metadata?.role === 'admin';
+  const isExplicitlyAuthorizedEmail = adminEmails.length > 0 && adminEmails.includes(userEmail);
+
+  if (!hasAdminRole && !isExplicitlyAuthorizedEmail) {
+    console.warn(`[Auth] Acceso administrativo denegado: Usuario ${user.email || user.id} no cuenta con autorización explícita.`);
+    return null;
+  }
+  
   return user;
 }
 

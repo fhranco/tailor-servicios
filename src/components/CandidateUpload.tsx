@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import './CandidateUpload.css';
 
 export default function CandidateUpload() {
+  const t = useTranslations('CandidateUpload');
   const [copied, setCopied] = useState(false);
   const emailAddress = 'seleccion@tailorservicios.cl';
 
@@ -16,7 +18,9 @@ export default function CandidateUpload() {
     }
   };
 
-  const mailtoUrl = `mailto:${emailAddress}?subject=Postulaci%C3%B3n%20Laboral%20-%20Curr%C3%ADculum%20Vitae&body=Estimado%20equipo%20de%20Selecci%C3%B3n%20de%20Tailor%20Servicios%2C%0A%0AAdjunto%20mi%20Curr%C3%ADculum%20Vitae%20para%20futuras%20b%C3%BAsquedas%20y%20oportunidades%20laborales.%0A%0A-%20Nombre%20completo%3A%0A-%20%C3%81rea%20o%20Especialidad%3A%0A-%20Ciudad%20de%20residencia%3A%0A-%20Tel%C3%A9fono%20de%20contacto%3A%0A%0ASaludos%20cordiales.`;
+  const mailSubject = encodeURIComponent(t('mail_subject'));
+  const mailBody = encodeURIComponent(t('mail_body'));
+  const mailtoUrl = `mailto:${emailAddress}?subject=${mailSubject}&body=${mailBody}`;
 
   return (
     <section className="c-upload-section" id="envia-tu-cv">
@@ -30,24 +34,24 @@ export default function CandidateUpload() {
         >
           {/* Columna Izquierda: Información de la Red de Talento */}
           <div className="c-upload-text">
-            <span className="c-upload-badge">Red de Talento Austral</span>
-            <h2 className="c-upload-title">Envía tu Currículum Vitae</h2>
+            <span className="c-upload-badge">{t('badge')}</span>
+            <h2 className="c-upload-title">{t('title')}</h2>
             <p className="c-upload-desc">
-              Si tu perfil no corresponde a ninguna de las vacantes activas en nuestro portal o deseas formar parte de nuestra base de datos para futuras búsquedas estratégicas en Magallanes y todo Chile, te invitamos a enviarnos tus antecedentes directamente por correo electrónico.
+              {t('desc')}
             </p>
 
             <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', color: 'rgba(255, 255, 255, 0.9)', fontSize: '0.95rem' }}>
                 <span style={{ color: 'var(--color-accent)', fontWeight: 'bold' }}>✓</span>
-                <span><strong>Privacidad total:</strong> No subes archivos a la web; tú mantienes el control enviándolo desde tu propio correo.</span>
+                <span><strong>{t('feature1_title')}</strong> {t('feature1_desc')}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', color: 'rgba(255, 255, 255, 0.9)', fontSize: '0.95rem' }}>
                 <span style={{ color: 'var(--color-accent)', fontWeight: 'bold' }}>✓</span>
-                <span><strong>Evaluación experta:</strong> Tu perfil es revisado por nuestro equipo de consultores especializados.</span>
+                <span><strong>{t('feature2_title')}</strong> {t('feature2_desc')}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', color: 'rgba(255, 255, 255, 0.9)', fontSize: '0.95rem' }}>
                 <span style={{ color: 'var(--color-accent)', fontWeight: 'bold' }}>✓</span>
-                <span><strong>Búsquedas confidenciales:</strong> Acceso a oportunidades laborales de alta dirección y proyectos exclusivos.</span>
+                <span><strong>{t('feature3_title')}</strong> {t('feature3_desc')}</span>
               </div>
             </div>
           </div>
@@ -73,16 +77,16 @@ export default function CandidateUpload() {
               </div>
               <div>
                 <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#be1622' }}>
-                  Envío Directo
+                  {t('channel_tag')}
                 </span>
                 <h3 style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--color-dark)', margin: '0.1rem 0 0 0' }}>
-                  Canal Oficial de Selección
+                  {t('channel_title')}
                 </h3>
               </div>
             </div>
 
             <p style={{ color: 'var(--color-gray-dark)', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1.5rem' }}>
-              Para postular de forma espontánea, abre tu proveedor de correo habitual (Gmail, Outlook, etc.) y envía tu CV adjunto a nuestra casilla técnica:
+              {t('channel_desc')}
             </p>
 
             {/* Caja de Correo con Copiado Rápido */}
@@ -94,7 +98,7 @@ export default function CandidateUpload() {
               border: '1px solid #e2e8f0',
               borderRadius: '10px',
               padding: '0.85rem 1.15rem',
-              marginBottom: '1.5rem',
+              marginBottom: '1.25rem',
               gap: '0.75rem'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', overflow: 'hidden' }}>
@@ -120,7 +124,7 @@ export default function CandidateUpload() {
                   flexShrink: 0
                 }}
               >
-                {copied ? '✓ ¡Copiado!' : 'Copiar'}
+                {copied ? t('copied_btn') : t('copy_btn')}
               </button>
             </div>
 
@@ -130,21 +134,39 @@ export default function CandidateUpload() {
               border: '1px solid #f1f5f9',
               borderRadius: '10px',
               padding: '1.1rem',
-              marginBottom: '1.5rem',
+              marginBottom: '1.25rem',
               fontSize: '0.88rem',
               color: '#475569'
             }}>
               <div style={{ fontWeight: 700, color: 'var(--color-dark)', marginBottom: '0.5rem', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Instrucciones para tu postulación:
+                {t('instructions_title')}
               </div>
               <ul style={{ margin: 0, paddingLeft: '1.2rem', lineHeight: '1.6', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                <li><strong>Adjunto:</strong> Envía tu archivo en formato PDF o Word actualizado.</li>
-                <li><strong>Asunto del correo:</strong> Indica tu área de especialidad (ej. <em>Postulación - Operaciones y Logística</em>).</li>
-                <li><strong>En el cuerpo:</strong> Menciona brevemente tus años de experiencia y ciudad de residencia.</li>
+                <li><strong>{t('inst1_label')}</strong> {t('inst1_desc')}</li>
+                <li><strong>{t('inst2_label')}</strong> {t('inst2_desc')}</li>
+                <li><strong>{t('inst3_label')}</strong> {t('inst3_desc')}</li>
               </ul>
             </div>
 
-            {/* Botón Principal: Abrir Correo */}
+            {/* Explicación visible obligatoria */}
+            <div style={{
+              backgroundColor: '#eff6ff',
+              border: '1px solid #bfdbfe',
+              borderRadius: '8px',
+              padding: '0.85rem 1rem',
+              marginBottom: '1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.65rem',
+              color: '#1e40af',
+              fontSize: '0.9rem',
+              fontWeight: 500
+            }}>
+              <span style={{ fontSize: '1.2rem', flexShrink: 0 }}>ℹ️</span>
+              <span>{t('email_notice')}</span>
+            </div>
+
+            {/* Botón Principal: Enviar currículum por correo */}
             <a 
               href={mailtoUrl}
               className="btn-primary"
@@ -162,19 +184,24 @@ export default function CandidateUpload() {
                 backgroundColor: 'var(--color-primary, #0f172a)',
                 color: '#ffffff',
                 transition: 'all 0.2s ease',
-                marginBottom: '1.25rem'
+                marginBottom: '0.85rem'
               }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="22" y1="2" x2="11" y2="13"></line>
                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
               </svg>
-              Abrir en mi Correo Electrónico
+              {t('open_email_btn')}
             </a>
 
-            {/* Alternativa secundaria: Portal Rex+ */}
+            {/* Aviso de Privacidad descriptivo y factual */}
+            <p style={{ fontSize: '0.78rem', color: '#64748b', lineHeight: '1.5', textAlign: 'justify', marginBottom: '1.25rem' }}>
+              {t('privacy_note')}
+            </p>
+
+            {/* Alternativa secundaria: Portal Rex+ independiente */}
             <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '1.1rem', textAlign: 'center' }}>
-              <span style={{ fontSize: '0.82rem', color: '#64748b' }}>¿Prefieres postular a convocatorias activas en línea?</span>
+              <span style={{ fontSize: '0.82rem', color: '#64748b' }}>{t('alt_question')}</span>
               <br />
               <a 
                 href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios"
@@ -191,7 +218,7 @@ export default function CandidateUpload() {
                   marginTop: '0.35rem'
                 }}
               >
-                Ver Ofertas en Portal Rex+
+                {t('alt_link')}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                   <polyline points="15 3 21 3 21 9"/>
@@ -200,8 +227,8 @@ export default function CandidateUpload() {
               </a>
             </div>
 
-            <span style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '1rem', textAlign: 'center' }}>
-              🔒 Sin intermediarios ni retención de archivos en la web. Regulado por la Ley 21.719 de Chile.
+            <span style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '0.75rem', textAlign: 'center' }}>
+              {t('security_badge')}
             </span>
           </div>
         </motion.div>

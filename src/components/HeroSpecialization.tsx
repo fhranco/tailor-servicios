@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import './HeroSpecialization.css';
 
 const heroImages = [
@@ -12,6 +13,7 @@ const heroImages = [
 ];
 
 export default function HeroSpecialization() {
+  const t = useTranslations('HeroSpecialization');
   const containerRef = useRef<HTMLElement>(null);
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -57,12 +59,12 @@ export default function HeroSpecialization() {
           className="hero-content"
           style={{ textAlign: 'left', margin: 0 }}
         >
-          <div className="hero-badge">Sectores Clave</div>
+          <div className="hero-badge">{t('badge')}</div>
           <h1 className="hero-title">
-            TALENTO PARA LAS INDUSTRIAS QUE MUEVEN LA <span className="text-accent">REGIÓN</span>
+            {t('title')} <span className="text-accent">{t('title_accent')}</span>
           </h1>
           <p className="hero-subtitle" style={{ margin: '0 0 2rem 0', maxWidth: '650px' }}>
-            En Tailor Servicios no solo reclutamos; entendemos la operación técnica y estratégica de los sectores más desafiantes del extremo sur de Chile. Nuestro modelo garantiza profesionales con el calce exacto para tu rubro.
+            {t('subtitle')}
           </p>
         </motion.div>
       </div>

@@ -9,6 +9,10 @@ export const metadata = {
     noarchive: true,
     nosnippet: true,
   },
+  alternates: {
+    canonical: null,
+    languages: {},
+  },
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

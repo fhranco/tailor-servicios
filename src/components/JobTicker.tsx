@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import './JobTicker.css';
 
 interface Job {
@@ -14,6 +15,7 @@ interface Job {
 }
 
 export default function JobTicker() {
+  const t = useTranslations('JobTicker');
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -53,10 +55,10 @@ export default function JobTicker() {
   const repeatedJobs = [...jobs, ...jobs, ...jobs];
 
   return (
-    <div className="job-ticker-bar" role="region" aria-label="Ofertas laborales activas">
+    <div className="job-ticker-bar" role="region" aria-label={t('aria_label')}>
       <div className="job-ticker-label">
         <span className="job-ticker-pulse"></span>
-        <span className="job-ticker-badge">OFERTAS LABORALES</span>
+        <span className="job-ticker-badge">{t('badge')}</span>
       </div>
 
       <div className="job-ticker-track-container">

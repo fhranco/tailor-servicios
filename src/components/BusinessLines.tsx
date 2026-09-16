@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import './BusinessLines.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 
 type ServiceKey = 'reclutamiento' | 'gestion' | 'desarrollo';
 
@@ -178,22 +177,25 @@ export default function BusinessLines() {
                 </div>
                 
                 <div className="modal-body">
-                  <h3 className="modal-title">{servicesData[selectedService].title}</h3>
-                  <p className="modal-desc">{servicesData[selectedService].longDesc}</p>
+                  <h3 className="modal-title">{t(`${selectedService}_title`)}</h3>
+                  <p className="modal-desc">{t(`${selectedService}_long`)}</p>
                   
-                  <h4 className="modal-subtitle">¿Qué incluye este servicio?</h4>
+                  <h4 className="modal-subtitle">{t('modal_subtitle')}</h4>
                   <ul className="modal-benefits">
-                    {servicesData[selectedService].benefits.map((benefit: string, i: number) => (
-                      <li key={i}>
+                    {(selectedService === 'reclutamiento' 
+                      ? [1, 2, 3, 4, 5, 6, 7] 
+                      : [1, 2, 3, 4, 5, 6, 7, 8]
+                    ).map((num) => (
+                      <li key={num}>
                         <span className="benefit-icon" style={{ color: servicesData[selectedService].color }}>✓</span>
-                        {benefit}
+                        {t(`${selectedService}_b${num}`)}
                       </li>
                     ))}
                   </ul>
                   
                   <div className="modal-actions">
-                    <button onClick={closeModal} className="btn btn-outline">Cerrar</button>
-                    <a href="#contacto" onClick={closeModal} className="btn btn-primary">Agendar reunión</a>
+                    <button onClick={closeModal} className="btn btn-outline">{t('modal_close')}</button>
+                    <a href="#contacto" onClick={closeModal} className="btn btn-primary">{t('modal_cta')}</a>
                   </div>
                 </div>
               </motion.div>

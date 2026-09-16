@@ -41,7 +41,29 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500, headers: { 'Cache-Control': 'no-store, private' } });
   }
 
-  return NextResponse.json(data, {
+  // Generar URLs temporales firmadas para descarga segura de CVs históricos (válidas por 1 hora)
+  // El bucket 'cvs' permanece 100% privado y ningún usuario anónimo puede acceder ni listar objetos.
+  const candidatesWithSignedUrls = await Promise.all(
+    (data || []).map(async (c: any) => {
+      if (c.cv_path) {
+        try {
+          const { data: signed } = await supabase.storage
+            .from('cvs')
+            .createSignedUrl(c.cv_path, 3600);
+          return {
+            ...c,
+            cv_download_url: signed?.signedUrl || ''
+          };
+        } catch (signErr) {
+          console.error('Error generating signed CV URL:', signErr);
+          return c;
+        }
+      }
+      return c;
+    })
+  );
+
+  return NextResponse.json(candidatesWithSignedUrls, {
     headers: { 'Cache-Control': 'no-store, private' }
   });
 }

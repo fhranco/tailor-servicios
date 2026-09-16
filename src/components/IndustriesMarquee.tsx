@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import './IndustriesMarquee.css';
 
 interface IndustryItem {
@@ -16,6 +17,7 @@ interface IndustryItem {
 }
 
 export default function IndustriesMarquee() {
+  const t = useTranslations('IndustriesMarquee');
   const viewportRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -27,13 +29,13 @@ export default function IndustriesMarquee() {
   const industries: IndustryItem[] = [
     {
       id: 'salmonicultura',
-      title: 'Salmonicultura',
-      tag: 'Acuicultura Austral',
+      title: t('i1_title'),
+      tag: t('i1_tag'),
       color: '#06b6d4', // Cyan
       glow: 'rgba(6, 182, 212, 0.25)',
       iconBg: 'rgba(6, 182, 212, 0.15)',
       iconColor: '#22d3ee',
-      desc: 'Búsqueda, selección y gestión de personas para centros de cultivo, plantas de proceso, centros de acopio y logística acuícola en fiordos y canales australes.',
+      desc: t('i1_desc'),
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.46-3.44 6-7 6s-7.56-2.54-8.5-6Z" />
@@ -44,13 +46,13 @@ export default function IndustriesMarquee() {
     },
     {
       id: 'energia',
-      title: 'Energía e Hidrógeno Verde',
-      tag: 'Transición Energética',
+      title: t('i2_title'),
+      tag: t('i2_tag'),
       color: '#10b981', // Esmeralda / Verde H2V
       glow: 'rgba(16, 185, 129, 0.25)',
       iconBg: 'rgba(16, 185, 129, 0.15)',
       iconColor: '#34d399',
-      desc: 'Reclutamiento de perfiles especializados para la transición energética, parques eólicos, plantas de H2V y megaproyectos industriales sostenibles en Magallanes.',
+      desc: t('i2_desc'),
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 2v8" />
@@ -65,13 +67,13 @@ export default function IndustriesMarquee() {
     },
     {
       id: 'logistica',
-      title: 'Logística y Transporte',
-      tag: 'Conectividad & Carga',
+      title: t('i3_title'),
+      tag: t('i3_tag'),
       color: '#f59e0b', // Ámbar / Dorado
       glow: 'rgba(245, 158, 11, 0.25)',
       iconBg: 'rgba(245, 158, 11, 0.15)',
       iconColor: '#fbbf24',
-      desc: 'Dotaciones operativas y ejecutivas para conectividad marítima, terrestre y portuaria en rutas complejas y operaciones de abastecimiento en zonas extremas.',
+      desc: t('i3_desc'),
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="1" y="3" width="15" height="13" rx="2" />
@@ -83,13 +85,13 @@ export default function IndustriesMarquee() {
     },
     {
       id: 'turismo',
-      title: 'Turismo y Hotelería',
-      tag: 'Hospitalidad Austral',
+      title: t('i4_title'),
+      tag: t('i4_tag'),
       color: '#38bdf8', // Azul Glaciar
       glow: 'rgba(56, 189, 248, 0.25)',
       iconBg: 'rgba(56, 189, 248, 0.15)',
       iconColor: '#7dd3fc',
-      desc: 'Selección de talento para hotelería boutique, lodges de expedición, cruceros australes y servicios gastronómicos de estándar internacional en la Patagonia.',
+      desc: t('i4_desc'),
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
@@ -99,13 +101,13 @@ export default function IndustriesMarquee() {
     },
     {
       id: 'ganaderia',
-      title: 'Ganadería',
-      tag: 'Agroindustria & Campo',
+      title: t('i5_title'),
+      tag: t('i5_tag'),
       color: '#fb923c', // Naranja Óxido / Campo
       glow: 'rgba(251, 146, 60, 0.25)',
       iconBg: 'rgba(251, 146, 60, 0.15)',
       iconColor: '#fdba74',
-      desc: 'Atracción y administración de personas para estancias patagónicas, plantas faenadoras, frigoríficos y cadenas de producción agropecuaria regional.',
+      desc: t('i5_desc'),
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -116,13 +118,13 @@ export default function IndustriesMarquee() {
     },
     {
       id: 'retail',
-      title: 'Retail',
-      tag: 'Comercio & Sucursales',
+      title: t('i6_title'),
+      tag: t('i6_tag'),
       color: '#a855f7', // Púrpura / Retail
       glow: 'rgba(168, 85, 247, 0.25)',
       iconBg: 'rgba(168, 85, 247, 0.15)',
       iconColor: '#c084fc',
-      desc: 'Gestión integral de dotaciones para grandes tiendas, sucursales regionales, centros comerciales y posiciones comerciales de alta rotación y atención a clientes.',
+      desc: t('i6_desc'),
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
@@ -133,13 +135,13 @@ export default function IndustriesMarquee() {
     },
     {
       id: 'alimentos',
-      title: 'Industria de Alimentos y Consumo Masivo',
-      tag: 'Plantas & Procesamiento',
+      title: t('i7_title'),
+      tag: t('i7_tag'),
       color: '#f43f5e', // Coral / Rosa
       glow: 'rgba(244, 63, 94, 0.25)',
       iconBg: 'rgba(244, 63, 94, 0.15)',
       iconColor: '#fb7185',
-      desc: 'Reclutamiento técnico y supervisión para plantas elaboradoras, centros de distribución, envasado y control de calidad en cadenas alimentarias.',
+      desc: t('i7_desc'),
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 2v20" />
@@ -225,15 +227,15 @@ export default function IndustriesMarquee() {
         <div className="industries-header-colored">
           <div className="industries-badge-colored">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2" />
             </svg>
-            Sectores Estratégicos
+            {t('badge')}
           </div>
           <h2 className="industries-title-colored">
-            Rubros e <span className="accent-title">Industrias</span>
+            {t('title_prefix')} <span className="accent-title">{t('title_accent')}</span>
           </h2>
           <p className="industries-desc-colored">
-            Acompañamos a organizaciones en sectores clave con soluciones de capital humano adaptadas a la geografía, regulación y exigencias operativas de cada territorio.
+            {t('desc')}
           </p>
         </div>
       </div>
@@ -279,7 +281,7 @@ export default function IndustriesMarquee() {
               <p>{item.desc}</p>
 
               <div className="card-footer-action">
-                <span>Especialidad Tailor</span>
+                <span>{t('specialty_tag')}</span>
                 <div className="card-indicator-dot"></div>
               </div>
             </div>
@@ -296,7 +298,7 @@ export default function IndustriesMarquee() {
             <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8" />
             <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
           </svg>
-          <span>Haz clic sostenido y arrastra hacia cualquier lado · Se pausa al pasar el cursor</span>
+          <span>{t('drag_hint')}</span>
         </div>
       </div>
     </section>

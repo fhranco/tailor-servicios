@@ -1,13 +1,15 @@
 "use client";
 
 import React from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import B2B_LeadForm from '@/components/B2B_LeadForm';
 import LocationMap from '@/components/LocationMap';
 import './page.css';
+import { useTranslations } from 'next-intl';
 
 export default function ContactoPage() {
+  const t = useTranslations('ContactoPage');
+
   return (
     <main className="contacto-page">
       {/* Hero Section */}
@@ -26,12 +28,12 @@ export default function ContactoPage() {
             transition={{ duration: 0.6 }}
             className="hero-content"
           >
-            <div className="hero-badge">Comunicación Directa</div>
+            <div className="hero-badge">{t('badge')}</div>
             <h1 className="hero-title">
-              HABLEMOS SOBRE EL FUTURO <br /> DE TU <span className="text-accent">EQUIPO</span>
+              {t('title_prefix')} <br /> {t('title_mid')} <span className="text-accent">{t('title_accent')}</span>
             </h1>
             <p className="hero-subtitle" style={{ maxWidth: '700px', textAlign: 'center' }}>
-              Desde Magallanes para todo Chile. Ya sea que necesite encontrar al líder ideal o transformar su cultura organizacional, estamos aquí para escucharlo.
+              {t('subtitle')}
             </p>
           </motion.div>
         </div>
@@ -49,9 +51,9 @@ export default function ContactoPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h2 className="info-title">Nuestras Oficinas</h2>
+              <h2 className="info-title">{t('offices_title')}</h2>
               <p className="info-desc">
-                Contamos con presencia local sólida en la Región de Magallanes y alcance estratégico a nivel nacional.
+                {t('offices_desc')}
               </p>
 
               <div className="contact-detail-list">
@@ -66,8 +68,8 @@ export default function ContactoPage() {
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                   </div>
                   <div className="detail-text">
-                    <h3>Dirección Corporativa</h3>
-                    <p>21 de mayo #2918, Punta Arenas.</p>
+                    <h3>{t('dir_label')}</h3>
+                    <p>{t('dir_val')}</p>
                   </div>
                 </motion.div>
 
@@ -82,7 +84,7 @@ export default function ContactoPage() {
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                   </div>
                   <div className="detail-text">
-                    <h3>WhatsApp / Teléfono</h3>
+                    <h3>{t('wa_label')}</h3>
                     <p><a href="https://wa.me/56997580085" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>+56 9 9758 0085</a></p>
                   </div>
                 </motion.div>
@@ -98,7 +100,7 @@ export default function ContactoPage() {
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                   </div>
                   <div className="detail-text">
-                    <h3>Correo Electrónico</h3>
+                    <h3>{t('email_label')}</h3>
                     <p><a href="mailto:Contacto@tailorservicios.cl" style={{ color: 'inherit', textDecoration: 'none' }}>Contacto@tailorservicios.cl</a></p>
                   </div>
                 </motion.div>
@@ -114,8 +116,8 @@ export default function ContactoPage() {
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                   </div>
                   <div className="detail-text">
-                    <h3>Horario de Atención</h3>
-                    <p>Lunes a Viernes: 09:00 a 18:00 hrs.</p>
+                    <h3>{t('hours_label')}</h3>
+                    <p>{t('hours_val')}</p>
                   </div>
                 </motion.div>
               </div>
@@ -139,8 +141,8 @@ export default function ContactoPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <h2 className="form-title">Solicite Asesoría o Presupuesto</h2>
-              <p className="form-subtitle">Complete el formulario y un especialista corporativo le contactará a la brevedad.</p>
+              <h2 className="form-title">{t('form_title')}</h2>
+              <p className="form-subtitle">{t('form_subtitle')}</p>
               
               <B2B_LeadForm />
             </motion.div>
@@ -154,15 +156,15 @@ export default function ContactoPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            <h3>¿Eres un profesional buscando nuevos desafíos?</h3>
-            <p>Este formulario es exclusivo para empresas. Si deseas ser parte de nuestra red de talento y acceder a oportunidades confidenciales en el sur de Chile, te invitamos a postular directamente en nuestro portal de empleos.</p>
+            <h3>{t('candidates_title')}</h3>
+            <p>{t('candidates_desc')}</p>
             <a 
               href="https://serviciosindustrialetailor.rexmas.com/jobs/tailor-servicios" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="btn-glass"
             >
-              Postular en Rex+
+              {t('candidates_btn')}
             </a>
           </motion.div>
 

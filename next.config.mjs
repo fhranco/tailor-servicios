@@ -5,23 +5,33 @@ const withNextIntl = createNextIntlPlugin(
 );
  
 /** @type {import('next').NextConfig} */
+const isDev = process.env.NODE_ENV !== 'production';
+
 const nextConfig = {
   poweredByHeader: false,
   transpilePackages: ['framer-motion', 'motion-dom', 'motion-utils'],
   async headers() {
+    const scriptSrc = isDev
+      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com"
+      : "script-src 'self' 'unsafe-inline' https://maps.googleapis.com";
+
+    const connectSrc = isDev
+      ? "connect-src 'self' ws: wss: http://localhost:* https://*.supabase.co wss://*.supabase.co"
+      : "connect-src 'self' https://*.supabase.co wss://*.supabase.co";
+
     const cspDirectives = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://maps.googleapis.com",
+      scriptSrc,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "img-src 'self' data: blob: https://images.unsplash.com https://maps.gstatic.com https://*.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com data:",
       "frame-src 'self' https://maps.google.com https://www.google.com",
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+      connectSrc,
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
       "frame-ancestors 'self'",
-      "upgrade-insecure-requests",
+      ...(isDev ? [] : ["upgrade-insecure-requests"]),
     ];
 
     return [
@@ -34,6 +44,30 @@ const nextConfig = {
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
           { key: 'Content-Security-Policy', value: cspDirectives.join('; ') },
+        ],
+      },
+      {
+        source: '/admin',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' },
+        ],
+      },
+      {
+        source: '/admin/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' },
+        ],
+      },
+      {
+        source: '/en/admin',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' },
+        ],
+      },
+      {
+        source: '/en/admin/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' },
         ],
       },
     ];
