@@ -167,7 +167,7 @@
     "contacto": "Contact",
     "empresas": "For Companies",
     "postulantes": "For Candidates",
-    "subir_cv": "Upload CV",
+    "subir_cv": "Send CV by email",
     "privacidad": "Privacy Policy",
     "terminos": "Terms & Conditions",
     "cookies": "Cookie Policy",
@@ -207,14 +207,25 @@
     "copied_btn": "✓ Copied!"
   },
   "CandidatosPage": {
-    "meta_title": "Candidates - Tailor Servicios",
+    "meta_title": "Candidates",
     "meta_desc": "Join our exclusive talent network. We connect high-level professionals with leading companies in southern Chile."
   },
   "HeroCandidatos": {
     "badge": "Talent Network",
     "title1": "BOOST YOUR ",
     "title_accent": "CAREER",
-    "subtitle": "We connect exceptional professionals with the best companies in the extreme south of Chile. Join our network and access confidential and strategic opportunities."
+    "subtitle": "We connect exceptional professionals with the best companies in the extreme south of Chile. Join our network and access confidential and strategic opportunities.",
+    "rex_btn": "General Job Portal (Rex+)",
+    "cv_btn": "No active vacancy? Send your CV",
+    "pill_confidential": "100% Confidential Processes",
+    "pill_platform": "Official Rex+ Platform",
+    "pill_tracking": "Real-Time Tracking",
+    "video_pill": "✨ A Message for You",
+    "video_title": "Your Talent Comes First",
+    "video_duration": "Inspiration & Future",
+    "video_play_label": "Click to watch this message",
+    "video_play_aria": "Play message for candidates",
+    "video_footer": "Every application represents a goal and a commitment to personal growth. At Tailor Servicios, we support your journey by connecting you with the best companies in the region."
   },
   "JobOffersCarousel": {
     "activeOpportunities": "Active Opportunities",
@@ -306,7 +317,7 @@
     "privacy_notice": "Your data will be processed by Tailor Servicios exclusively to manage your request. You can request its deletion at any time by writing to privacidad@tailorservicios.cl."
   },
   "TerminosPage": {
-    "meta_title": "Terms and Conditions - Tailor Servicios",
+    "meta_title": "Terms and Conditions",
     "meta_desc": "Terms and conditions, and privacy policy of Tailor Servicios.",
     "page_title": "Terms and Conditions",
     "privacy_page_title": "Privacy Policy",

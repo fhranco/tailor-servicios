@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import AdminDashboard from '@/components/AdminDashboard';
 import AdminLoginForm from '@/components/AdminLoginForm';
+import { useTranslations } from 'next-intl';
 
 export default function AdminPage() {
+  const t = useTranslations('AdminLogin');
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +29,7 @@ export default function AdminPage() {
   if (loading) {
     return (
       <main style={{ minHeight: '100vh', backgroundColor: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ color: '#94a3b8', fontSize: '1.2rem', fontFamily: 'sans-serif' }}>Cargando panel...</div>
+        <div style={{ color: '#94a3b8', fontSize: '1.2rem', fontFamily: 'sans-serif' }}>{t('loading')}</div>
       </main>
     );
   }

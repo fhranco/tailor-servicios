@@ -43,7 +43,6 @@ export default function HeroCandidatos() {
             </p>
 
             {/* Acceso Primario Destacado: Portal General de Ofertas Laborales (Rex+) */}
-            {/* Se elimina cualquier botón secundario confuso ("Postular con Taylor Servicios") */}
             <div className="hero-candidatos-actions">
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
                 <a 
@@ -52,7 +51,7 @@ export default function HeroCandidatos() {
                   rel="noopener noreferrer" 
                   className="hero-cta-btn-primary"
                 >
-                  <span>Portal General de Empleos (Rex+)</span>
+                  <span>{t('rex_btn')}</span>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                     <polyline points="15 3 21 3 21 9"/>
@@ -81,7 +80,7 @@ export default function HeroCandidatos() {
                     <line x1="22" y1="2" x2="11" y2="13"></line>
                     <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                   </svg>
-                  <span>¿Sin vacante activa? Envía tu CV</span>
+                  <span>{t('cv_btn')}</span>
                 </a>
               </div>
             </div>
@@ -89,15 +88,15 @@ export default function HeroCandidatos() {
             <div className="hero-features-strip">
               <div className="feature-pill">
                 <span className="pill-dot"></span>
-                <span>Procesos 100% Confidenciales</span>
+                <span>{t('pill_confidential')}</span>
               </div>
               <div className="feature-pill">
                 <span className="pill-dot"></span>
-                <span>Plataforma Oficial Rex+</span>
+                <span>{t('pill_platform')}</span>
               </div>
               <div className="feature-pill">
                 <span className="pill-dot"></span>
-                <span>Seguimiento en Tiempo Real</span>
+                <span>{t('pill_tracking')}</span>
               </div>
             </div>
           </motion.div>
@@ -112,10 +111,10 @@ export default function HeroCandidatos() {
             <div className="hero-video-card">
               <div className="hero-video-card-header">
                 <div className="video-header-left">
-                  <span className="video-pill">✨ Mensaje para Ti</span>
-                  <span className="video-card-title">Tu Talento en Primer Lugar</span>
+                  <span className="video-pill">{t('video_pill')}</span>
+                  <span className="video-card-title">{t('video_title')}</span>
                 </div>
-                <span className="video-duration">Inspiración & Futuro</span>
+                <span className="video-duration">{t('video_duration')}</span>
               </div>
 
               <div className="hero-video-player-wrapper" onClick={toggleVideo}>
@@ -131,20 +130,18 @@ export default function HeroCandidatos() {
 
                 {!isPlaying && (
                   <div className="video-play-overlay">
-                    <button className="video-play-btn" aria-label="Reproducir mensaje para postulantes">
+                    <button className="video-play-btn" aria-label={t('video_play_aria')}>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <polygon points="6 3 20 12 6 21 6 3"></polygon>
                       </svg>
                     </button>
-                    <span className="video-play-label">Haz clic para ver este mensaje</span>
+                    <span className="video-play-label">{t('video_play_label')}</span>
                   </div>
                 )}
               </div>
 
               <div className="hero-video-card-footer">
-                <p>
-                  Cada postulación representa una meta y una vocación de superación. En Tailor Servicios acompañamos tu trayectoria conectándote con las mejores empresas de la región.
-                </p>
+                <p>{t('video_footer')}</p>
               </div>
             </div>
           </motion.div>

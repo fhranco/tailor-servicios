@@ -207,14 +207,25 @@
     "copied_btn": "✓ ¡Copiado!"
   },
   "CandidatosPage": {
-    "meta_title": "Candidatos - Tailor Servicios",
+    "meta_title": "Candidatos",
     "meta_desc": "Únete a nuestra red de talento exclusivo. Conectamos profesionales de alto nivel con las empresas líderes en el sur de Chile."
   },
   "HeroCandidatos": {
     "badge": "Red de Talento",
     "title1": "POTENCIA TU ",
     "title_accent": "CARRERA",
-    "subtitle": "Conectamos profesionales excepcionales con las mejores empresas del extremo sur de Chile. Únete a nuestra red y accede a oportunidades confidenciales y estratégicas."
+    "subtitle": "Conectamos profesionales excepcionales con las mejores empresas del extremo sur de Chile. Únete a nuestra red y accede a oportunidades confidenciales y estratégicas.",
+    "rex_btn": "Portal General de Empleos (Rex+)",
+    "cv_btn": "¿Sin vacante activa? Envía tu CV",
+    "pill_confidential": "Procesos 100% Confidenciales",
+    "pill_platform": "Plataforma Oficial Rex+",
+    "pill_tracking": "Seguimiento en Tiempo Real",
+    "video_pill": "✨ Mensaje para Ti",
+    "video_title": "Tu Talento en Primer Lugar",
+    "video_duration": "Inspiración & Futuro",
+    "video_play_label": "Haz clic para ver este mensaje",
+    "video_play_aria": "Reproducir mensaje para postulantes",
+    "video_footer": "Cada postulación representa una meta y una vocación de superación. En Tailor Servicios acompañamos tu trayectoria conectándote con las mejores empresas de la región."
   },
   "JobOffersCarousel": {
     "activeOpportunities": "Oportunidades Activas",
@@ -306,7 +317,7 @@
     "privacy_notice": "Tus datos serán tratados por Tailor Servicios exclusivamente para gestionar tu solicitud. Puedes solicitar su eliminación en cualquier momento escribiendo a privacidad@tailorservicios.cl."
   },
   "TerminosPage": {
-    "meta_title": "Términos y Condiciones - Tailor Servicios",
+    "meta_title": "Términos y Condiciones",
     "meta_desc": "Términos y condiciones, y política de privacidad de Tailor Servicios.",
     "page_title": "Términos y Condiciones",
     "privacy_page_title": "Política de Privacidad",

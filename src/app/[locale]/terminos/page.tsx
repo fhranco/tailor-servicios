@@ -7,7 +7,7 @@ export async function generateMetadata({ params: { locale } }: { params: { local
   const t = await getTranslations({ locale, namespace: 'TerminosPage' });
   const isEn = locale === 'en';
   return {
-    title: isEn ? 'Terms and Conditions' : t('meta_title'),
+    title: t('meta_title'),
     description: t('meta_desc'),
     alternates: {
       canonical: isEn ? 'https://tailorservicios.cl/en/terminos' : 'https://tailorservicios.cl/terminos',

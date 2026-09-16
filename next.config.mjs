@@ -10,6 +10,20 @@ const isDev = process.env.NODE_ENV !== 'production';
 const nextConfig = {
   poweredByHeader: false,
   transpilePackages: ['framer-motion', 'motion-dom', 'motion-utils'],
+  async redirects() {
+    return [
+      {
+        source: '/es',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/es/:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     const scriptSrc = isDev
       ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com"
