@@ -209,6 +209,38 @@
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.25);
 }
 
+/* Candidate Email Action Button (Explicit High Contrast) */
+.candidate-email-action-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.6rem !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  padding: 0.95rem 1.5rem !important;
+  border-radius: 8px !important;
+  width: 100% !important;
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  transition: all 0.25s ease !important;
+  margin-bottom: 0.85rem !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15) !important;
+}
+
+.candidate-email-action-btn:hover,
+.candidate-email-action-btn:focus-visible {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.25) !important;
+}
+
+.candidate-email-action-btn svg {
+  stroke: #ffffff !important;
+  color: #ffffff !important;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .c-upload-card {

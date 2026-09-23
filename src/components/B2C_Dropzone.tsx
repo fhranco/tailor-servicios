@@ -70,7 +70,7 @@ export default function B2C_Dropzone() {
       {/* Botón Principal: Enviar currículum por correo */}
       <a 
         href={mailtoUrl}
-        className="btn-primary"
+        className="candidate-email-action-btn"
         style={{
           display: 'inline-flex',
           alignItems: 'center',

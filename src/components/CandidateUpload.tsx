@@ -169,7 +169,7 @@ export default function CandidateUpload() {
             {/* Botón Principal: Enviar currículum por correo */}
             <a 
               href={mailtoUrl}
-              className="btn-primary"
+              className="candidate-email-action-btn"
               style={{
                 textDecoration: 'none',
                 display: 'inline-flex',
