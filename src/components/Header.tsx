@@ -64,7 +64,7 @@ export default function Header() {
         <div className="fluid-container nav-container">
           <Link href="/" className="logo-link" title="Tailor Servicios - Inicio">
             <img 
-              src="/logoweb.png" 
+              src="/logoweb.webp" 
               alt="Tailor Servicios" 
               className="logo-img"
               width={130}
