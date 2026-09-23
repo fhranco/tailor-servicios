@@ -40,7 +40,10 @@ export default function ClientLogos() {
                   alt={logo.name}
                   title={logo.name}
                   className="premium-logo-img"
+                  loading="lazy"
                   decoding="async"
+                  width={120}
+                  height={60}
                 />
               </div>
             ))}
@@ -53,7 +56,10 @@ export default function ClientLogos() {
                   alt={logo.name}
                   title={logo.name}
                   className="premium-logo-img"
+                  loading="lazy"
                   decoding="async"
+                  width={120}
+                  height={60}
                 />
               </div>
             ))}
@@ -70,7 +76,10 @@ export default function ClientLogos() {
                   alt={logo.name}
                   title={logo.name}
                   className="premium-logo-img"
+                  loading="lazy"
                   decoding="async"
+                  width={120}
+                  height={60}
                 />
               </div>
             ))}
@@ -83,7 +92,10 @@ export default function ClientLogos() {
                   alt={logo.name}
                   title={logo.name}
                   className="premium-logo-img"
+                  loading="lazy"
                   decoding="async"
+                  width={120}
+                  height={60}
                 />
               </div>
             ))}

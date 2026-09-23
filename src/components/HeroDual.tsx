@@ -71,7 +71,7 @@ export default function HeroDual() {
             fill
             priority={currentSlide === 0}
             sizes="100vw"
-            quality={85}
+            quality={80}
             className="hero-bg-image"
             style={{ 
               objectFit: 'cover',

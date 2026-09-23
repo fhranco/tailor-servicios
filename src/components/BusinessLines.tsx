@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import './BusinessLines.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
@@ -127,7 +128,17 @@ export default function BusinessLines() {
           const isSecondary = index === 1;
           return (
             <motion.div key={key} className={`service-card ${isSecondary ? 'secondary' : ''}`} variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}>
-              <div className="card-bg" style={{ backgroundImage: `url(${service.image})`, backgroundPosition: service.bgPosition || 'center' }}></div>
+              <div className="card-bg">
+                <Image 
+                  src={service.image} 
+                  alt={t(`${serviceKey}_title`)}
+                  fill
+                  loading="lazy"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  quality={75}
+                  style={{ objectFit: 'cover', objectPosition: service.bgPosition || 'center' }}
+                />
+              </div>
               <div className="card-overlay"></div>
               <div className="card-accent" style={{ backgroundColor: service.color }}></div>
               <div className="card-content">

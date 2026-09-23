@@ -10,6 +10,9 @@ const isDev = process.env.NODE_ENV !== 'production';
 const nextConfig = {
   poweredByHeader: false,
   transpilePackages: ['framer-motion', 'motion-dom', 'motion-utils'],
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
   async redirects() {
     return [
       {
