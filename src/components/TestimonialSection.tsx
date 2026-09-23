@@ -111,7 +111,7 @@ export default function TestimonialSection() {
         )}
 
         <div className="author-info">
-          <h4 className="author-name">{test.nombre}</h4>
+          <p className="author-name">{test.nombre}</p>
           <span className="author-role">{test.cargo}</span>
           <div className="author-company-row">
             <span className="author-company">{test.empresa}</span>

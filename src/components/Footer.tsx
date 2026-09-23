@@ -32,7 +32,7 @@ export default function Footer() {
           </div>
 
           <div className="footer-col">
-            <h4>{t('nav')}</h4>
+            <p className="footer-col-title">{t('nav')}</p>
             <ul className="footer-links">
               <li><Link href="/">{t('inicio')}</Link></li>
               <li><Link href="/nosotros">{t('nosotros')}</Link></li>
@@ -42,7 +42,7 @@ export default function Footer() {
           </div>
 
           <div className="footer-col">
-            <h4>{t('embudos')}</h4>
+            <p className="footer-col-title">{t('embudos')}</p>
             <ul className="footer-links">
               <li><Link href="/empresas">{t('empresas')}</Link></li>
               <li><Link href="/candidatos">{t('postulantes')}</Link></li>
@@ -51,7 +51,7 @@ export default function Footer() {
           </div>
 
           <div className="footer-col">
-            <h4>{t('oficinas')}</h4>
+            <p className="footer-col-title">{t('oficinas')}</p>
             <ul className="footer-links">
               <li><span style={{color: '#fff'}}>Punta Arenas</span></li>
               <li>{t('magallanes_region')}</li>
@@ -61,7 +61,7 @@ export default function Footer() {
           </div>
 
           <div className="footer-col">
-            <h4>{t('legal')}</h4>
+            <p className="footer-col-title">{t('legal')}</p>
             <ul className="footer-links">
               <li><Link href="/privacidad">{t('privacidad')}</Link></li>
               <li><Link href="/terminos">{t('terminos')}</Link></li>

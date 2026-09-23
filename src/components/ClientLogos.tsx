@@ -18,7 +18,7 @@ export default function ClientLogos() {
   return (
     <section className="client-logos-section">
       <div className="fluid-container">
-        <motion.h3 
+        <motion.h2 
           className="logos-title"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -26,7 +26,7 @@ export default function ClientLogos() {
           transition={{ duration: 0.6 }}
         >
           {t('title')}
-        </motion.h3>
+        </motion.h2>
       </div>
 
       <div className="marquee-wrapper">

@@ -26,7 +26,8 @@
   max-width: 300px;
 }
 
-.footer-col h4 {
+.footer-col h4,
+.footer-col-title {
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
