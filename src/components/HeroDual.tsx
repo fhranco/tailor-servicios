@@ -5,6 +5,7 @@ import './HeroDual.css';
 import { Link } from '@/i18n/routing';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 export default function HeroDual() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -54,33 +55,37 @@ export default function HeroDual() {
   return (
     <section className="hero-robert-wrapper">
       
-      {/* Background Image */}
-      <AnimatePresence mode="popLayout">
+      {/* Background Image - Initial slide rendered immediately via SSR without opacity:0 blocking */}
+      <AnimatePresence mode="popLayout" initial={false}>
         <motion.div 
           key={slides[currentSlide].id}
           className="hero-bg-container"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
         >
-          <img 
+          <Image 
             src={slides[currentSlide].bg} 
             alt="Fondo Tailor" 
+            fill
+            priority={currentSlide === 0}
+            sizes="100vw"
+            quality={85}
             className="hero-bg-image"
-            fetchPriority={currentSlide === 0 ? "high" : "auto"}
-            loading={currentSlide === 0 ? "eager" : "lazy"}
-            decoding="async"
-            style={{ objectPosition: slides[currentSlide].objectPosition || "center right" }}
+            style={{ 
+              objectFit: 'cover',
+              objectPosition: slides[currentSlide].objectPosition || "center right" 
+            }}
           />
         </motion.div>
       </AnimatePresence>
       <div className={`hero-overlay overlay-${currentAlign}`}></div>
       
-      {/* Content Block (Glassmorphism) */}
+      {/* Content Block (Glassmorphism) - Initial slide text rendered immediately via SSR */}
       <div className={`fluid-container hero-container-layout layout-${currentAlign}`}>
         <div className={`hero-content-block ${currentAlign === 'right' ? 'hero-content-right' : ''}`}>
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div 
               key={slides[currentSlide].id}
               initial={{ opacity: 0, y: 15 }}
@@ -127,13 +132,13 @@ export default function HeroDual() {
             onClick={() => setCurrentSlide(idx)}
             aria-label={`Ver slide ${idx + 1}`}
           >
-            <img 
+            <Image 
               src={slide.thumb} 
               alt={`Miniatura ${idx + 1}`} 
-              loading="lazy"
-              decoding="async"
               width={90}
               height={54}
+              loading="lazy"
+              style={{ objectFit: 'cover', width: '100%', height: '100%' }}
             />
             <div className="hero-thumb-progress">
               {idx === currentSlide && (
@@ -152,3 +157,4 @@ export default function HeroDual() {
     </section>
   );
 }
+
