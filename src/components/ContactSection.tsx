@@ -1,7 +1,14 @@
+'use client';
+
 import React from 'react';
-import B2B_LeadForm from './B2B_LeadForm';
+import dynamic from 'next/dynamic';
 import './ContactSection.css';
 import { useTranslations } from 'next-intl';
+
+const B2B_LeadForm = dynamic(() => import('./B2B_LeadForm'), {
+  loading: () => <div className="b2b-form-placeholder" style={{ minHeight: '480px' }} />,
+  ssr: false,
+});
 
 export default function ContactSection() {
   const t = useTranslations('ContactSection');
