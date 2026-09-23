@@ -67,8 +67,6 @@ export const CLIENT_LOGOS: ClientLogo[] = [
   { name: "Australis", src: "/Logos/logo-australis.jpg" },
   { name: "DAP", src: "/Logos/logo-dap.jpg" },
   { name: "Austro Conectividad", src: "/Logos/logo-austro-conectividad.jpg" },
-  { name: "Austro Chile A.G.", src: "/Logos/logo-austro-chile.jpg" },
-  { name: "HYST (Torres del Paine)", src: "/Logos/logo-hyst.png" },
   { name: "Ataindus", src: "/Logos/logo-ataindus.jpg" },
   { name: "H2V Magallanes", src: "/Logos/logo-h2v-magallanes.jpg" },
   { name: "Ascendal Punta Arenas", src: "/Logos/logo-ascendal.jpg" },
@@ -76,10 +74,5 @@ export const CLIENT_LOGOS: ClientLogo[] = [
   { name: "AV", src: "/Logos/logo-av.jpg" },
   { name: "Aguas Magallanes", src: "/Logos/logo-aguas-magallanes.jpg" },
   { name: "RedSalud", src: "/Logos/logo-redsalud.jpg" },
-  { name: "Hotel Cerro Castillo", src: "/Logos/logo-hotel-cerro-castillo.png" },
-  { name: "The Singular Patagonia", src: "/Logos/logo-the-singular.png" },
-  { name: "Instituto Chileno Británico de Cultura", src: "/Logos/logo-instituto-britanico.png" },
-  { name: "Austro Chile (Insignia)", src: "/Logos/logo-austro-chile-insignia.png" },
-  { name: "IST (Instituto de Seguridad del Trabajo)", src: "/Logos/logo-ist.png" },
-  { name: "ONG Canales", src: "/Logos/logo-ong-canales.png" },
+  { name: "Hotel Cerro Castillo", src: "/Logos/logo-hotel-cerro-castillo.png" }
 ];

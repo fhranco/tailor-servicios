@@ -34,11 +34,11 @@ export default function NosotrosPage() {
       logo: '/alianzas/hyst.png'
     },
     {
-      id: 'mutual',
-      name: 'Mutual de Seguridad CChC',
-      desc: t('mutual_desc'),
-      tag: t('mutual_tag'),
-      logo: '/alianzas/mutual-de-seguridad.png'
+      id: 'ist',
+      name: 'IST',
+      desc: t('ist_desc'),
+      tag: t('ist_tag'),
+      logo: '/alianzas/ist.png'
     },
     {
       id: 'britanico',
@@ -53,7 +53,7 @@ export default function NosotrosPage() {
     <main className="nosotros-page">
       <section className="inner-hero">
         <div className="fluid-container">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -72,32 +72,72 @@ export default function NosotrosPage() {
 
       {/* Quiénes Somos / Nuestra Historia */}
       <section className="story-section">
-        <div className="fluid-container story-container">
-          <h2>{t('story_title')}</h2>
-          <p className="lead-text" style={{ fontWeight: 600, color: 'var(--color-dark)', fontSize: '1.4rem' }}>
-            {t('lead_1')} <span className="text-accent">{t('lead_accent1')}</span> {t('lead_2')} <span className="text-accent">{t('lead_accent2')}</span> {t('lead_3')}
-          </p>
-          <p>
-            {t('story_p1')}
-          </p>
-          <p>
-            {t('story_p2')}
-          </p>
-          <p>
-            {t('story_p3')}
-          </p>
-          <p>
-            {t('story_p4')}
-          </p>
-          <div className="quote-box" style={{ marginTop: '3rem', marginBottom: '1rem' }}>
-            <svg className="quote-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 11L8 15H11V19H5V15L7 11H5V7H11V11H10ZM20 11L18 15H21V19H15V15L17 11H15V7H21V11H20Z" fill="currentColor"/></svg>
+        <div className="fluid-container story-grid-layout">
+          <div className="story-text-column">
+            <h2>{t('story_title')}</h2>
+            <p className="lead-text" style={{ fontWeight: 600, color: 'var(--color-dark)', fontSize: '1.4rem' }}>
+              {t('lead_1')} <span className="text-accent">{t('lead_accent1')}</span> {t('lead_2')} <span className="text-accent">{t('lead_accent2')}</span> {t('lead_3')}
+            </p>
             <p>
-              {t('quote')}
+              {t('story_p1')}
+            </p>
+            <p>
+              {t('story_p2')}
+            </p>
+            <p>
+              {t('story_p3')}
+            </p>
+            <p>
+              {t('story_p4')}
+            </p>
+            <div className="quote-box" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>
+              <svg className="quote-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 11L8 15H11V19H5V15L7 11H5V7H11V11H10ZM20 11L18 15H21V19H15V15L17 11H15V7H21V11H20Z" fill="currentColor" /></svg>
+              <p>
+                {t('quote')}
+              </p>
+            </div>
+            <p style={{ fontWeight: 'bold', color: 'var(--color-dark)', fontSize: '1.25rem', marginTop: '1.5rem' }}>
+              {t('motto')}
             </p>
           </div>
-          <p style={{ fontWeight: 'bold', color: 'var(--color-dark)', fontSize: '1.25rem', marginTop: '2rem' }}>
-            {t('motto')}
-          </p>
+
+          <motion.div 
+            className="story-image-column"
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="story-image-card">
+              <div className="story-image-wrap">
+                <img 
+                  src="/maria-avendano.webp" 
+                  alt="María Avendaño — Directora Ejecutiva y Socia Fundadora de Tailor Servicios" 
+                  className="story-leader-photo"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div className="story-image-caption">
+                <h3 className="leader-name">{t('story_leader_name')}</h3>
+                <p className="leader-role">{t('story_leader_role')}</p>
+                
+                <div className="leader-bio-body">
+                  <p>{t('story_leader_bio_1')}</p>
+                  <p>{t('story_leader_bio_2')}</p>
+                </div>
+
+                <div className="leader-quote-box">
+                  <svg className="leader-quote-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                  </svg>
+                  <p className="leader-quote-text">
+                    &ldquo;{t('story_leader_quote')}&rdquo;
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -105,7 +145,7 @@ export default function NosotrosPage() {
       <section className="mission-vision-section">
         <div className="fluid-container">
           <div className="mission-vision-grid">
-            <motion.div 
+            <motion.div
               className="mv-card mission-card"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -127,7 +167,7 @@ export default function NosotrosPage() {
               </p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="mv-card vision-card"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -159,8 +199,8 @@ export default function NosotrosPage() {
       {/* Por qué nos eligen */}
       <section className="why-section">
         <div className="fluid-container">
-          <h2 style={{textAlign: 'center', fontSize: '2.5rem', color: 'var(--color-dark)'}}>{t('why_title')}</h2>
-          <p style={{textAlign: 'center', fontSize: '1.25rem', color: 'var(--color-gray-dark)', marginTop: '1rem', maxWidth: '800px', margin: '1rem auto 0'}}>
+          <h2 style={{ textAlign: 'center', fontSize: '2.5rem', color: 'var(--color-dark)' }}>{t('why_title')}</h2>
+          <p style={{ textAlign: 'center', fontSize: '1.25rem', color: 'var(--color-gray-dark)', marginTop: '1rem', maxWidth: '800px', margin: '1rem auto 0' }}>
             {t('why_subtitle')}
           </p>
 
@@ -197,14 +237,14 @@ export default function NosotrosPage() {
       <section className="team-section">
         <div className="fluid-container team-grid">
           <div className="team-image-placeholder">
-            <img 
-              src="/Images/team-nosotros.webp" 
-              alt="Reunión de equipo profesional Tailor Servicios" 
-              loading="lazy" 
-              decoding="async" 
+            <img
+              src="/Images/team-nosotros.webp"
+              alt="Reunión de equipo profesional Tailor Servicios"
+              loading="lazy"
+              decoding="async"
             />
           </div>
-          
+
           <div className="team-content">
             <h2>{t('team_title')}</h2>
             <ul className="team-list">
@@ -219,9 +259,9 @@ export default function NosotrosPage() {
             {/* Identificador de Marca Oficial Vigente en el pie de la sección */}
             <div className="team-brand-badge">
               <div className="team-brand-logo-wrap">
-                <img 
-                  src="/tailor-logo-white.png" 
-                  alt="Tailor Servicios — Identificador Oficial" 
+                <img
+                  src="/tailor-logo-white.png"
+                  alt="Tailor Servicios — Identificador Oficial"
                   className="team-brand-logo"
                 />
               </div>
@@ -250,8 +290,8 @@ export default function NosotrosPage() {
 
           <div className="alliances-grid">
             {alliances.map((alliance, i) => (
-              <motion.div 
-                key={alliance.id} 
+              <motion.div
+                key={alliance.id}
                 className="alliance-card"
                 initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -259,9 +299,9 @@ export default function NosotrosPage() {
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
                 <div className="alliance-logo-box">
-                  <img 
-                    src={alliance.logo} 
-                    alt={`Logo Alianza ${alliance.name}`} 
+                  <img
+                    src={alliance.logo}
+                    alt={`Logo Alianza ${alliance.name}`}
                     className="alliance-logo-img"
                   />
                 </div>
