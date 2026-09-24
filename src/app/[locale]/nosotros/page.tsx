@@ -112,7 +112,7 @@ export default function NosotrosPage() {
               <div className="story-image-wrap">
                 <img 
                   src="/maria-avendano.webp" 
-                  alt="María Avendaño — Directora Ejecutiva y Socia Fundadora de Tailor Servicios" 
+                  alt="Ma. Pía Avendaño A. — Directora Ejecutiva y Socia Fundadora de Tailor Servicios" 
                   className="story-leader-photo"
                   loading="lazy"
                   decoding="async"
