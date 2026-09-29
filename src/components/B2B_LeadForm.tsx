@@ -327,9 +327,11 @@ export default function B2B_LeadForm() {
 
       {/* Cloudflare Turnstile Widget */}
       <div 
-        ref={turnstileContainerRef} 
+        ref={turnstileContainerRef}
+        id="b2b-turnstile-container"
         style={{ margin: '14px 0', minHeight: '65px', display: 'flex', justifyContent: 'center' }}
-      />
+        aria-label="Verificación de seguridad"
+      ></div>
 
       <div className="submit-container">
         <button
