@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, FocusEvent, FormEvent, useEffect } from 'react';
+import React, { useState, FocusEvent, FormEvent, useEffect, useRef } from 'react';
 import './B2B_LeadForm.css';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
@@ -13,6 +13,8 @@ interface FormState {
   servicio: { value: string; error: string };
   legal: { value: boolean; error: string };
 }
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '0x4AAAAAAFIi14-gxvWeg3z7';
 
 export default function B2B_LeadForm() {
   const t = useTranslations('B2B_LeadForm');
@@ -33,12 +35,33 @@ export default function B2B_LeadForm() {
   const [renderTime] = useState<number>(() => Date.now());
   const [honeypot, setHoneypot] = useState('');
   const [turnstileToken, setTurnstileToken] = useState<string>('');
-  const [hasTurnstileKey, setHasTurnstileKey] = useState<boolean>(false);
+  const turnstileContainerRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-    if (!siteKey) return;
-    setHasTurnstileKey(true);
+    const renderTurnstileWidget = () => {
+      if (
+        typeof window !== 'undefined' &&
+        (window as any).turnstile &&
+        turnstileContainerRef.current &&
+        widgetIdRef.current === null
+      ) {
+        try {
+          widgetIdRef.current = (window as any).turnstile.render(turnstileContainerRef.current, {
+            sitekey: TURNSTILE_SITE_KEY,
+            theme: 'light',
+            callback: (token: string) => {
+              setTurnstileToken(token);
+            },
+            'expired-callback': () => {
+              setTurnstileToken('');
+            },
+          });
+        } catch (err) {
+          console.error('[Turnstile] Render exception:', err);
+        }
+      }
+    };
 
     const scriptId = 'cf-turnstile-script';
     let script = document.getElementById(scriptId) as HTMLScriptElement;
@@ -48,32 +71,22 @@ export default function B2B_LeadForm() {
       script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
       script.async = true;
       script.defer = true;
+      script.onload = () => {
+        renderTurnstileWidget();
+      };
       document.head.appendChild(script);
+    } else {
+      renderTurnstileWidget();
     }
 
-    const interval = setInterval(() => {
-      if ((window as any).turnstile) {
-        clearInterval(interval);
-        const container = document.getElementById('b2b-turnstile-container');
-        if (container && !container.hasChildNodes()) {
-          try {
-            (window as any).turnstile.render('#b2b-turnstile-container', {
-              sitekey: siteKey,
-              callback: (token: string) => {
-                setTurnstileToken(token);
-              },
-              'expired-callback': () => {
-                setTurnstileToken('');
-              },
-            });
-          } catch (e) {
-            console.error('Turnstile render error:', e);
-          }
-        }
+    // Polling de seguridad si el script ya estaba cargado
+    const timer = setInterval(() => {
+      if ((window as any).turnstile && widgetIdRef.current === null) {
+        renderTurnstileWidget();
       }
-    }, 250);
+    }, 300);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -136,7 +149,8 @@ export default function B2B_LeadForm() {
     e.preventDefault();
     if (!isValid) return;
 
-    if (hasTurnstileKey && !turnstileToken) {
+    const activeToken = turnstileToken || (document.querySelector('input[name="cf-turnstile-response"]') as HTMLInputElement)?.value || '';
+    if (!activeToken) {
       setServerError('Por favor, completa la verificación de seguridad antes de enviar.');
       return;
     }
@@ -173,7 +187,7 @@ export default function B2B_LeadForm() {
             empresa: formData.empresa.value,
             servicio: formData.servicio.value,
             privacyAccepted: formData.legal.value,
-            turnstile_token: turnstileToken,
+            turnstile_token: activeToken,
             _t: renderTime,
             website: honeypot,
           }),
@@ -311,15 +325,17 @@ export default function B2B_LeadForm() {
         {formData.legal.error && <span className="error-msg" role="alert">{formData.legal.error}</span>}
       </div>
 
-      {hasTurnstileKey && (
-        <div id="b2b-turnstile-container" style={{ margin: '8px 0', minHeight: '65px', display: 'flex', justifyContent: 'center' }}></div>
-      )}
+      {/* Cloudflare Turnstile Widget */}
+      <div 
+        ref={turnstileContainerRef} 
+        style={{ margin: '14px 0', minHeight: '65px', display: 'flex', justifyContent: 'center' }}
+      />
 
       <div className="submit-container">
         <button
           type="submit"
           className={`submit-button ${isSubmitting ? 'loading' : ''}`}
-          disabled={!isValid || isSubmitting || (hasTurnstileKey && !turnstileToken)}
+          disabled={!isValid || isSubmitting}
         >
           {isSubmitting ? <span className="spinner" aria-hidden="true"></span> : t('btn_submit')}
         </button>
