@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { maskIp } from '@/lib/auth';
 
 let nodemailerInstance: any = null;
 try {
@@ -104,12 +105,96 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
+/**
+ * Filtro Heurístico Anti-Gibberish / Anti-Spam:
+ * Detecta cadenas generadas aleatoriamente por bots (ej. "onwIJBrzaTJGCafAgNyuiK", "wPGHYQOFQHIXXPTY").
+ */
+function isSuspiciousBotInput(nombre: string, empresa: string): { isBot: boolean; reason?: string } {
+  // 1. Cúmulo anómalo de 5 o más consonantes seguidas (imposible en español/inglés normal)
+  const consonantClusterRegex = /[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]{5,}/;
+  if (consonantClusterRegex.test(nombre) || consonantClusterRegex.test(empresa)) {
+    return { isBot: true, reason: 'consonant_cluster' };
+  }
+
+  // 2. Token largo sin espacios con alternancia caótica de mayúsculas/minúsculas
+  const tokens = [...nombre.split(/\s+/), ...empresa.split(/\s+/)];
+  for (const token of tokens) {
+    if (token.length >= 10) {
+      let transitions = 0;
+      for (let i = 1; i < token.length; i++) {
+        const prevIsUpper = token[i - 1] >= 'A' && token[i - 1] <= 'Z';
+        const currIsUpper = token[i] >= 'A' && token[i] <= 'Z';
+        const prevIsLower = token[i - 1] >= 'a' && token[i - 1] <= 'z';
+        const currIsLower = token[i] >= 'a' && token[i] <= 'z';
+        if ((prevIsUpper && currIsLower) || (prevIsLower && currIsUpper)) {
+          transitions++;
+        }
+      }
+      if (transitions >= 3) {
+        return { isBot: true, reason: 'chaotic_case_token' };
+      }
+    }
+  }
+
+  // 3. Proporción de vocales en palabras largas (menos del 15% de vocales indica texto aleatorio)
+  for (const text of [nombre, empresa]) {
+    const letters = text.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ]/g, '');
+    if (letters.length >= 8) {
+      const vowels = letters.match(/[aeiouáéíóúAEIOUÁÉÍÓÚ]/g) || [];
+      const vowelRatio = vowels.length / letters.length;
+      if (vowelRatio < 0.15) {
+        return { isBot: true, reason: 'low_vowel_ratio' };
+      }
+    }
+  }
+
+  return { isBot: false };
+}
+
+/**
+ * Validador de token Cloudflare Turnstile en servidor.
+ */
+async function verifyTurnstile(token: string | undefined, ip: string): Promise<{ valid: boolean; reason?: string }> {
+  const secretKey = process.env.TURNSTILE_SECRET_KEY;
+  if (!secretKey) {
+    // Si aún no se ha configurado la variable TURNSTILE_SECRET_KEY en Vercel,
+    // se permite el paso y operan los demás filtros de contención.
+    return { valid: true };
+  }
+  if (!token) {
+    return { valid: false, reason: 'missing_turnstile_token' };
+  }
+  try {
+    const formData = new URLSearchParams();
+    formData.append('secret', secretKey);
+    formData.append('response', token);
+    formData.append('remoteip', ip);
+
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    });
+    const outcome = await res.json();
+    if (!outcome.success) {
+      console.warn('[Turnstile] Token inválido o expirado:', outcome['error-codes']);
+      return { valid: false, reason: 'invalid_turnstile_token' };
+    }
+    return { valid: true };
+  } catch (err) {
+    console.error('[Turnstile] Error en consulta a Cloudflare siteverify:', err);
+    return { valid: false, reason: 'turnstile_exception' };
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const rawIp = request.headers.get('x-forwarded-for') || 'local';
     const clientIp = rawIp.split(',')[0].trim();
 
-    // 1. Rate limiting
+    // 1. Rate limiting local
     if (!checkRateLimit(clientIp)) {
       return NextResponse.json(
         { success: false, error: 'Demasiadas solicitudes. Por favor, intenta más tarde.' },
@@ -117,7 +202,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. Verificación de Content-Type (bloqueo directo de multipart o envíos binarios)
+    // 2. Verificación de Content-Type
     const contentType = request.headers.get('content-type') || '';
     if (!contentType.includes('application/json')) {
       return NextResponse.json(
@@ -129,11 +214,31 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     // 3. Honeypot check (detección silenciosa de bots spam)
-    if (body._hp || body.honeypot || body.website) {
-      return NextResponse.json({ success: true });
+    if (body._hp || body.honeypot || body.website || body.company_fax || body.b_email) {
+      console.warn(`[Send-Email] Bot neutralizado por Honeypot (IP: ${maskIp(clientIp)})`);
+      return NextResponse.json({ success: true, message: 'Solicitud procesada.' });
     }
 
-    // 4. Validación estricta de tipo de solicitud
+    // 4. Time-Trap (trampa de tiempo: rechaza envíos inhumanamente veloces en < 2.5 seg)
+    if (body._t) {
+      const elapsed = Date.now() - Number(body._t);
+      if (elapsed < 2500 || elapsed > 86400000) {
+        console.warn(`[Send-Email] Bot neutralizado por Time-Trap: ${elapsed}ms (IP: ${maskIp(clientIp)})`);
+        return NextResponse.json({ success: true, message: 'Solicitud procesada.' });
+      }
+    }
+
+    // 5. Verificación de Cloudflare Turnstile
+    const turnstileCheck = await verifyTurnstile(body.turnstile_token, clientIp);
+    if (!turnstileCheck.valid) {
+      console.warn(`[Send-Email] Acceso bloqueado por Turnstile: ${turnstileCheck.reason} (IP: ${maskIp(clientIp)})`);
+      return NextResponse.json(
+        { success: false, error: 'Verificación de seguridad requerida. Por favor, recarga la página.' },
+        { status: 403 }
+      );
+    }
+
+    // 6. Validación estricta de tipo de solicitud
     const { type } = body;
     if (type === 'candidate') {
       return NextResponse.json(
@@ -149,7 +254,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Tipo de solicitud inválido.' }, { status: 400 });
     }
 
-    // 5. Bloqueo estricto de elusión: Rechazar cualquier intento de adjuntar o enviar archivos bajo type=lead
+    // 7. Bloqueo estricto de elusión de archivos
     const FORBIDDEN_FILE_KEYS = [
       'file', 'files', 'cv', 'cv_file', 'attachment', 'attachments', 
       'resume', 'curriculum', 'document', 'cv_path', 'cv_url', 'cv_base64', 'file_data'
@@ -176,7 +281,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 4. Sanitización y validación de campos obligatorios
+    // 8. Sanitización y validación de campos obligatorios
     const safeNombre = sanitizeInput(body.nombre, 100);
     const rawEmail = typeof body.email === 'string' ? body.email.trim() : '';
     const safeEmail = sanitizeInput(rawEmail, 120);
@@ -193,6 +298,13 @@ export async function POST(request: Request) {
 
     if (!safeEmpresa || safeEmpresa.length < 2) {
       return NextResponse.json({ success: false, error: 'Nombre de empresa requerido.' }, { status: 400 });
+    }
+
+    // 9. Filtro Heurístico Anti-Gibberish (bloqueo silencioso de scripts spam)
+    const botCheck = isSuspiciousBotInput(safeNombre, safeEmpresa);
+    if (botCheck.isBot) {
+      console.warn(`[Send-Email] Bot spam neutralizado por filtro heurístico: ${botCheck.reason} [${safeEmpresa} - ${safeNombre}] (IP: ${maskIp(clientIp)})`);
+      return NextResponse.json({ success: true, message: 'Solicitud procesada.' });
     }
 
     const adminEmail = process.env.LEADS_NOTIFICATION_EMAIL || 'contacto@tailorservicios.cl';

@@ -29,6 +29,53 @@ export default function B2B_LeadForm() {
   const [serverError, setServerError] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // Defensas anti-bot en cliente
+  const [renderTime] = useState<number>(() => Date.now());
+  const [honeypot, setHoneypot] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState<string>('');
+  const [hasTurnstileKey, setHasTurnstileKey] = useState<boolean>(false);
+
+  useEffect(() => {
+    const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+    if (!siteKey) return;
+    setHasTurnstileKey(true);
+
+    const scriptId = 'cf-turnstile-script';
+    let script = document.getElementById(scriptId) as HTMLScriptElement;
+    if (!script) {
+      script = document.createElement('script');
+      script.id = scriptId;
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+
+    const interval = setInterval(() => {
+      if ((window as any).turnstile) {
+        clearInterval(interval);
+        const container = document.getElementById('b2b-turnstile-container');
+        if (container && !container.hasChildNodes()) {
+          try {
+            (window as any).turnstile.render('#b2b-turnstile-container', {
+              sitekey: siteKey,
+              callback: (token: string) => {
+                setTurnstileToken(token);
+              },
+              'expired-callback': () => {
+                setTurnstileToken('');
+              },
+            });
+          } catch (e) {
+            console.error('Turnstile render error:', e);
+          }
+        }
+      }
+    }, 250);
+
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     // Check global validity
     const checkValid = () => {
@@ -89,6 +136,11 @@ export default function B2B_LeadForm() {
     e.preventDefault();
     if (!isValid) return;
 
+    if (hasTurnstileKey && !turnstileToken) {
+      setServerError('Por favor, completa la verificación de seguridad antes de enviar.');
+      return;
+    }
+
     setIsSubmitting(true);
     setServerError('');
 
@@ -107,7 +159,7 @@ export default function B2B_LeadForm() {
 
       if (dbError) throw dbError;
 
-      // Send Email Notifications (Alert & Auto-responder)
+      // Send Email Notifications (Alert & Auto-responder) con protecciones anti-bot
       try {
         await fetch('/api/send-email', {
           method: 'POST',
@@ -121,6 +173,9 @@ export default function B2B_LeadForm() {
             empresa: formData.empresa.value,
             servicio: formData.servicio.value,
             privacyAccepted: formData.legal.value,
+            turnstile_token: turnstileToken,
+            _t: renderTime,
+            website: honeypot,
           }),
         });
       } catch (mailErr) {
@@ -158,6 +213,20 @@ export default function B2B_LeadForm() {
           {serverError}
         </div>
       )}
+
+      {/* Honeypot anti-spam (invisible para usuarios reales) */}
+      <div style={{ position: 'absolute', opacity: 0, zIndex: -1, pointerEvents: 'none', height: 0, overflow: 'hidden' }} aria-hidden="true">
+        <label htmlFor="b2b_hp_website">Sitio Web Corporativo</label>
+        <input
+          type="text"
+          id="b2b_hp_website"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+        />
+      </div>
 
       <div className="form-group">
         <label htmlFor="b2b-nombre">{t('lbl_name')}</label>
@@ -242,11 +311,15 @@ export default function B2B_LeadForm() {
         {formData.legal.error && <span className="error-msg" role="alert">{formData.legal.error}</span>}
       </div>
 
+      {hasTurnstileKey && (
+        <div id="b2b-turnstile-container" style={{ margin: '8px 0', minHeight: '65px', display: 'flex', justifyContent: 'center' }}></div>
+      )}
+
       <div className="submit-container">
         <button
           type="submit"
           className={`submit-button ${isSubmitting ? 'loading' : ''}`}
-          disabled={!isValid || isSubmitting}
+          disabled={!isValid || isSubmitting || (hasTurnstileKey && !turnstileToken)}
         >
           {isSubmitting ? <span className="spinner" aria-hidden="true"></span> : t('btn_submit')}
         </button>
