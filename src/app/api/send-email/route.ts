@@ -91,6 +91,54 @@ function sanitizeInput(val: any, maxLength = 150): string {
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
+/**
+ * Lista de dominios de email desechables / temporales usados por bots y spam.
+ * Cubre los servicios más activos — estable sin mantenimiento por años.
+ */
+const DISPOSABLE_EMAIL_DOMAINS = new Set([
+  'mailinator.com', 'guerrillamail.com', 'guerrillamail.net', 'guerrillamail.org',
+  'guerrillamail.biz', 'guerrillamail.de', 'guerrillamail.info',
+  'tempmail.com', 'temp-mail.org', 'throwam.com', 'yopmail.com',
+  'trashmail.com', 'trashmail.me', 'trashmail.net', 'trashmail.org',
+  'mailnull.com', 'spamgourmet.com', 'sharklasers.com', 'guerrillamailblock.com',
+  'grr.la', 'spam4.me', 'dispostable.com', 'fakeinbox.com', 'maildrop.cc',
+  'mailnesia.com', 'mailforspam.com', 'spamhereplease.com', 'binkmail.com',
+  'safetymail.info', 'spambox.us', 'spamdecoy.net', 'spamfree24.org',
+  'throwam.com', 'throwam.net', 'mytemp.email', 'tmpmail.net', 'tmpmail.org',
+  'tempr.email', 'discard.email', 'crazymailing.com', 'mohmal.com',
+  'getnada.com', 'mailnull.com', 'spamoff.de', 'tempinbox.com',
+  'spamgourmet.net', 'spamgourmet.org', 'anonbox.net', 'filzmail.com',
+  'dumpmail.de', 'discardmail.com', 'discardmail.de', 'spamspot.com',
+  'jetable.fr.nf', 'noref.in', 'ownmail.net', 'petml.com', 'shredmail.com',
+  'spamevader.com', 'spamslicer.com', 'spoofmail.de', 'suremail.info',
+  'throwam.com', 'uggsrock.com', 'veryrealemail.com', 'wasteland.rr.nu',
+  'webemail.me', 'weg-werf-email.de', 'wegwerfmail.de', 'wegwerfmail.net',
+  'wegwerfmail.org', 'wh4f.org', 'yopmail.fr', 'yopmail.pp.ua',
+  'cool.fr.nf', 'jetable.fr.nf', 'nospam.ze.tc', 'nomail.xl.cx',
+]);
+
+function isDisposableEmail(email: string): boolean {
+  const domain = email.split('@')[1]?.toLowerCase();
+  return domain ? DISPOSABLE_EMAIL_DOMAINS.has(domain) : false;
+}
+
+/**
+ * Whitelist de orígenes permitidos para el endpoint /api/send-email.
+ * Incluye dominio de producción y previews de Vercel.
+ */
+const ALLOWED_ORIGINS = [
+  'https://tailorservicios.cl',
+  'https://www.tailorservicios.cl',
+];
+
+function isAllowedOrigin(origin: string | null): boolean {
+  if (!origin) return false;
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  // Permite preview deployments de Vercel: https://*.vercel.app
+  if (/^https:\/\/[a-zA-Z0-9-]+-[a-zA-Z0-9-]+\.vercel\.app$/.test(origin)) return true;
+  return false;
+}
+
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
   const entry = rateLimitMap.get(ip);
@@ -213,6 +261,16 @@ export async function POST(request: Request) {
 
     const body = await request.json();
 
+    // 3.1 Validación de Origin (bloquea scripts externos que llaman directo al endpoint)
+    const origin = request.headers.get('origin');
+    if (!isAllowedOrigin(origin)) {
+      console.warn(`[Send-Email] Origen bloqueado: ${origin} (IP: ${maskIp(clientIp)})`);
+      return NextResponse.json(
+        { success: false, error: 'Origen de solicitud no autorizado.' },
+        { status: 403 }
+      );
+    }
+
     // 3. Honeypot check (detección silenciosa de bots spam)
     if (body._hp || body.honeypot || body.website || body.company_fax || body.b_email) {
       console.warn(`[Send-Email] Bot neutralizado por Honeypot (IP: ${maskIp(clientIp)})`);
@@ -294,6 +352,15 @@ export async function POST(request: Request) {
 
     if (!safeEmail || !EMAIL_REGEX.test(rawEmail) || rawEmail.length > 120) {
       return NextResponse.json({ success: false, error: 'Correo electrónico inválido.' }, { status: 400 });
+    }
+
+    // 8.1 Bloqueo de emails desechables / temporales
+    if (isDisposableEmail(rawEmail)) {
+      console.warn(`[Send-Email] Email desechable bloqueado: ${maskIp(clientIp)}`);
+      return NextResponse.json(
+        { success: false, error: 'Por favor, use un correo corporativo o permanente para contactarnos.' },
+        { status: 400 }
+      );
     }
 
     if (!safeEmpresa || safeEmpresa.length < 2) {
