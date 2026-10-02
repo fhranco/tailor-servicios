@@ -4,7 +4,8 @@ import path from 'path';
 import { createClient } from '@supabase/supabase-js';
 import { blogArticlesEs } from '@/data/blogPosts';
 
-const CACHE_PATH = path.join(process.cwd(), 'scratch', 'blog_articles.json');
+const DATA_PATH = path.join(process.cwd(), 'src', 'data', 'blog_articles.json');
+const SCRATCH_PATH = path.join(process.cwd(), 'scratch', 'blog_articles.json');
 
 function getSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -15,8 +16,9 @@ function getSupabase() {
 
 function readLiveArticles() {
   try {
-    if (fs.existsSync(CACHE_PATH)) {
-      const content = fs.readFileSync(CACHE_PATH, 'utf-8');
+    const targetPath = fs.existsSync(DATA_PATH) ? DATA_PATH : (fs.existsSync(SCRATCH_PATH) ? SCRATCH_PATH : null);
+    if (targetPath) {
+      const content = fs.readFileSync(targetPath, 'utf-8');
       const parsed = JSON.parse(content);
       if (Array.isArray(parsed) && parsed.length > 0) {
         return parsed;

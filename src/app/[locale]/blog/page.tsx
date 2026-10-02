@@ -14,6 +14,28 @@ export default function BlogPage() {
 
   const defaultBlogPosts = [
     {
+      id: 1790975336156,
+      slug: 'hay-lugares-que-uno-habita-y-hay-otros-que-de-alguna-manera-terminan-habitandolo-a-uno-magallanes-tiene-algo-de-eso',
+      title: isEn
+        ? "There are places one inhabits, and others that somehow end up inhabiting you. Magallanes has something of that."
+        : "Hay lugares que uno habita y hay otros que, de alguna manera, terminan habitándolo a uno. Magallanes tiene algo de eso.",
+      category: isEn ? "People & Strategy" : "Gestión de Personas",
+      date: isEn ? "October 2, 2026" : "2 de octubre de 2026",
+      readTime: isEn ? "7 min read" : "7 min de lectura",
+      summary: isEn
+        ? "For those of us born in Punta Arenas who have built our lives in this territory, its realities are not something told to us. We live them."
+        : "Para quienes nacimos en Punta Arenas y hemos desarrollado buena parte de nuestras vidas en este territorio, sus particularidades no son algo que nos hayan contado. Las vivimos.",
+      image: '/Images/tailor-web15.webp',
+      featured: true,
+      categoryKey: 'personas',
+      author: {
+        name: 'Ma. Pía Avendaño A.',
+        role: isEn ? 'Executive Director - Institutional Leadership & Strategy' : 'Directora Ejecutiva - Liderazgo Institucional & Estrategia',
+        institution: 'Tailor Servicios',
+        avatar: 'MP'
+      }
+    },
+    {
       id: 1,
       slug: 'estrategias-atraccion-talento-zonas-extremas-chile',
       title: t('post1_title'),
@@ -22,8 +44,14 @@ export default function BlogPage() {
       readTime: t('post1_time'),
       summary: t('post1_summary'),
       image: '/Images/tailor-web15.webp',
-      featured: true,
-      categoryKey: 'atraccion'
+      featured: false,
+      categoryKey: 'atraccion',
+      author: {
+        name: 'Equipo de Consultoría Tailor',
+        role: 'Especialistas en Reclutamiento & Gestión de Personas',
+        institution: 'Tailor Servicios',
+        avatar: 'TS'
+      }
     },
     {
       id: 2,
@@ -196,7 +224,7 @@ export default function BlogPage() {
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                       </svg>
-                      {t('author_tailor')}
+                      {(featuredPost as any).author?.name || t('author_tailor')}
                     </span>
                     <span className="meta-bullet">•</span>
                     <span>{featuredPost.date}</span>
@@ -277,6 +305,12 @@ export default function BlogPage() {
 
                     <div className="blog-card-body">
                       <div className="blog-card-meta">
+                        {(post as any).author?.name && (
+                          <>
+                            <span className="blog-card-author">{(post as any).author.name}</span>
+                            <span className="meta-sep">•</span>
+                          </>
+                        )}
                         <span>{post.date}</span>
                         <span className="meta-sep">•</span>
                         <span className="meta-time">

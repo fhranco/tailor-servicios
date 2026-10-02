@@ -5,7 +5,8 @@ import { createClient } from '@supabase/supabase-js';
 import { getAuthorizedUser, maskIp } from '@/lib/auth';
 import { blogArticlesEs } from '@/data/blogPosts';
 
-const CACHE_PATH = path.join(process.cwd(), 'scratch', 'blog_articles.json');
+const DATA_PATH = path.join(process.cwd(), 'src', 'data', 'blog_articles.json');
+const SCRATCH_PATH = path.join(process.cwd(), 'scratch', 'blog_articles.json');
 
 function getAdminSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -16,8 +17,9 @@ function getAdminSupabase() {
 
 function readLocalArticles(): any[] {
   try {
-    if (fs.existsSync(CACHE_PATH)) {
-      const content = fs.readFileSync(CACHE_PATH, 'utf-8');
+    const targetPath = fs.existsSync(DATA_PATH) ? DATA_PATH : (fs.existsSync(SCRATCH_PATH) ? SCRATCH_PATH : null);
+    if (targetPath) {
+      const content = fs.readFileSync(targetPath, 'utf-8');
       return JSON.parse(content);
     }
   } catch (err) {
@@ -28,13 +30,20 @@ function readLocalArticles(): any[] {
 
 function writeLocalArticles(articles: any[]) {
   try {
-    const dir = path.dirname(CACHE_PATH);
+    // 1. Guardar en src/data/blog_articles.json para persistencia en repo
+    const dir = path.dirname(DATA_PATH);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
-    fs.writeFileSync(CACHE_PATH, JSON.stringify(articles, null, 2), 'utf-8');
+    fs.writeFileSync(DATA_PATH, JSON.stringify(articles, null, 2), 'utf-8');
+
+    // 2. Guardar en scratch si el directorio existe
+    const scratchDir = path.dirname(SCRATCH_PATH);
+    if (fs.existsSync(scratchDir)) {
+      fs.writeFileSync(SCRATCH_PATH, JSON.stringify(articles, null, 2), 'utf-8');
+    }
   } catch (err) {
-    console.error('Error writing local blog cache:', err);
+    console.error('Error writing blog articles to file:', err);
   }
 }
 

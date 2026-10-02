@@ -170,7 +170,7 @@ export default function ArticleDetailPage({ params: { locale, slug } }: Props) {
 
             <div className="article-meta-row">
               <div className="meta-author-box">
-                <div className="author-avatar-icon">TS</div>
+                <div className="author-avatar-icon">{article.author.avatar || 'TS'}</div>
                 <div>
                   <div className="author-name">{article.author.name}</div>
                   <div className="author-role">{article.author.role}</div>
