@@ -132,7 +132,13 @@ CREATE TABLE IF NOT EXISTS public.blog_articles (
   image_alt TEXT,
   summary TEXT,
   content_html TEXT,              -- Contenido HTML con formato nativo y tags respetados
-  content_json JSONB,             -- Estructura de respaldo
+  content_json JSONB,             -- Estructura de respaldo y campos bilingües
+  title_en TEXT,                  -- Título corporativo en Inglés
+  subtitle_en TEXT,               -- Subtítulo / Bajada en Inglés
+  summary_en TEXT,                -- Resumen para motores de búsqueda en Inglés
+  content_html_en TEXT,           -- Contenido HTML en Inglés
+  category_en TEXT,               -- Categoría en Inglés
+  read_time_en TEXT,              -- Tiempo de lectura en Inglés
   keywords TEXT[] DEFAULT '{}',
   key_takeaways TEXT[] DEFAULT '{}',
   read_time TEXT DEFAULT '5 min de lectura',
@@ -142,6 +148,14 @@ CREATE TABLE IF NOT EXISTS public.blog_articles (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
+
+-- Migraciones seguras para tablas existentes
+ALTER TABLE public.blog_articles ADD COLUMN IF NOT EXISTS title_en TEXT;
+ALTER TABLE public.blog_articles ADD COLUMN IF NOT EXISTS subtitle_en TEXT;
+ALTER TABLE public.blog_articles ADD COLUMN IF NOT EXISTS summary_en TEXT;
+ALTER TABLE public.blog_articles ADD COLUMN IF NOT EXISTS content_html_en TEXT;
+ALTER TABLE public.blog_articles ADD COLUMN IF NOT EXISTS category_en TEXT;
+ALTER TABLE public.blog_articles ADD COLUMN IF NOT EXISTS read_time_en TEXT;
 
 ALTER TABLE public.blog_articles ENABLE ROW LEVEL SECURITY;
 

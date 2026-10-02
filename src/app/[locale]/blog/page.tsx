@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from '@/i18n/routing';
 import { motion, AnimatePresence } from 'framer-motion';
 import './page.css';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 export default function BlogPage() {
   const t = useTranslations('BlogPage');
+  const locale = useLocale();
+  const isEn = locale === 'en';
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   const defaultBlogPosts = [
@@ -162,14 +164,29 @@ export default function BlogPage() {
                 <div className="featured-image-container">
                   <img 
                     src={featuredPost.image} 
-                    alt={featuredPost.title} 
+                    alt={(isEn && (featuredPost as any).titleEn) ? (featuredPost as any).titleEn : featuredPost.title} 
                     className="featured-img"
                     loading="eager"
                   />
                   <div className="featured-tag-badge">
                     <span className="tag-sparkle">★</span> {t('featured_badge')}
                   </div>
-                  <span className="featured-cat-badge">{featuredPost.category}</span>
+                  <span className="featured-cat-badge">
+                    {(isEn && (featuredPost as any).categoryEn) ? (featuredPost as any).categoryEn : featuredPost.category}
+                    {isEn && (
+                      <span style={{
+                        marginLeft: '0.45rem',
+                        padding: '0.12rem 0.4rem',
+                        borderRadius: '4px',
+                        fontSize: '0.68rem',
+                        fontWeight: 800,
+                        background: (featuredPost as any).titleEn ? '#1e40af' : '#92400e',
+                        color: '#ffffff'
+                      }}>
+                        {(featuredPost as any).titleEn ? 'EN' : 'ES'}
+                      </span>
+                    )}
+                  </span>
                 </div>
 
                 <div className="featured-body">
@@ -189,14 +206,18 @@ export default function BlogPage() {
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="12 6 12 12 16 14"></polyline>
                       </svg>
-                      {featuredPost.readTime}
+                      {(isEn && (featuredPost as any).readTimeEn) ? (featuredPost as any).readTimeEn : featuredPost.readTime}
                     </span>
                   </div>
 
                   <Link href={`/blog/${featuredPost.slug}`} className="article-title-link">
-                    <h2 className="featured-title">{featuredPost.title}</h2>
+                    <h2 className="featured-title">
+                      {(isEn && (featuredPost as any).titleEn) ? (featuredPost as any).titleEn : featuredPost.title}
+                    </h2>
                   </Link>
-                  <p className="featured-summary">{featuredPost.summary}</p>
+                  <p className="featured-summary">
+                    {(isEn && (featuredPost as any).summaryEn) ? (featuredPost as any).summaryEn : featuredPost.summary}
+                  </p>
 
                   <div className="featured-footer">
                     <Link href={`/blog/${featuredPost.slug}`} className="btn-luxury-action">
@@ -211,54 +232,76 @@ export default function BlogPage() {
           {/* Grid de Artículos */}
           <div className="blog-grid">
             <AnimatePresence mode="popLayout">
-              {gridPosts.map((post, idx) => (
-                <motion.article 
-                  key={post.id}
-                  layout
-                  className="blog-card"
-                  initial={{ opacity: 0, y: 25 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4, delay: idx * 0.08 }}
-                >
-                  <Link href={`/blog/${post.slug}`} className="blog-card-img-link">
-                    <div className="blog-card-image-wrapper">
-                      <img 
-                        src={post.image} 
-                        alt={post.title} 
-                        className="blog-card-img" 
-                        loading="lazy"
-                      />
-                      <span className="blog-category-badge">{post.category}</span>
-                    </div>
-                  </Link>
+              {gridPosts.map((post, idx) => {
+                const title = (isEn && (post as any).titleEn) ? (post as any).titleEn : post.title;
+                const summary = (isEn && (post as any).summaryEn) ? (post as any).summaryEn : post.summary;
+                const category = (isEn && (post as any).categoryEn) ? (post as any).categoryEn : post.category;
+                const readTime = (isEn && (post as any).readTimeEn) ? (post as any).readTimeEn : post.readTime;
 
-                  <div className="blog-card-body">
-                    <div className="blog-card-meta">
-                      <span>{post.date}</span>
-                      <span className="meta-sep">•</span>
-                      <span className="meta-time">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <circle cx="12" cy="12" r="10"></circle>
-                          <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
-                        {post.readTime}
-                      </span>
-                    </div>
-
-                    <Link href={`/blog/${post.slug}`} className="article-title-link">
-                      <h2 className="blog-card-title">{post.title}</h2>
+                return (
+                  <motion.article 
+                    key={post.id}
+                    layout
+                    className="blog-card"
+                    initial={{ opacity: 0, y: 25 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.4, delay: idx * 0.08 }}
+                  >
+                    <Link href={`/blog/${post.slug}`} className="blog-card-img-link">
+                      <div className="blog-card-image-wrapper">
+                        <img 
+                          src={post.image} 
+                          alt={title} 
+                          className="blog-card-img" 
+                          loading="lazy"
+                        />
+                        <span className="blog-category-badge">
+                          {category}
+                          {isEn && (
+                            <span style={{
+                              marginLeft: '0.45rem',
+                              padding: '0.12rem 0.4rem',
+                              borderRadius: '4px',
+                              fontSize: '0.68rem',
+                              fontWeight: 800,
+                              background: (post as any).titleEn ? '#1e40af' : '#92400e',
+                              color: '#ffffff'
+                            }}>
+                              {(post as any).titleEn ? 'EN' : 'ES'}
+                            </span>
+                          )}
+                        </span>
+                      </div>
                     </Link>
-                    <p className="blog-card-summary">{post.summary}</p>
 
-                    <div className="blog-card-footer">
-                      <Link href={`/blog/${post.slug}`} className="blog-card-link">
-                        <span>{t('read_more')} →</span>
+                    <div className="blog-card-body">
+                      <div className="blog-card-meta">
+                        <span>{post.date}</span>
+                        <span className="meta-sep">•</span>
+                        <span className="meta-time">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                          </svg>
+                          {readTime}
+                        </span>
+                      </div>
+
+                      <Link href={`/blog/${post.slug}`} className="article-title-link">
+                        <h2 className="blog-card-title">{title}</h2>
                       </Link>
+                      <p className="blog-card-summary">{summary}</p>
+
+                      <div className="blog-card-footer">
+                        <Link href={`/blog/${post.slug}`} className="blog-card-link">
+                          <span>{t('read_more')} →</span>
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                </motion.article>
-              ))}
+                  </motion.article>
+                );
+              })}
             </AnimatePresence>
           </div>
 

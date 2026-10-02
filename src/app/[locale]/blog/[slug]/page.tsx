@@ -2,8 +2,10 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { Link } from '@/i18n/routing';
-import { getBlogArticleBySlug, blogArticlesEs } from '@/data/blogPosts';
+import { getBlogArticleBySlug, getAllBlogSlugs, blogArticlesEs } from '@/data/blogPosts';
 import './page.css';
+
+export const dynamicParams = true;
 
 interface Props {
   params: {
@@ -61,8 +63,8 @@ export async function generateMetadata({ params: { locale, slug } }: Props): Pro
 }
 
 export async function generateStaticParams() {
-  return blogArticlesEs.map(article => ({
-    slug: article.slug,
+  return getAllBlogSlugs().map(slug => ({
+    slug,
   }));
 }
 
@@ -154,7 +156,7 @@ export default function ArticleDetailPage({ params: { locale, slug } }: Props) {
         <header className="article-hero">
           <div className="fluid-container article-header-container">
             <nav className="article-breadcrumbs" aria-label="Breadcrumb">
-              <Link href="/" className="crumb-link">{isEn ? 'Inicio' : 'Inicio'}</Link>
+              <Link href="/" className="crumb-link">{isEn ? 'Home' : 'Inicio'}</Link>
               <span className="crumb-sep">/</span>
               <Link href="/blog" className="crumb-link">Blog</Link>
               <span className="crumb-sep">/</span>
@@ -220,26 +222,47 @@ export default function ArticleDetailPage({ params: { locale, slug } }: Props) {
             {/* Columna Principal de Contenido */}
             <main className="article-body-column">
               
-              {/* Puntos Clave para la Dirección */}
-              <div className="key-takeaways-card">
-                <div className="takeaways-header">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                  </svg>
-                  <h3>{isEn ? 'Key Strategic Takeaways' : 'Puntos Clave para la Dirección'}</h3>
+              {/* Aviso si en ruta en inglés aún no hay traducción cargada */}
+              {isEn && !article.contentHtmlEn && (
+                <div style={{
+                  background: '#f8fafc',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '8px',
+                  padding: '0.75rem 1.15rem',
+                  marginBottom: '1.25rem',
+                  fontSize: '0.86rem',
+                  color: '#475569',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.6rem'
+                }}>
+                  <span style={{ fontSize: '1.1rem' }}>🌐</span>
+                  <span><strong>English edition notice:</strong> This strategic analysis is currently presented in its official Spanish edition. Full English translation is being finalized.</span>
                 </div>
-                <ul className="takeaways-list">
-                  {article.keyTakeaways.map((point, idx) => (
-                    <li key={idx}>
-                      <span className="bullet-check">✓</span>
-                      <span>{point}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              )}
+
+              {/* Puntos Clave para la Dirección */}
+              {article.keyTakeaways && article.keyTakeaways.length > 0 && (
+                <div className="key-takeaways-card">
+                  <div className="takeaways-header">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                    </svg>
+                    <h3>{isEn ? 'Key Strategic Takeaways' : 'Puntos Clave para la Dirección'}</h3>
+                  </div>
+                  <ul className="takeaways-list">
+                    {article.keyTakeaways.map((point, idx) => (
+                      <li key={idx}>
+                        <span className="bullet-check">✓</span>
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {/* Índice de Contenidos Interactivo (Table of Contents) */}
-              {article.sections.length > 1 && (
+              {article.sections && article.sections.length > 1 && (
                 <nav className="table-of-contents-card" aria-label="Índice de Contenidos">
                   <div className="toc-header">
                     <span className="toc-icon">📑</span>
@@ -258,73 +281,84 @@ export default function ArticleDetailPage({ params: { locale, slug } }: Props) {
                 </nav>
               )}
 
-              {/* Secciones de Contenido */}
-              <div className="article-text-body">
-                {article.sections.map((section, sIdx) => (
-                  <section key={sIdx} id={`seccion-${sIdx + 1}`} className="content-sub-section">
-                    <h2 className="section-heading">
-                      <span className="heading-accent-bar"></span>
-                      {section.heading}
-                    </h2>
+              {/* Secciones de Contenido o HTML Directo */}
+              <div className="article-text-body article-html-direct">
+                {article.contentHtml ? (
+                  <div dangerouslySetInnerHTML={{ __html: article.contentHtml }} />
+                ) : (
+                  <>
+                    {article.sections?.map((section, sIdx) => (
+                      <section key={sIdx} id={`seccion-${sIdx + 1}`} className="content-sub-section">
+                        <h2 className="section-heading">
+                          <span className="heading-accent-bar"></span>
+                          {section.heading}
+                        </h2>
 
-                    {section.paragraphs.map((p, pIdx) => (
-                      <p 
-                        key={pIdx} 
-                        className={`article-paragraph ${sIdx === 0 && pIdx === 0 ? 'article-lead-paragraph' : ''}`}
-                      >
-                        {p}
-                      </p>
+                        {section.paragraphs?.map((p, pIdx) => (
+                          <p 
+                            key={pIdx} 
+                            className={`article-paragraph ${sIdx === 0 && pIdx === 0 ? 'article-lead-paragraph' : ''}`}
+                          >
+                            {p}
+                          </p>
+                        ))}
+
+                        {/* Subsecciones H3 si existen */}
+                        {section.subsections && section.subsections.map((sub, subIdx) => (
+                          <div key={subIdx} className="content-sub-sub-section">
+                            <h3 className="section-sub-heading">{sub.title}</h3>
+                            {sub.paragraphs?.map((sp, spIdx) => (
+                              <p key={spIdx} className="article-paragraph">{sp}</p>
+                            ))}
+                          </div>
+                        ))}
+
+                        {section.quote && (
+                          <blockquote className="article-quote">
+                            <p>"{section.quote}"</p>
+                          </blockquote>
+                        )}
+
+                        {section.list && (
+                          <ul className="article-styled-list">
+                            {section.list.map((item, lIdx) => (
+                              <li key={lIdx}>{item}</li>
+                            ))}
+                          </ul>
+                        )}
+
+                        {section.callout && (
+                          <aside className="article-callout-box">
+                            <div className="callout-icon">💡</div>
+                            <div>
+                              <h4>{section.callout.title}</h4>
+                              <p>{section.callout.text}</p>
+                            </div>
+                          </aside>
+                        )}
+                      </section>
                     ))}
 
-                    {/* Subsecciones H3 si existen */}
-                    {section.subsections && section.subsections.map((sub, subIdx) => (
-                      <div key={subIdx} className="content-sub-sub-section">
-                        <h3 className="section-sub-heading">{sub.title}</h3>
-                        {sub.paragraphs.map((sp, spIdx) => (
-                          <p key={spIdx} className="article-paragraph">{sp}</p>
-                        ))}
-                      </div>
-                    ))}
-
-                    {section.quote && (
-                      <blockquote className="article-quote">
-                        <p>"{section.quote}"</p>
-                      </blockquote>
+                    {/* Conclusión */}
+                    {article.conclusion?.text && (
+                      <section className="article-conclusion-box">
+                        <h3>{article.conclusion.title}</h3>
+                        <p>{article.conclusion.text}</p>
+                      </section>
                     )}
+                  </>
+                )}
+              </div>
 
-                    {section.list && (
-                      <ul className="article-styled-list">
-                        {section.list.map((item, lIdx) => (
-                          <li key={lIdx}>{item}</li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {section.callout && (
-                      <aside className="article-callout-box">
-                        <div className="callout-icon">💡</div>
-                        <div>
-                          <h4>{section.callout.title}</h4>
-                          <p>{section.callout.text}</p>
-                        </div>
-                      </aside>
-                    )}
-                  </section>
-                ))}
-
-                {/* Conclusión */}
-                <section className="article-conclusion-box">
-                  <h3>{article.conclusion.title}</h3>
-                  <p>{article.conclusion.text}</p>
-                </section>
-
-                {/* Palabras Clave / Tags */}
+              {/* Palabras Clave / Tags */}
+              {article.keywords && article.keywords.length > 0 && (
                 <div className="article-tags-cloud">
                   <span className="tags-label">{isEn ? 'Topics:' : 'Temas de Interés:'}</span>
                   {article.keywords.map((kw, kwIdx) => (
                     <span key={kwIdx} className="article-keyword-tag">#{kw}</span>
                   ))}
                 </div>
+              )}
 
                 {/* Compartir Artículo */}
                 <div className="article-share-bar">
@@ -358,7 +392,6 @@ export default function ArticleDetailPage({ params: { locale, slug } }: Props) {
                   </div>
                 </div>
 
-              </div>
             </main>
 
             {/* Barra Lateral / Sidebar de Asesoría */}

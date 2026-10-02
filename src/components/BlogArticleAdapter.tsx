@@ -48,6 +48,22 @@ export interface ParsedArticle {
     title: string;
     text: string;
   };
+  contentHtml?: string;
+  rawDraft?: string;
+  titleEn?: string;
+  subtitleEn?: string;
+  categoryEn?: string;
+  summaryEn?: string;
+  readTimeEn?: string;
+  keywordsEn?: string[];
+  keyTakeawaysEn?: string[];
+  sectionsEn?: ParsedSection[];
+  conclusionEn?: {
+    title: string;
+    text: string;
+  } | null;
+  contentHtmlEn?: string;
+  rawDraftEn?: string;
 }
 
 export const TAILOR_AUTHORS = [
@@ -104,8 +120,12 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
   const [articlesList, setArticlesList] = useState<ParsedArticle[]>([]);
   const [loadingList, setLoadingList] = useState(true);
 
-  // Estados del Editor
+  // Estados del Editor Bilingüe
   const [rawText, setRawText] = useState('');
+  const [rawTextEn, setRawTextEn] = useState('');
+  const [activeLangTab, setActiveLangTab] = useState<'es' | 'en'>('es');
+  const [editorLayout, setEditorLayout] = useState<'tabs' | 'columns'>('tabs');
+  const [previewLocale, setPreviewLocale] = useState<'es' | 'en'>('es');
   const [activePreviewTab, setActivePreviewTab] = useState<'article' | 'card' | 'code'>('article');
   const [copySuccess, setCopySuccess] = useState(false);
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
@@ -138,18 +158,28 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
 
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('tailor_blog_active_draft');
+      const savedEn = localStorage.getItem('tailor_blog_active_draft_en');
       if (saved && saved.trim().length > 15) {
         setHasSavedDraft(true);
+      }
+      if (savedEn && savedEn.trim().length > 15) {
+        setRawTextEn(savedEn);
       }
     }
   }, []);
 
-  // Auto-guardado en localStorage mientras se escribe
+  // Auto-guardado en localStorage mientras se escribe (ambos idiomas)
   useEffect(() => {
     if (rawText && rawText.trim().length > 15 && typeof window !== 'undefined') {
       localStorage.setItem('tailor_blog_active_draft', rawText);
     }
   }, [rawText]);
+
+  useEffect(() => {
+    if (rawTextEn && rawTextEn.trim().length > 15 && typeof window !== 'undefined') {
+      localStorage.setItem('tailor_blog_active_draft_en', rawTextEn);
+    }
+  }, [rawTextEn]);
 
   const fetchArticles = async () => {
     setLoadingList(true);
@@ -222,8 +252,8 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
     while (i < remainingLines.length) {
       const line = remainingLines[i];
 
-      // Detección de bloque de Puntos Clave
-      if (/^(puntos\s+clave|aspectos\s+clave|conclusiones\s+ejecutivas|resumen\s+ejecutivo|key\s+takeaways)/i.test(line)) {
+      // Detección de bloque de Puntos Clave (Español e Inglés)
+      if (/^(puntos\s+clave|aspectos\s+clave|conclusiones\s+ejecutivas|resumen\s+ejecutivo|key\s+takeaways|key\s+points|takeaways)/i.test(line)) {
         i++;
         while (i < remainingLines.length && isListLine(remainingLines[i])) {
           keyTakeaways.push(cleanListMarker(remainingLines[i]));
@@ -232,8 +262,8 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
         continue;
       }
 
-      // Detección de Conclusión
-      if (/^(conclusi[oó]n|en\s+conclusi[oó]n|hacia\s+una|palabras\s+finales)/i.test(line)) {
+      // Detección de Conclusión (Español e Inglés)
+      if (/^(conclusi[oó]n|en\s+conclusi[oó]n|hacia\s+una|palabras\s+finales|conclusion|in\s+conclusion|final\s+thoughts|closing\s+remarks|strategic\s+reflection)/i.test(line)) {
         conclusion.title = cleanHeadingMarker(line);
         i++;
         const conclusionParas: string[] = [];
@@ -420,10 +450,41 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
   };
 
   const handleParseText = () => {
-    if (!rawText.trim()) return;
-    const parsedData = parseDraftText(rawText, parsed, selectedAuthorId, customAuthor);
-    if (parsedData) {
-      setParsed(parsedData);
+    if (activeLangTab === 'es') {
+      if (!rawText.trim()) return;
+      const parsedData = parseDraftText(rawText, parsed, selectedAuthorId, customAuthor);
+      if (parsedData) {
+        if (parsed?.titleEn) parsedData.titleEn = parsed.titleEn;
+        if (parsed?.subtitleEn) parsedData.subtitleEn = parsed.subtitleEn;
+        if (parsed?.summaryEn) parsedData.summaryEn = parsed.summaryEn;
+        if (parsed?.sectionsEn) parsedData.sectionsEn = parsed.sectionsEn;
+        if (parsed?.conclusionEn) parsedData.conclusionEn = parsed.conclusionEn;
+        if (parsed?.keyTakeawaysEn) parsedData.keyTakeawaysEn = parsed.keyTakeawaysEn;
+        if (parsed?.keywordsEn) parsedData.keywordsEn = parsed.keywordsEn;
+        if (parsed?.readTimeEn) parsedData.readTimeEn = parsed.readTimeEn;
+        if (parsed?.rawDraftEn) parsedData.rawDraftEn = parsed.rawDraftEn;
+        parsedData.rawDraft = rawText;
+        setParsed(parsedData);
+        setPreviewLocale('es');
+      }
+    } else {
+      if (!rawTextEn.trim()) return;
+      const parsedEn = parseDraftText(rawTextEn, null, selectedAuthorId, customAuthor);
+      if (parsedEn && parsed) {
+        setParsed({
+          ...parsed,
+          titleEn: parsedEn.title,
+          subtitleEn: parsedEn.subtitle,
+          summaryEn: parsedEn.summary,
+          sectionsEn: parsedEn.sections,
+          conclusionEn: parsedEn.conclusion,
+          keyTakeawaysEn: parsedEn.keyTakeaways,
+          keywordsEn: parsedEn.keywords,
+          readTimeEn: `${Math.max(1, Math.ceil(parsedEn.wordCount / 200))} min read`,
+          rawDraftEn: rawTextEn
+        });
+        setPreviewLocale('en');
+      }
     }
   };
 
@@ -483,22 +544,280 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
     return found;
   };
 
-  // Insertar etiquetas HTML / formato directamente en el área de texto
-  const insertTagIntoTextarea = (openTag: string, closeTag: string, defaultText: string) => {
-    const textarea = document.getElementById('raw-text-input') as HTMLTextAreaElement | null;
+  // Extraer metadatos automáticamente del HTML del artículo (H1, resumen, word count)
+  const extractMetadataFromHtml = (html: string): { title?: string; summary?: string; wordCount: number } => {
+    if (!html || !html.trim()) return { wordCount: 0 };
+    const textOnly = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    const wordCount = textOnly ? textOnly.split(' ').filter(Boolean).length : 0;
+
+    let title: string | undefined;
+    const h1Match = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+    if (h1Match) {
+      title = h1Match[1].replace(/<[^>]+>/g, '').trim();
+    } else {
+      const h2Match = html.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i);
+      if (h2Match) {
+        title = h2Match[1].replace(/<[^>]+>/g, '').trim();
+      }
+    }
+
+    let summary: string | undefined;
+    const pMatch = html.match(/<p[^>]*>([\s\S]*?)<\/p>/i);
+    if (pMatch) {
+      const cleanP = pMatch[1].replace(/<[^>]+>/g, '').trim();
+      if (cleanP.length > 20) {
+        summary = cleanP.length > 200 ? cleanP.substring(0, 197) + '...' : cleanP;
+      }
+    }
+
+    return { title, summary, wordCount };
+  };
+
+  // Convertir texto plano a HTML estructurado (<p>, <h2>, <ul>)
+  const convertPlainTextToHtml = (text: string): string => {
+    if (!text || !text.trim()) return '';
+    if (/<(p|h[1-6]|ul|ol|blockquote|div)[\s>]/i.test(text)) {
+      return text;
+    }
+    const lines = text.split('\n');
+    const result: string[] = [];
+    let inList = false;
+
+    for (let i = 0; i < lines.length; i++) {
+      const rawLine = lines[i].trim();
+      if (!rawLine) {
+        if (inList) {
+          result.push('</ul>');
+          inList = false;
+        }
+        continue;
+      }
+
+      if (/^[-*•–—]\s+/.test(rawLine)) {
+        if (!inList) {
+          result.push('<ul>');
+          inList = true;
+        }
+        const itemText = rawLine.replace(/^[-*•–—]\s+/, '');
+        result.push(`  <li>${itemText}</li>`);
+        continue;
+      } else if (inList) {
+        result.push('</ul>');
+        inList = false;
+      }
+
+      if (/^(\d+[\.\)]|[A-Z][\.\)]|Sección|Paso)/i.test(rawLine) && rawLine.length < 90) {
+        result.push(`<h2>${rawLine}</h2>`);
+        continue;
+      }
+
+      if (/^["“].+["”]$/.test(rawLine) && rawLine.length < 250) {
+        result.push(`<blockquote>${rawLine}</blockquote>`);
+        continue;
+      }
+
+      result.push(`<p>${rawLine}</p>`);
+    }
+
+    if (inList) {
+      result.push('</ul>');
+    }
+
+    return result.join('\n');
+  };
+
+  // Convertir artículos antiguos basados en secciones a HTML para edición directa
+  const sectionsToHtml = (article: ParsedArticle, isEn: boolean = false): string => {
+    const sections = isEn ? (article.sectionsEn || []) : (article.sections || []);
+    const conclusion = isEn ? article.conclusionEn : article.conclusion;
+    const takeaways = isEn ? article.keyTakeawaysEn : article.keyTakeaways;
+    
+    let html = '';
+    
+    if (takeaways && takeaways.length > 0) {
+      html += `<blockquote>\n  <strong>${isEn ? 'Key Strategic Takeaways:' : 'Puntos Clave para la Dirección:'}</strong>\n  <ul>\n`;
+      for (const t of takeaways) {
+        html += `    <li>${t}</li>\n`;
+      }
+      html += `  </ul>\n</blockquote>\n\n`;
+    }
+    
+    for (const sec of sections) {
+      html += `<h2>${sec.heading}</h2>\n`;
+      for (const p of sec.paragraphs) {
+        html += `<p>${p}</p>\n`;
+      }
+      if (sec.quote) {
+        html += `<blockquote>"${sec.quote}"</blockquote>\n`;
+      }
+      if (sec.list && sec.list.length > 0) {
+        html += `<ul>\n`;
+        for (const item of sec.list) {
+          html += `  <li>${item}</li>\n`;
+        }
+        html += `</ul>\n`;
+      }
+      if (sec.subsections && sec.subsections.length > 0) {
+        for (const sub of sec.subsections) {
+          html += `<h3>${sub.title}</h3>\n`;
+          for (const sp of sub.paragraphs) {
+            html += `<p>${sp}</p>\n`;
+          }
+        }
+      }
+      html += '\n';
+    }
+    
+    if (conclusion && conclusion.text) {
+      html += `<h2>${conclusion.title || (isEn ? 'Strategic Reflection' : 'Reflexión Estratégica')}</h2>\n`;
+      html += `<p>${conclusion.text}</p>\n`;
+    }
+    
+    return html.trim();
+  };
+
+  // Insertar etiquetas HTML / formato directamente en el área de texto activa
+  const insertTagIntoTextarea = (openTag: string, closeTag: string, defaultText: string, targetLang?: 'es' | 'en') => {
+    const lang = targetLang || activeLangTab;
+    const targetId = lang === 'en' ? 'raw-text-en-input' : 'raw-text-input';
+    const currentText = lang === 'en' ? rawTextEn : rawText;
+    const setText = lang === 'en' ? setRawTextEn : setRawText;
+
+    const textarea = document.getElementById(targetId) as HTMLTextAreaElement | null;
     if (!textarea) return;
 
     const start = textarea.selectionStart || 0;
     const end = textarea.selectionEnd || 0;
-    const selectedText = rawText.substring(start, end) || defaultText;
+    const selectedText = currentText.substring(start, end) || defaultText;
     const replacement = `${openTag}${selectedText}${closeTag}`;
-    const newText = rawText.substring(0, start) + replacement + rawText.substring(end);
+    const newText = currentText.substring(0, start) + replacement + currentText.substring(end);
 
-    setRawText(newText);
+    setText(newText);
     setTimeout(() => {
       textarea.focus();
       textarea.setSelectionRange(start + openTag.length, start + openTag.length + selectedText.length);
     }, 50);
+  };
+
+  // Formatear texto plano en HTML con un solo clic
+  const handleFormatPlainText = (targetLang: 'es' | 'en') => {
+    const current = targetLang === 'en' ? rawTextEn : rawText;
+    if (!current.trim()) {
+      alert('⚠️ No hay texto para formatear.');
+      return;
+    }
+    const formatted = convertPlainTextToHtml(current);
+    if (targetLang === 'en') {
+      setRawTextEn(formatted);
+    } else {
+      setRawText(formatted);
+    }
+  };
+
+  // Asistente para generar borrador base en inglés a partir del borrador en español
+  const handleGenerateEnglishFromSpanish = () => {
+    if (!rawText.trim()) {
+      alert('⚠️ Primero debes ingresar el contenido en español en el contenedor [🇨🇱 Español].');
+      return;
+    }
+
+    if (rawTextEn.trim()) {
+      const confirmReplace = window.confirm('Ya tienes contenido en el contenedor en inglés. ¿Deseas reemplazarlo con una nueva base generada desde el español?');
+      if (!confirmReplace) return;
+    }
+
+    let baseEn = rawText
+      .replace(/Puntos Clave para la Dirección/gi, 'Key Strategic Takeaways for Leadership')
+      .replace(/Aspectos clave/gi, 'Key takeaways')
+      .replace(/Resumen ejecutivo/gi, 'Executive summary')
+      .replace(/Conclusión/gi, 'Conclusion')
+      .replace(/En conclusión/gi, 'In conclusion')
+      .replace(/Reflexión Estratégica/gi, 'Strategic Reflection');
+
+    if (parsed && (parsed.title.includes('Magallanes') || parsed.slug.includes('magallanes'))) {
+      baseEn = `<h2>Magallanes: A Strategic Gateway, Not a Peripheral Outpost</h2>
+<p>We are close to Antarctica, close to strategic maritime routes, surrounded by nature that the world seeks to know, study, and protect. And in the midst of energetic, scientific, tourism, and logistical transformations that are drawing unprecedented international attention to this edge of the planet. Perhaps that is why, when someone speaks of Magallanes from the outside, we pay close attention.</p>
+
+<p>Not because we need validation from others, but because we know firsthand the effort required to build, innovate, and grow organizations in this territory. And because we also recognize the immense potential of a region that for too long was viewed merely as the remote end of Chile, and which today, with growing momentum, is recognized as a strategic territory.</p>
+
+<blockquote>"Words shape perceptions, but capabilities build lasting reality."</blockquote>
+
+<h2>A Position That Is Shifting</h2>
+<p>Today, Magallanes participates in strategic discussions for Chile and the world: energy transition, green hydrogen, maritime connectivity, special interest tourism, and Antarctic logistics.</p>
+
+<h2>Strategic Reflection</h2>
+<p>Championing Magallanes means acknowledging our potential with maturity to address our gaps and compete with excellence on the global stage.</p>`;
+    }
+
+    setRawTextEn(baseEn);
+    if (parsed) {
+      const metaEn = extractMetadataFromHtml(baseEn);
+      setParsed({
+        ...parsed,
+        titleEn: parsed.titleEn || metaEn.title || 'Magallanes: Strategic Gateway and Southern Projection',
+        summaryEn: parsed.summaryEn || metaEn.summary || '',
+        contentHtmlEn: baseEn,
+        rawDraftEn: baseEn
+      });
+      setPreviewLocale('en');
+    }
+  };
+
+  // Manejador de cambio de texto HTML en Español con sincronización en tiempo real
+  const handleRawTextChange = (newVal: string) => {
+    setRawText(newVal);
+    if (parsed) {
+      const meta = extractMetadataFromHtml(newVal);
+      setParsed(prev => prev ? ({
+        ...prev,
+        contentHtml: newVal,
+        rawDraft: newVal,
+        title: (prev.title === 'Nuevo Artículo de Estrategia' || !prev.title.trim()) ? (meta.title || prev.title) : prev.title,
+        summary: !prev.summary.trim() ? (meta.summary || prev.summary) : prev.summary,
+        wordCount: meta.wordCount || newVal.split(/\s+/).filter(Boolean).length
+      }) : null);
+    }
+  };
+
+  // Manejador de cambio de texto HTML en Inglés con sincronización en tiempo real
+  const handleRawTextEnChange = (newVal: string) => {
+    setRawTextEn(newVal);
+    if (parsed) {
+      const metaEn = extractMetadataFromHtml(newVal);
+      setParsed(prev => prev ? ({
+        ...prev,
+        contentHtmlEn: newVal,
+        rawDraftEn: newVal,
+        titleEn: !prev.titleEn?.trim() ? (metaEn.title || prev.titleEn) : prev.titleEn,
+        summaryEn: !prev.summaryEn?.trim() ? (metaEn.summary || prev.summaryEn) : prev.summaryEn
+      }) : null);
+    }
+  };
+
+  // Autodetectar metadatos (H1 / primer párrafo) desde el HTML
+  const handleAutoDetectMetadata = (lang: 'es' | 'en') => {
+    const text = lang === 'es' ? rawText : rawTextEn;
+    if (!text.trim()) {
+      alert(`⚠️ No hay contenido en el contenedor de ${lang === 'es' ? 'Español' : 'Inglés'}.`);
+      return;
+    }
+    const meta = extractMetadataFromHtml(text);
+    if (parsed) {
+      if (lang === 'es') {
+        setParsed({
+          ...parsed,
+          title: meta.title || parsed.title,
+          summary: meta.summary || parsed.summary,
+          slug: isEditingExisting ? parsed.slug : generateSlug(meta.title || parsed.title)
+        });
+      } else {
+        setParsed({
+          ...parsed,
+          titleEn: meta.title || parsed.titleEn,
+          summaryEn: meta.summary || parsed.summaryEn
+        });
+      }
+    }
   };
 
   // Manejo de carga de imagen propia desde el computador
@@ -539,30 +858,69 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
     }
   };
 
-    // Guardar y Publicar en Backend
+  // Guardar y Publicar en Backend
   const handleSaveArticle = async () => {
     setSaveStatus('Guardando artículo...');
 
-    // 1. Auto-sincronizar siempre desde rawText si tiene contenido
-    let articleToSave = parsed;
-    if (rawText.trim()) {
-      const generated = parseDraftText(rawText, parsed, selectedAuthorId, customAuthor);
-      if (generated) {
-        articleToSave = generated;
-        setParsed(generated);
-      }
-    }
-
-    if (!articleToSave || !articleToSave.title) {
-      alert('⚠️ Por favor escribe o pega el contenido de tu artículo antes de guardar.');
+    if (!rawText.trim()) {
+      alert('⚠️ Por favor escribe o pega el contenido HTML del artículo en español antes de guardar.');
       setSaveStatus(null);
       return;
     }
+
+    const metaEs = extractMetadataFromHtml(rawText);
+    const metaEn = extractMetadataFromHtml(rawTextEn);
+
+    const titleEs = parsed?.title?.trim() || metaEs.title || 'Artículo de Estrategia';
+    const titleEn = parsed?.titleEn?.trim() || metaEn.title || '';
+    const summaryEs = parsed?.summary?.trim() || metaEs.summary || titleEs;
+    const summaryEn = parsed?.summaryEn?.trim() || metaEn.summary || '';
+    const wordCountEs = metaEs.wordCount || rawText.trim().split(/\s+/).filter(Boolean).length;
+    const wordCountEn = metaEn.wordCount || rawTextEn.trim().split(/\s+/).filter(Boolean).length;
+    const readTimeEs = `${Math.max(1, Math.ceil(wordCountEs / 200))} min de lectura`;
+    const readTimeEn = wordCountEn > 0 ? `${Math.max(1, Math.ceil(wordCountEn / 200))} min read` : '5 min read';
+    const slug = (isEditingExisting && parsed?.slug) ? parsed.slug : (generateSlug(titleEs) || `articulo-${Date.now()}`);
+
+    const articleToSave: ParsedArticle = {
+      id: parsed?.id || Date.now(),
+      title: titleEs,
+      subtitle: parsed?.subtitle?.trim() || summaryEs,
+      summary: summaryEs,
+      slug: slug,
+      category: parsed?.category || 'Gestión de Personas',
+      categoryKey: parsed?.categoryKey || 'personas',
+      date: parsed?.date || new Date().toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' }),
+      isoDate: parsed?.isoDate || new Date().toISOString().split('T')[0],
+      readTime: readTimeEs,
+      wordCount: wordCountEs,
+      author: parsed?.author || TAILOR_AUTHORS[0],
+      image: parsed?.image || AVAILABLE_IMAGES[0].path,
+      imageAlt: titleEs,
+      keywords: parsed?.keywords && parsed.keywords.length > 0 ? parsed.keywords : extractKeywords(rawText, parsed?.category || 'Gestión de Personas'),
+      keyTakeaways: parsed?.keyTakeaways || [],
+      sections: parsed?.sections || [],
+      conclusion: parsed?.conclusion || { title: 'Conclusión', text: '' },
+      contentHtml: rawText,
+      rawDraft: rawText,
+      titleEn: titleEn,
+      subtitleEn: parsed?.subtitleEn || summaryEn,
+      summaryEn: summaryEn,
+      readTimeEn: readTimeEn,
+      keywordsEn: parsed?.keywordsEn || [],
+      keyTakeawaysEn: parsed?.keyTakeawaysEn || [],
+      sectionsEn: parsed?.sectionsEn || [],
+      conclusionEn: parsed?.conclusionEn || null,
+      contentHtmlEn: rawTextEn.trim() ? rawTextEn : undefined,
+      rawDraftEn: rawTextEn.trim() ? rawTextEn : undefined,
+    };
+
+    setParsed(articleToSave);
 
     // Respaldo de seguridad inmediato en localStorage
     try {
       if (typeof window !== 'undefined') {
         localStorage.setItem('tailor_blog_last_draft_backup', rawText);
+        localStorage.setItem('tailor_blog_last_draft_backup_en', rawTextEn);
         localStorage.setItem('tailor_blog_last_attempted_article', JSON.stringify(articleToSave));
       }
     } catch (backupErr) {
@@ -583,16 +941,17 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
       if (res.ok) {
         const resData = await res.json().catch(() => ({}));
         const savedResult = resData.article || articleToSave;
-        setSaveStatus('✅ ¡Artículo guardado y publicado exitosamente!');
+        setSaveStatus('✅ ¡Artículo guardado y publicado exitosamente en el Blog!');
         if (typeof window !== 'undefined') {
           localStorage.removeItem('tailor_blog_active_draft');
+          localStorage.removeItem('tailor_blog_active_draft_en');
           localStorage.setItem('tailor_blog_last_published', JSON.stringify(savedResult));
         }
         await fetchArticles();
         setTimeout(() => {
           setSaveStatus(null);
           setViewMode('list');
-        }, 1000);
+        }, 1200);
       } else {
         const errData = await res.json().catch(() => ({}));
         const errorMsg = errData?.error || `Error en servidor (${res.status})`;
@@ -636,37 +995,50 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
   const handleEditClick = (article: ParsedArticle) => {
     setIsEditingExisting(true);
     setParsed(article);
-    setSelectedAuthorId(article.author.id || 'consultoria');
+    setSelectedAuthorId(article.author?.id || 'consultoria');
 
-    // Reconstruir un texto equivalente en el textarea para permitir re-parseo si se desea
-    let reconstructedText = `${article.title}\n\n${article.subtitle}\n\n`;
-    if (article.keyTakeaways && article.keyTakeaways.length > 0) {
-      reconstructedText += `Puntos clave:\n${article.keyTakeaways.map(p => `- ${p}`).join('\n')}\n\n`;
-    }
-    for (const sec of article.sections) {
-      reconstructedText += `${sec.heading}\n${sec.paragraphs.join('\n\n')}\n\n`;
-      if (sec.quote) reconstructedText += `"${sec.quote}"\n\n`;
-      if (sec.list) reconstructedText += `${sec.list.map(l => `- ${l}`).join('\n')}\n\n`;
-      if (sec.subsections) {
-        for (const sub of sec.subsections) {
-          reconstructedText += `${sub.title}\n${sub.paragraphs.join('\n\n')}\n\n`;
-        }
-      }
-    }
-    if (article.conclusion) {
-      reconstructedText += `${article.conclusion.title}\n${article.conclusion.text}`;
+    // 1. Cargar o reconstruir HTML en español
+    if (article.contentHtml && article.contentHtml.trim()) {
+      setRawText(article.contentHtml);
+    } else if (article.rawDraft && article.rawDraft.trim()) {
+      setRawText(article.rawDraft);
+    } else {
+      setRawText(sectionsToHtml(article, false));
     }
 
-    setRawText(reconstructedText);
+    // 2. Cargar o reconstruir HTML en inglés
+    if (article.contentHtmlEn && article.contentHtmlEn.trim()) {
+      setRawTextEn(article.contentHtmlEn);
+    } else if (article.rawDraftEn && article.rawDraftEn.trim()) {
+      setRawTextEn(article.rawDraftEn);
+    } else if (article.sectionsEn && article.sectionsEn.length > 0) {
+      setRawTextEn(sectionsToHtml(article, true));
+    } else {
+      setRawTextEn('');
+    }
+
+    setActiveLangTab('es');
+    setPreviewLocale('es');
     setViewMode('editor');
   };
 
   // Iniciar creación de artículo nuevo
   const handleNewArticleClick = () => {
     setIsEditingExisting(false);
+    const initialHtml = `<h2>1. Diagnóstico Inicial & Contexto</h2>
+<p>Escribe o pega aquí el primer párrafo de tu artículo en español...</p>
+
+<h2>2. Medidas Operativas y Recomendaciones</h2>
+<p>Detalla las buenas prácticas y estrategias recomendadas para directivos y líderes...</p>
+
+<blockquote>"La adopción de estas medidas fortalece la cultura y la retención del talento clave."</blockquote>
+
+<h2>3. Conclusiones para la Dirección</h2>
+<p>Síntesis de impacto operativo y reflexiones finales para las organizaciones.</p>`;
+
     const newDraft: ParsedArticle = {
       id: Date.now(),
-      title: 'Nuevo Artículo Estratégico',
+      title: 'Nuevo Artículo de Estrategia',
       subtitle: 'Análisis y recomendaciones clave para organizaciones de la Patagonia.',
       category: 'Gestión de Personas',
       categoryKey: 'personas',
@@ -677,38 +1049,35 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
       slug: 'nuevo-articulo-' + Date.now().toString().slice(-4),
       author: TAILOR_AUTHORS[0],
       image: AVAILABLE_IMAGES[0].path,
-      imageAlt: 'Nuevo Artículo Estratégico',
+      imageAlt: 'Nuevo Artículo de Estrategia',
       summary: 'Resumen introductorio del nuevo artículo de Tailor Servicios.',
       keywords: ['Tailor Servicios', 'Gestión de Personas', 'Punta Arenas'],
-      keyTakeaways: [
-        'Diagnóstico clave sobre el desafío organizacional a resolver.',
-        'Recomendación operativa para directores y gerentes de empresas.'
-      ],
-      sections: [
-        {
-          heading: '1. Diagnóstico Inicial & Contexto',
-          paragraphs: [
-            'Escribe aquí el análisis de contexto o pega un borrador completo en el cuadro de texto superior.'
-          ],
-          subsections: []
-        },
-        {
-          heading: '2. Medidas Operativas y Recomendaciones',
-          paragraphs: [
-            'Detalla las buenas prácticas y estrategias recomendadas para resolver este desafío en la organización.'
-          ],
-          subsections: []
-        }
-      ],
+      keyTakeaways: [],
+      sections: [],
       conclusion: {
-        title: 'Conclusiones Estratégicas para la Dirección',
-        text: 'La adopción de estas medidas fortalece la cultura y la retención del talento clave.'
-      }
+        title: 'Reflexión Estratégica',
+        text: 'La adopción de estas prácticas permite a las organizaciones consolidar ventajas sustentables a través de sus personas.'
+      },
+      contentHtml: initialHtml,
+      rawDraft: initialHtml,
+      titleEn: '',
+      subtitleEn: '',
+      summaryEn: '',
+      readTimeEn: '5 min read',
+      keywordsEn: [],
+      keyTakeawaysEn: [],
+      sectionsEn: [],
+      conclusionEn: null,
+      contentHtmlEn: '',
+      rawDraftEn: ''
     };
 
     setParsed(newDraft);
-    setRawText(`${newDraft.title}\n\n${newDraft.subtitle}\n\nPuntos clave:\n- Diagnóstico clave sobre el desafío organizacional a resolver.\n- Recomendación operativa para directores y gerentes de empresas.\n\n1. Diagnóstico Inicial & Contexto\nEscribe aquí el análisis de contexto o pega un borrador completo en el cuadro de texto superior.\n\n2. Medidas Operativas y Recomendaciones\nDetalla las buenas prácticas y estrategias recomendadas para resolver este desafío en la organización.\n\nConclusión:\nLa adopción de estas medidas fortalece la cultura y la retención del talento clave.`);
+    setRawText(initialHtml);
+    setRawTextEn('');
     setSelectedAuthorId('consultoria');
+    setActiveLangTab('es');
+    setPreviewLocale('es');
     setViewMode('editor');
   };
 
@@ -975,6 +1344,14 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
                       <td>
                         <div className="cms-table-title">{article.title}</div>
                         <div className="cms-table-slug">/blog/{article.slug}</div>
+                        <div className="cms-lang-badges" style={{ display: 'flex', gap: '5px', marginTop: '5px' }}>
+                          <span className="badge-lang es">🇨🇱 ES</span>
+                          {article.titleEn ? (
+                            <span className="badge-lang en">🇬🇧 EN</span>
+                          ) : (
+                            <span className="badge-lang en-pending">🇬🇧 Sin EN</span>
+                          )}
+                        </div>
                       </td>
                       <td>
                         <span className="cms-pill" style={{ pointerEvents: 'none', background: '#eff6ff', color: '#1d4ed8', borderColor: '#bfdbfe', display: 'inline-block' }}>
@@ -994,16 +1371,27 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
                         </div>
                       </td>
                       <td style={{ textAlign: 'right' }}>
-                        <div className="cms-table-actions" style={{ justifyContent: 'flex-end' }}>
+                        <div className="cms-table-actions" style={{ justifyContent: 'flex-end', flexWrap: 'wrap', gap: '0.4rem' }}>
                           <a 
                             href={`/blog/${article.slug}`} 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="btn-cms-action view-btn"
-                            title="Ver en vivo en la web"
+                            title="Ver versión en español"
                           >
-                            👁️ Ver ↗
+                            👁️ ES ↗
                           </a>
+                          {article.titleEn && (
+                            <a 
+                              href={`/en/blog/${article.slug}`} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="btn-cms-action view-btn-en"
+                              title="Ver versión en inglés"
+                            >
+                              👁️ EN ↗
+                            </a>
+                          )}
                           <button
                             type="button"
                             className="btn-cms-action edit-btn"
@@ -1053,6 +1441,15 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
                       <span>{article.readTime}</span>
                     </div>
 
+                    <div className="cms-lang-badges" style={{ display: 'flex', gap: '5px', margin: '6px 0' }}>
+                      <span className="badge-lang es">🇨🇱 ES</span>
+                      {article.titleEn ? (
+                        <span className="badge-lang en">🇬🇧 EN</span>
+                      ) : (
+                        <span className="badge-lang en-pending">🇬🇧 Sin EN</span>
+                      )}
+                    </div>
+
                     <h3 className="cms-card-title">{article.title}</h3>
                     <p className="cms-card-summary">{article.summary}</p>
 
@@ -1062,10 +1459,21 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="btn-cms-action view-btn"
-                        title="Ver en vivo en la web"
+                        title="Ver versión en español"
                       >
-                        👁️ Ver Web ↗
+                        👁️ ES ↗
                       </a>
+                      {article.titleEn && (
+                        <a 
+                          href={`/en/blog/${article.slug}`} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="btn-cms-action view-btn-en"
+                          title="Ver versión en inglés"
+                        >
+                          👁️ EN ↗
+                        </a>
+                      )}
 
                       <button
                         type="button"
@@ -1099,458 +1507,521 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
       {viewMode === 'editor' && (
         <div className="adapter-workspace-grid">
           {/* PANEL IZQUIERDO: Entrada de Texto y Configuración */}
+          {/* PANEL IZQUIERDO: 2 Contenedores HTML Directo y Configuración Esencial */}
           <div className="adapter-input-panel">
-            <div className="input-card">
-              <div className="card-top-bar">
-                <label htmlFor="raw-text-input">
-                  <strong>📝 {isEditingExisting ? 'Editando Borrador:' : 'Pega tu Texto en Bruto (Word, Doc o Correo):'}</strong>
-                </label>
+            
+            {/* 1. BARRA SUPERIOR DE DISPOSICIÓN & ESTADO */}
+            <div className="editor-top-controls">
+              <div className="editor-top-left">
+                <span className="editor-badge-icon">📝</span>
+                <div>
+                  <h3 className="editor-heading-title">
+                    {isEditingExisting ? 'Modificar Artículo HTML' : 'Nuevo Artículo HTML Bilingüe'}
+                  </h3>
+                  <p className="editor-heading-sub">
+                    Ingresa directamente el código HTML en español e inglés. Se publica fielmente optimizado para SEO.
+                  </p>
+                </div>
+              </div>
+
+              <div className="editor-top-actions">
+                {/* Selector de Disposición: Pestañas vs 2 Columnas */}
+                <div className="layout-switcher-pill-group">
+                  <button
+                    type="button"
+                    className={`btn-layout-pill ${editorLayout === 'tabs' ? 'active' : ''}`}
+                    onClick={() => setEditorLayout('tabs')}
+                    title="Alternar entre Español e Inglés mediante pestañas"
+                  >
+                    📑 Pestañas
+                  </button>
+                  <button
+                    type="button"
+                    className={`btn-layout-pill ${editorLayout === 'columns' ? 'active' : ''}`}
+                    onClick={() => setEditorLayout('columns')}
+                    title="Ver ambos contenedores lado a lado simultáneamente"
+                  >
+                    ⫴ 2 Columnas
+                  </button>
+                </div>
+
                 <button 
                   type="button" 
                   className="btn-clear-text"
                   onClick={() => {
-                    if (rawText.trim() && !window.confirm('¿Deseas vaciar el borrador actual? Se perderá el texto escrito.')) {
+                    if ((rawText.trim() || rawTextEn.trim()) && !window.confirm('¿Deseas vaciar los contenedores actuales? Se perderá el texto ingresado.')) {
                       return;
                     }
                     setRawText('');
-                    setParsed(null);
+                    setRawTextEn('');
+                    if (parsed) {
+                      setParsed({
+                        ...parsed,
+                        contentHtml: '',
+                        contentHtmlEn: ''
+                      });
+                    }
                     if (typeof window !== 'undefined') {
                       localStorage.removeItem('tailor_blog_active_draft');
+                      localStorage.removeItem('tailor_blog_active_draft_en');
                     }
                   }}
+                  title="Vaciar contenido de los contenedores"
                 >
                   Limpiar
                 </button>
               </div>
-
-              {/* Banner de Recuperación de Borrador */}
-              {hasSavedDraft && (
-                <div style={{
-                  background: '#fef3c7',
-                  border: '1px solid #fde68a',
-                  color: '#92400e',
-                  padding: '0.75rem 1rem',
-                  borderRadius: '8px',
-                  marginBottom: '1rem',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  fontSize: '0.85rem',
-                  flexWrap: 'wrap',
-                  gap: '0.5rem'
-                }}>
-                  <span>⚠️ Hemos encontrado un borrador anterior guardado en tu navegador.</span>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const saved = localStorage.getItem('tailor_blog_active_draft');
-                        if (saved) {
-                          setRawText(saved);
-                          const p = parseDraftText(saved);
-                          if (p) setParsed(p);
-                          setHasSavedDraft(false);
-                        }
-                      }}
-                      style={{
-                        background: '#92400e',
-                        color: '#ffffff',
-                        border: 'none',
-                        padding: '0.35rem 0.75rem',
-                        borderRadius: '4px',
-                        fontWeight: 700,
-                        cursor: 'pointer'
-                      }}
-                    >
-                      Restaurar mi borrador
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        localStorage.removeItem('tailor_blog_active_draft');
-                        setHasSavedDraft(false);
-                      }}
-                      style={{
-                        background: 'transparent',
-                        color: '#78350f',
-                        border: '1px solid #d97706',
-                        padding: '0.35rem 0.65rem',
-                        borderRadius: '4px',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      Descartar
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Barra de Formato / Etiquetas Rápidas (HTML y Semántica) */}
-              <div style={{
-                display: 'flex',
-                gap: '0.45rem',
-                flexWrap: 'wrap',
-                marginBottom: '0.65rem',
-                padding: '0.45rem 0.65rem',
-                background: '#f8fafc',
-                borderRadius: '6px',
-                border: '1px solid #e2e8f0',
-                alignItems: 'center',
-                fontSize: '0.8rem'
-              }}>
-                <span style={{ color: '#475569', fontWeight: 700, marginRight: '0.2rem' }}>Insertar etiquetas:</span>
-                <button
-                  type="button"
-                  onClick={() => insertTagIntoTextarea('<h2>', '</h2>', 'Título de Sección')}
-                  style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '4px', padding: '0.25rem 0.55rem', cursor: 'pointer', fontWeight: 600, color: '#1e293b' }}
-                  title="Insertar etiqueta H2 para sección principal"
-                >
-                  &lt;h2&gt; Sección
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertTagIntoTextarea('<h3>', '</h3>', 'Subsección')}
-                  style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '4px', padding: '0.25rem 0.55rem', cursor: 'pointer', fontWeight: 600, color: '#1e293b' }}
-                  title="Insertar etiqueta H3 para subsección"
-                >
-                  &lt;h3&gt; Subtítulo
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertTagIntoTextarea('<ul>\n  <li>', '</li>\n</ul>', 'Elemento de lista')}
-                  style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '4px', padding: '0.25rem 0.55rem', cursor: 'pointer', fontWeight: 600, color: '#1e293b' }}
-                  title="Insertar lista de viñetas"
-                >
-                  &lt;ul&gt; Lista
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertTagIntoTextarea('<blockquote>', '</blockquote>', 'Cita destacada del autor')}
-                  style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '4px', padding: '0.25rem 0.55rem', cursor: 'pointer', fontWeight: 600, color: '#1e293b' }}
-                  title="Insertar cita destacada"
-                >
-                  &lt;blockquote&gt; Cita
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertTagIntoTextarea('<p>', '</p>', 'Párrafo de contenido')}
-                  style={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '4px', padding: '0.25rem 0.55rem', cursor: 'pointer', fontWeight: 600, color: '#1e293b' }}
-                  title="Insertar párrafo"
-                >
-                  &lt;p&gt; Párrafo
-                </button>
-              </div>
-
-              <textarea
-                id="raw-text-input"
-                className="adapter-textarea"
-                placeholder="Pega aquí el texto completo del artículo...
-
-Ejemplo:
-Estrategias de atracción de talento en Magallanes
-Cómo las organizaciones superan la lejanía geográfica con propuestas de valor.
-
-Puntos clave:
-- La lejanía exige compensaciones más allá del dinero.
-- El arraigo familiar reduce la deserción en un 45%.
-
-1. El contexto laboral en el sur austral
-La región experimenta un dinamismo sin precedentes...
-
-1.1 Oportunidades en energías limpias y acuicultura
-El sector acuícola demanda perfiles técnicos con alta especialización...
-
-«En zonas extremas, reclutar no es solo llenar una vacante: es planificar la sustentabilidad.»
-
-Conclusión:
-La atracción de talento en el sur demanda profesionalizar cada fase..."
-                value={rawText}
-                onChange={(e) => setRawText(e.target.value)}
-                rows={12}
-              />
-
-              <div className="input-action-bar" style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <button
-                  type="button"
-                  onClick={handleSaveArticle}
-                  disabled={!rawText.trim()}
-                  style={{
-                    flex: '1.2',
-                    background: '#16a34a',
-                    color: '#ffffff',
-                    fontWeight: 800,
-                    fontSize: '0.95rem',
-                    padding: '0.85rem 1.25rem',
-                    borderRadius: '8px',
-                    border: 'none',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(22, 163, 74, 0.25)',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.5rem'
-                  }}
-                >
-                  💾 Guardar y Publicar en el Blog
-                </button>
-                <button
-                  type="button"
-                  className="btn-parse-execute"
-                  onClick={handleParseText}
-                  disabled={!rawText.trim()}
-                  style={{ flex: '1' }}
-                >
-                  ⚡ Adaptar y Ver Estructura
-                </button>
-              </div>
             </div>
 
-            {/* AJUSTES EDITORIALES: Autor, Portada e Imagen */}
+            {/* Banner de Recuperación de Borrador */}
+            {hasSavedDraft && (
+              <div className="draft-recovery-banner">
+                <span>⚠️ Hemos encontrado un borrador anterior guardado en tu navegador.</span>
+                <div className="draft-recovery-actions">
+                  <button
+                    type="button"
+                    className="btn-draft-restore"
+                    onClick={() => {
+                      const saved = localStorage.getItem('tailor_blog_active_draft');
+                      const savedEn = localStorage.getItem('tailor_blog_active_draft_en');
+                      if (saved) setRawText(saved);
+                      if (savedEn) setRawTextEn(savedEn);
+                      setHasSavedDraft(false);
+                    }}
+                  >
+                    Restaurar mi borrador
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-draft-dismiss"
+                    onClick={() => {
+                      localStorage.removeItem('tailor_blog_active_draft');
+                      localStorage.removeItem('tailor_blog_active_draft_en');
+                      setHasSavedDraft(false);
+                    }}
+                  >
+                    Descartar
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* 2. TARJETA DE CONFIGURACIÓN ESENCIAL EDITORIAL & SEO */}
             {parsed && (
-              <div className="adapter-controls-card">
+              <div className="cms-essential-settings-card">
                 <div className="card-top-bar">
-                  <h3>⚙️ {isEditingExisting ? 'Modificar Artículo' : 'Configuración del Artículo'}</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ fontSize: '1.15rem' }}>⚙️</span>
+                    <strong>Configuración Esencial & Metadatos SEO</strong>
+                  </div>
                   <span className={`status-pill ${isEditingExisting ? 'edit-mode' : 'create-mode'}`}>
-                    {isEditingExisting ? '✏️ Modo Edición' : '✨ Nuevo Borrador'}
+                    {isEditingExisting ? '✏️ Modo Edición' : '✨ Nuevo Artículo'}
                   </span>
                 </div>
 
-                {/* 0. EDICIÓN DIRECTA DE TÍTULO, SUBTÍTULO Y RESUMEN */}
-                <div className="form-group-row">
-                  <label><strong>📌 Título del Artículo (H1):</strong></label>
-                  <input
-                    type="text"
-                    value={parsed.title}
-                    onChange={(e) => {
-                      const newTitle = e.target.value;
-                      setParsed({
-                        ...parsed,
-                        title: newTitle,
-                        slug: isEditingExisting ? parsed.slug : generateSlug(newTitle)
-                      });
-                    }}
-                    className="adapter-input"
-                    placeholder="Título principal del artículo (H1)..."
-                  />
-                </div>
-
-                <div className="form-group-row">
-                  <label><strong>📝 Subtítulo / Bajada Ejecutiva:</strong></label>
-                  <textarea
-                    value={parsed.subtitle}
-                    onChange={(e) => setParsed({ ...parsed, subtitle: e.target.value })}
-                    className="adapter-textarea small-textarea"
-                    rows={2}
-                    placeholder="Bajada descriptiva que acompaña al título..."
-                  />
-                </div>
-
-                <div className="form-group-row">
-                  <label><strong>🔍 Resumen SEO (Meta description):</strong></label>
-                  <textarea
-                    value={parsed.summary}
-                    onChange={(e) => setParsed({ ...parsed, summary: e.target.value })}
-                    className="adapter-textarea small-textarea"
-                    rows={2}
-                    placeholder="Breve resumen para Google y redes sociales..."
-                  />
-                </div>
-
-                <div className="form-group-row">
-                  <label><strong>⭐ Puntos Clave para la Dirección (uno por línea):</strong></label>
-                  <textarea
-                    value={(parsed.keyTakeaways || []).join('\n')}
-                    onChange={(e) => setParsed({
-                      ...parsed,
-                      keyTakeaways: e.target.value.split('\n').filter(l => l.trim().length > 0)
-                    })}
-                    className="adapter-textarea small-textarea"
-                    rows={3}
-                    placeholder="Punto clave 1&#10;Punto clave 2&#10;Punto clave 3..."
-                  />
-                </div>
-
-                {/* 1. SELECCIÓN DE AUTOR DEL EQUIPO TAILOR */}
-                <div className="form-group-row">
-                  <label>👤 ¿Quién escribe este artículo? (Equipo Tailor):</label>
-                  <select
-                    value={selectedAuthorId}
-                    onChange={(e) => handleAuthorChange(e.target.value)}
-                    className="adapter-select"
-                  >
-                    {TAILOR_AUTHORS.map((author) => (
-                      <option key={author.id} value={author.id}>
-                        {author.name} — ({author.role})
-                      </option>
-                    ))}
-                    <option value="custom">✏️ Autor Personalizado...</option>
-                  </select>
-                </div>
-
-                {selectedAuthorId === 'custom' && (
-                  <div className="custom-author-subgroup">
+                <div className="settings-grid">
+                  {/* Título ES */}
+                  <div className="form-group-row">
+                    <div className="label-with-action">
+                      <label><strong>📌 Título del Artículo (H1 en Español):</strong></label>
+                      <button
+                        type="button"
+                        className="btn-autodetect-link"
+                        onClick={() => handleAutoDetectMetadata('es')}
+                        title="Detectar automáticamente título y resumen desde las etiquetas <h1> y <p> del HTML"
+                      >
+                        ⚡ Detectar desde HTML
+                      </button>
+                    </div>
                     <input
                       type="text"
-                      placeholder="Nombre del autor"
-                      value={customAuthor.name}
+                      value={parsed.title}
                       onChange={(e) => {
-                        const updated = { ...customAuthor, name: e.target.value };
-                        setCustomAuthor(updated);
-                        if (parsed) setParsed({ ...parsed, author: { ...parsed.author, name: e.target.value } });
+                        const newTitle = e.target.value;
+                        setParsed({
+                          ...parsed,
+                          title: newTitle,
+                          slug: isEditingExisting ? parsed.slug : generateSlug(newTitle)
+                        });
                       }}
                       className="adapter-input"
+                      placeholder="Título principal del artículo en español..."
                     />
+                  </div>
+
+                  {/* Título EN */}
+                  <div className="form-group-row">
+                    <div className="label-with-action">
+                      <label><strong>📌 Article Title (H1 in English - Opcional):</strong></label>
+                      <button
+                        type="button"
+                        className="btn-autodetect-link"
+                        onClick={() => handleAutoDetectMetadata('en')}
+                        title="Detectar automáticamente título en inglés desde las etiquetas del HTML en inglés"
+                      >
+                        ⚡ Detectar desde HTML EN
+                      </button>
+                    </div>
                     <input
                       type="text"
-                      placeholder="Cargo o especialidad"
-                      value={customAuthor.role}
-                      onChange={(e) => {
-                        const updated = { ...customAuthor, role: e.target.value };
-                        setCustomAuthor(updated);
-                        if (parsed) setParsed({ ...parsed, author: { ...parsed.author, role: e.target.value } });
-                      }}
+                      value={parsed.titleEn || ''}
+                      onChange={(e) => setParsed({ ...parsed, titleEn: e.target.value })}
                       className="adapter-input"
+                      placeholder="English Title for international readership..."
+                    />
+                  </div>
+
+                  {/* Categoría & Autor */}
+                  <div className="form-row-dual">
+                    <div className="form-group-col">
+                      <label><strong>🏷️ Categoría Editorial:</strong></label>
+                      <select 
+                        value={parsed.category} 
+                        onChange={(e) => {
+                          const newCat = e.target.value;
+                          let key = 'personas';
+                          if (newCat === 'Atracción de Talento') key = 'atraccion';
+                          if (newCat === 'Normativa Laboral') key = 'normativa';
+                          if (newCat === 'Desarrollo Organizacional') key = 'do';
+                          setParsed({ ...parsed, category: newCat, categoryKey: key });
+                        }}
+                        className="adapter-select"
+                      >
+                        <option value="Atracción de Talento">Atracción de Talento</option>
+                        <option value="Gestión de Personas">Gestión de Personas</option>
+                        <option value="Desarrollo Organizacional">Desarrollo Organizacional</option>
+                        <option value="Normativa Laboral">Normativa Laboral</option>
+                      </select>
+                    </div>
+
+                    <div className="form-group-col">
+                      <label><strong>👤 Autor del Equipo Tailor:</strong></label>
+                      <select
+                        value={selectedAuthorId}
+                        onChange={(e) => handleAuthorChange(e.target.value)}
+                        className="adapter-select"
+                      >
+                        {TAILOR_AUTHORS.map((author) => (
+                          <option key={author.id} value={author.id}>
+                            {author.name} — ({author.role})
+                          </option>
+                        ))}
+                        <option value="custom">✏️ Autor Personalizado...</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Autor Personalizado si aplica */}
+                  {selectedAuthorId === 'custom' && (
+                    <div className="custom-author-subgroup">
+                      <input
+                        type="text"
+                        placeholder="Nombre del autor"
+                        value={customAuthor.name}
+                        onChange={(e) => {
+                          const updated = { ...customAuthor, name: e.target.value };
+                          setCustomAuthor(updated);
+                          if (parsed) setParsed({ ...parsed, author: { ...parsed.author, name: e.target.value } });
+                        }}
+                        className="adapter-input"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Cargo o especialidad"
+                        value={customAuthor.role}
+                        onChange={(e) => {
+                          const updated = { ...customAuthor, role: e.target.value };
+                          setCustomAuthor(updated);
+                          if (parsed) setParsed({ ...parsed, author: { ...parsed.author, role: e.target.value } });
+                        }}
+                        className="adapter-input"
+                      />
+                    </div>
+                  )}
+
+                  {/* Imagen de Portada (1:1 Cuadrada) */}
+                  <div className="form-group-row">
+                    <label><strong>🖼️ Imagen de Portada (Formato Cuadrado 1:1):</strong></label>
+                    <div className="image-mode-tabs">
+                      <button
+                        type="button"
+                        className={`image-tab-btn ${imageSourceMode === 'catalog' ? 'active' : ''}`}
+                        onClick={() => setImageSourceMode('catalog')}
+                      >
+                        Galería Tailor
+                      </button>
+                      <button
+                        type="button"
+                        className={`image-tab-btn ${imageSourceMode === 'upload' ? 'active' : ''}`}
+                        onClick={() => setImageSourceMode('upload')}
+                      >
+                        ⬆️ Subir Imagen
+                      </button>
+                      <button
+                        type="button"
+                        className={`image-tab-btn ${imageSourceMode === 'url' ? 'active' : ''}`}
+                        onClick={() => setImageSourceMode('url')}
+                      >
+                        URL Externa
+                      </button>
+                    </div>
+
+                    {imageSourceMode === 'catalog' && (
+                      <select
+                        value={parsed.image}
+                        onChange={(e) => setParsed({ ...parsed, image: e.target.value })}
+                        className="adapter-select"
+                      >
+                        {AVAILABLE_IMAGES.map((img) => (
+                          <option key={img.path} value={img.path}>
+                            {img.label}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+
+                    {imageSourceMode === 'upload' && (
+                      <div className="upload-dropzone">
+                        <input 
+                          type="file" 
+                          ref={fileInputRef} 
+                          accept="image/*" 
+                          onChange={handleFileUpload} 
+                          style={{ display: 'none' }} 
+                        />
+                        <button 
+                          type="button" 
+                          className="btn-upload-trigger"
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          📁 Seleccionar archivo de imagen de tu equipo
+                        </button>
+                        <span className="upload-hint">Soporta WebP, PNG, JPG (Se encuadrará en formato cuadrado 1:1)</span>
+                      </div>
+                    )}
+
+                    {imageSourceMode === 'url' && (
+                      <input
+                        type="text"
+                        placeholder="https://ejemplo.com/imagen.webp"
+                        value={parsed.image}
+                        onChange={(e) => setParsed({ ...parsed, image: e.target.value })}
+                        className="adapter-input"
+                      />
+                    )}
+                  </div>
+
+                  {/* Slug & Resumen SEO */}
+                  <div className="form-row-dual">
+                    <div className="form-group-col">
+                      <label><strong>🔗 URL Slug SEO (amigable):</strong></label>
+                      <input
+                        type="text"
+                        value={parsed.slug}
+                        onChange={(e) => setParsed({ ...parsed, slug: e.target.value })}
+                        className="adapter-input"
+                      />
+                    </div>
+                    <div className="form-group-col">
+                      <label><strong>🔍 Resumen SEO (Meta description ES):</strong></label>
+                      <input
+                        type="text"
+                        value={parsed.summary}
+                        onChange={(e) => setParsed({ ...parsed, summary: e.target.value })}
+                        className="adapter-input"
+                        placeholder="Breve resumen para Google y vista previa..."
+                      />
+                    </div>
+                  </div>
+
+                  {parsed.titleEn && (
+                    <div className="form-group-row">
+                      <label><strong>🔍 Resumen SEO en Inglés (Meta description EN):</strong></label>
+                      <input
+                        type="text"
+                        value={parsed.summaryEn || ''}
+                        onChange={(e) => setParsed({ ...parsed, summaryEn: e.target.value })}
+                        className="adapter-input"
+                        placeholder="Brief summary for English version..."
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* 3. CONTENEDORES DE TEXTO / HTML DIRECTO */}
+            <div className="bilingual-html-section">
+              {/* Si estamos en modo pestañas, mostramos la barra de pestañas */}
+              {editorLayout === 'tabs' && (
+                <div className="language-selector-tabs">
+                  <button
+                    type="button"
+                    className={`lang-tab-btn ${activeLangTab === 'es' ? 'active' : ''}`}
+                    onClick={() => setActiveLangTab('es')}
+                  >
+                    <span className="lang-tab-flag">🇨🇱</span>
+                    <div className="lang-tab-info">
+                      <span className="lang-tab-title">Contenedor HTML Español</span>
+                      <span className="lang-tab-subtitle">
+                        {rawText.trim() ? `${rawText.trim().split(/\s+/).filter(Boolean).length} palabras` : 'Vacío'}
+                      </span>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    className={`lang-tab-btn ${activeLangTab === 'en' ? 'active' : ''}`}
+                    onClick={() => setActiveLangTab('en')}
+                  >
+                    <span className="lang-tab-flag">🇬🇧</span>
+                    <div className="lang-tab-info">
+                      <span className="lang-tab-title">Contenedor HTML English</span>
+                      <span className="lang-tab-subtitle">
+                        {rawTextEn.trim() ? `${rawTextEn.trim().split(/\s+/).filter(Boolean).length} words` : 'Opcional / Pendiente'}
+                      </span>
+                    </div>
+                  </button>
+                </div>
+              )}
+
+              {/* Render de Contenedores: según tabs o 2 columnas */}
+              <div className={`containers-wrapper ${editorLayout === 'columns' ? 'layout-columns' : 'layout-tabs'}`}>
+                
+                {/* CONTENEDOR 1: ESPAÑOL */}
+                {(editorLayout === 'columns' || activeLangTab === 'es') && (
+                  <div className="html-container-box es">
+                    <div className="html-container-header">
+                      <div className="html-container-title">
+                        <span className="flag-icon">🇨🇱</span>
+                        <strong>HTML del Artículo (Español)</strong>
+                        <span className="word-count-badge">
+                          {rawText.trim() ? `${rawText.trim().split(/\s+/).filter(Boolean).length} palabras` : '0 palabras'}
+                        </span>
+                      </div>
+                      
+                      {/* Botón para convertir texto plano a HTML si el cliente pega texto sin tags */}
+                      <button
+                        type="button"
+                        className="btn-format-quick"
+                        onClick={() => handleFormatPlainText('es')}
+                        title="Convierte párrafos y listas de texto plano en etiquetas HTML limpias automáticamente"
+                      >
+                        ✨ Formatear a HTML
+                      </button>
+                    </div>
+
+                    {/* Barra de Etiquetas HTML Rápidas */}
+                    <div className="html-container-toolbar">
+                      <button type="button" onClick={() => insertTagIntoTextarea('<h2>', '</h2>', 'Título de Sección', 'es')}>&lt;h2&gt; Sección</button>
+                      <button type="button" onClick={() => insertTagIntoTextarea('<h3>', '</h3>', 'Subsección', 'es')}>&lt;h3&gt; Subtítulo</button>
+                      <button type="button" onClick={() => insertTagIntoTextarea('<p>', '</p>', 'Párrafo de contenido', 'es')}>&lt;p&gt; Párrafo</button>
+                      <button type="button" onClick={() => insertTagIntoTextarea('<ul>\n  <li>', '</li>\n</ul>', 'Elemento de lista', 'es')}>&lt;ul&gt; Lista</button>
+                      <button type="button" onClick={() => insertTagIntoTextarea('<blockquote>', '</blockquote>', 'Cita destacada del autor', 'es')}>&lt;blockquote&gt; Cita</button>
+                      <button type="button" onClick={() => insertTagIntoTextarea('<strong>', '</strong>', 'texto destacado', 'es')}>&lt;strong&gt;</button>
+                      <button type="button" onClick={() => insertTagIntoTextarea('<a href="https://ejemplo.com">', '</a>', 'enlace', 'es')}>&lt;a&gt;</button>
+                    </div>
+
+                    <textarea
+                      id="raw-text-input"
+                      className="html-editor-textarea"
+                      placeholder={`<h2>1. Diagnóstico Inicial & Contexto</h2>
+<p>Escribe o pega aquí el contenido HTML del artículo...</p>
+
+<h2>2. Medidas Operativas y Recomendaciones</h2>
+<p>Detalla las buenas prácticas y estrategias recomendadas...</p>
+
+<blockquote>"La adopción de estas medidas fortalece la cultura organizacional."</blockquote>
+
+<h2>3. Conclusiones para la Dirección</h2>
+<p>Síntesis de impacto operativo y reflexiones finales.</p>`}
+                      value={rawText}
+                      onChange={(e) => handleRawTextChange(e.target.value)}
+                      rows={editorLayout === 'columns' ? 18 : 14}
+                      spellCheck={false}
                     />
                   </div>
                 )}
 
-                {/* 2. SUBIR O SELECCIONAR IMAGEN DE PORTADA */}
-                <div className="form-group-row">
-                  <label>🖼️ Imagen de Portada (Formato Cuadrado 1:1):</label>
-                  <div className="image-mode-tabs">
-                    <button
-                      type="button"
-                      className={`image-tab-btn ${imageSourceMode === 'catalog' ? 'active' : ''}`}
-                      onClick={() => setImageSourceMode('catalog')}
-                    >
-                      Galería Tailor
-                    </button>
-                    <button
-                      type="button"
-                      className={`image-tab-btn ${imageSourceMode === 'upload' ? 'active' : ''}`}
-                      onClick={() => setImageSourceMode('upload')}
-                    >
-                      ⬆️ Subir Imagen
-                    </button>
-                    <button
-                      type="button"
-                      className={`image-tab-btn ${imageSourceMode === 'url' ? 'active' : ''}`}
-                      onClick={() => setImageSourceMode('url')}
-                    >
-                      URL Externa
-                    </button>
-                  </div>
+                {/* CONTENEDOR 2: INGLÉS */}
+                {(editorLayout === 'columns' || activeLangTab === 'en') && (
+                  <div className="html-container-box en">
+                    <div className="html-container-header">
+                      <div className="html-container-title">
+                        <span className="flag-icon">🇬🇧</span>
+                        <strong>HTML of the Article (English)</strong>
+                        <span className="word-count-badge">
+                          {rawTextEn.trim() ? `${rawTextEn.trim().split(/\s+/).filter(Boolean).length} words` : '0 words'}
+                        </span>
+                      </div>
 
-                  {imageSourceMode === 'catalog' && (
-                    <select
-                      value={parsed.image}
-                      onChange={(e) => setParsed({ ...parsed, image: e.target.value })}
-                      className="adapter-select"
-                    >
-                      {AVAILABLE_IMAGES.map((img) => (
-                        <option key={img.path} value={img.path}>
-                          {img.label}
-                        </option>
-                      ))}
-                    </select>
-                  )}
-
-                  {imageSourceMode === 'upload' && (
-                    <div className="upload-dropzone">
-                      <input 
-                        type="file" 
-                        ref={fileInputRef} 
-                        accept="image/*" 
-                        onChange={handleFileUpload} 
-                        style={{ display: 'none' }} 
-                      />
-                      <button 
-                        type="button" 
-                        className="btn-upload-trigger"
-                        onClick={() => fileInputRef.current?.click()}
-                      >
-                        📁 Seleccionar archivo de imagen de tu equipo
-                      </button>
-                      <span className="upload-hint">Soporta WebP, PNG, JPG (Se encuadrará en formato cuadrado 1:1)</span>
+                      <div style={{ display: 'flex', gap: '0.4rem' }}>
+                        <button
+                          type="button"
+                          className="btn-assistant-generate-compact"
+                          onClick={handleGenerateEnglishFromSpanish}
+                          title="Genera una estructura base en inglés a partir del contenido en español"
+                        >
+                          🪄 Base desde Español
+                        </button>
+                        <button
+                          type="button"
+                          className="btn-format-quick"
+                          onClick={() => handleFormatPlainText('en')}
+                          title="Formatea párrafos y listas en HTML limpio"
+                        >
+                          ✨ Format HTML
+                        </button>
+                      </div>
                     </div>
-                  )}
 
-                  {imageSourceMode === 'url' && (
-                    <input
-                      type="text"
-                      placeholder="https://ejemplo.com/imagen.webp"
-                      value={parsed.image}
-                      onChange={(e) => setParsed({ ...parsed, image: e.target.value })}
-                      className="adapter-input"
+                    {/* Barra de Etiquetas HTML Rápidas EN */}
+                    <div className="html-container-toolbar">
+                      <button type="button" onClick={() => insertTagIntoTextarea('<h2>', '</h2>', 'Section Heading', 'en')}>&lt;h2&gt; Heading</button>
+                      <button type="button" onClick={() => insertTagIntoTextarea('<h3>', '</h3>', 'Subsection', 'en')}>&lt;h3&gt; Subheading</button>
+                      <button type="button" onClick={() => insertTagIntoTextarea('<p>', '</p>', 'Content paragraph', 'en')}>&lt;p&gt; Paragraph</button>
+                      <button type="button" onClick={() => insertTagIntoTextarea('<ul>\n  <li>', '</li>\n</ul>', 'List item', 'en')}>&lt;ul&gt; List</button>
+                      <button type="button" onClick={() => insertTagIntoTextarea('<blockquote>', '</blockquote>', 'Executive quote', 'en')}>&lt;blockquote&gt; Quote</button>
+                      <button type="button" onClick={() => insertTagIntoTextarea('<strong>', '</strong>', 'bold text', 'en')}>&lt;strong&gt;</button>
+                      <button type="button" onClick={() => insertTagIntoTextarea('<a href="https://example.com">', '</a>', 'link text', 'en')}>&lt;a&gt;</button>
+                    </div>
+
+                    <textarea
+                      id="raw-text-en-input"
+                      className="html-editor-textarea"
+                      placeholder={`<h2>1. Initial Diagnosis & Context</h2>
+<p>Write or paste your English HTML content here...</p>
+
+<h2>2. Operational Measures and Recommendations</h2>
+<p>Detail strategic frameworks and best practices...</p>
+
+<blockquote>"Implementing these practices strengthens organizational culture."</blockquote>
+
+<h2>3. Executive Conclusions</h2>
+<p>Summary of operational impact and closing reflections.</p>`}
+                      value={rawTextEn}
+                      onChange={(e) => handleRawTextEnChange(e.target.value)}
+                      rows={editorLayout === 'columns' ? 18 : 14}
+                      spellCheck={false}
                     />
-                  )}
-                </div>
-
-                {/* 3. CATEGORÍA & SLUG */}
-                <div className="form-group-row">
-                  <label>Categoría Editorial:</label>
-                  <select 
-                    value={parsed.category} 
-                    onChange={(e) => {
-                      const newCat = e.target.value;
-                      let key = 'personas';
-                      if (newCat === 'Atracción de Talento') key = 'atraccion';
-                      if (newCat === 'Normativa Laboral') key = 'normativa';
-                      if (newCat === 'Desarrollo Organizacional') key = 'do';
-                      setParsed({ ...parsed, category: newCat, categoryKey: key });
-                    }}
-                    className="adapter-select"
-                  >
-                    <option value="Atracción de Talento">Atracción de Talento</option>
-                    <option value="Gestión de Personas">Gestión de Personas</option>
-                    <option value="Desarrollo Organizacional">Desarrollo Organizacional</option>
-                    <option value="Normativa Laboral">Normativa Laboral</option>
-                  </select>
-                </div>
-
-                <div className="form-group-row">
-                  <label>URL Slug SEO (amigable):</label>
-                  <input
-                    type="text"
-                    value={parsed.slug}
-                    onChange={(e) => setParsed({ ...parsed, slug: e.target.value })}
-                    className="adapter-input"
-                  />
-                </div>
-
-                {/* BOTÓN DE GUARDAR Y PUBLICAR */}
-                <div className="save-action-area">
-                  <button
-                    type="button"
-                    className="btn-save-publish"
-                    onClick={handleSaveArticle}
-                  >
-                    💾 Guardar y Publicar en el Blog
-                  </button>
-                  {saveStatus && <div className="save-status-msg">{saveStatus}</div>}
-                </div>
-
-                {/* SEMÁFORO DE CALIDAD SEO & E-E-A-T */}
-                <div className="seo-quality-scorecard">
-                  <div className="scorecard-header">
-                    <span className="scorecard-icon">🎯</span>
-                    <strong>Auditoría de Calidad SEO & E-E-A-T:</strong>
                   </div>
-                  <div className="scorecard-items">
-                    <span className={`score-badge ${parsed.wordCount >= 800 ? 'good' : 'warning'}`}>
-                      {parsed.wordCount >= 800 ? '✓' : '⚠️'} {parsed.wordCount} palabras {parsed.wordCount >= 800 ? '(Óptimo Autoridad)' : '(Ideal > 800)'}
-                    </span>
-                    <span className="score-badge good">✓ H1 Título detectado</span>
-                    <span className={`score-badge ${parsed.sections.length >= 2 ? 'good' : 'warning'}`}>
-                      {parsed.sections.length >= 2 ? '✓' : '⚠️'} {parsed.sections.length} secciones H2
-                    </span>
-                    <span className="score-badge good">✓ Formato 1:1 Cuadrado</span>
-                    <span className="score-badge good">✓ Autor {parsed.author.name}</span>
-                  </div>
-                </div>
-
+                )}
               </div>
-            )}
+            </div>
+
+            {/* 4. BARRA DE ACCIÓN: GUARDAR Y PUBLICAR */}
+            <div className="input-action-bar-direct">
+              <button
+                type="button"
+                className="btn-save-publish-main"
+                onClick={handleSaveArticle}
+                disabled={!rawText.trim()}
+              >
+                💾 Guardar y Publicar en el Blog
+              </button>
+              {saveStatus && <div className="save-status-msg-direct">{saveStatus}</div>}
+            </div>
+
           </div>
 
           {/* PANEL DERECHO: Visualizador Dual (Artículo / Tarjeta Cuadrada / Código) */}
@@ -1586,6 +2057,45 @@ La atracción de talento en el sur demanda profesionalizar cada fase..."
                     💻 Código / JSON
                   </button>
 
+                  {/* Selector de Idioma de Vista Previa */}
+                  <div className="preview-lang-switch-group" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginLeft: '0.5rem' }}>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b' }}>Vista:</span>
+                    <button
+                      type="button"
+                      className={`btn-preview-lang ${previewLocale === 'es' ? 'active' : ''}`}
+                      onClick={() => setPreviewLocale('es')}
+                      style={{
+                        padding: '0.22rem 0.55rem',
+                        fontSize: '0.76rem',
+                        fontWeight: 700,
+                        borderRadius: '4px',
+                        border: '1px solid #cbd5e1',
+                        background: previewLocale === 'es' ? '#1d4ed8' : '#ffffff',
+                        color: previewLocale === 'es' ? '#ffffff' : '#334155',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      🇨🇱 ES
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn-preview-lang ${previewLocale === 'en' ? 'active' : ''}`}
+                      onClick={() => setPreviewLocale('en')}
+                      style={{
+                        padding: '0.22rem 0.55rem',
+                        fontSize: '0.76rem',
+                        fontWeight: 700,
+                        borderRadius: '4px',
+                        border: '1px solid #cbd5e1',
+                        background: previewLocale === 'en' ? '#1d4ed8' : '#ffffff',
+                        color: previewLocale === 'en' ? '#ffffff' : '#334155',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      🇬🇧 EN
+                    </button>
+                  </div>
+
                   <div className="tab-actions-right">
                     <button 
                       type="button" 
@@ -1606,147 +2116,219 @@ La atracción de talento en el sur demanda profesionalizar cada fase..."
                 </div>
 
                 {/* 1. VISTA ARTÍCULO COMPLETO CON H1, H2, H3 */}
-                {activePreviewTab === 'article' && (
-                  <div className="live-preview-viewport">
-                    {/* Hero del Artículo con H1 */}
-                    <div className="preview-hero">
-                      <span className="preview-cat-badge">{parsed.category}</span>
-                      <h1 className="preview-title">{parsed.title}</h1>
-                      <p className="preview-subtitle">{parsed.subtitle}</p>
-                      
-                      <div className="preview-meta">
-                        <div className="meta-author-pill">
-                          <span className="author-circle">{parsed.author.avatar}</span>
+                {activePreviewTab === 'article' && (() => {
+                  const isPreviewEn = previewLocale === 'en';
+                  const previewTitle = isPreviewEn ? (parsed.titleEn || (rawTextEn.trim() ? '(Haz clic en ⚡ Adaptar o 💾 Guardar para procesar)' : '⚠️ Sin versión en inglés aún')) : parsed.title;
+                  const previewSubtitle = isPreviewEn ? (parsed.subtitleEn || 'Strategic analysis and key considerations for executive leadership.') : parsed.subtitle;
+                  const previewCategory = isPreviewEn ? (parsed.categoryEn || parsed.category) : parsed.category;
+                  const previewTakeaways = isPreviewEn ? (parsed.keyTakeawaysEn && parsed.keyTakeawaysEn.length > 0 ? parsed.keyTakeawaysEn : []) : parsed.keyTakeaways;
+                  const previewSections = isPreviewEn ? (parsed.sectionsEn && parsed.sectionsEn.length > 0 ? parsed.sectionsEn : []) : parsed.sections;
+                  const previewConclusion = isPreviewEn ? (parsed.conclusionEn || null) : parsed.conclusion;
+                  const previewReadTime = isPreviewEn ? (parsed.readTimeEn || '5 min read') : parsed.readTime;
+
+                  return (
+                    <div className="live-preview-viewport">
+                      {isPreviewEn && !parsed.titleEn && (
+                        <div style={{
+                          padding: '1rem 1.25rem',
+                          background: '#eff6ff',
+                          border: '1px solid #bfdbfe',
+                          borderRadius: '8px',
+                          color: '#1e40af',
+                          marginBottom: '1.25rem',
+                          fontSize: '0.88rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: '1rem',
+                          flexWrap: 'wrap'
+                        }}>
                           <div>
-                            <strong>{parsed.author.name}</strong>
-                            <small>{parsed.author.role}</small>
+                            <strong>💡 Vista previa en Inglés:</strong> Aún no has maquetado el contenido en inglés.
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => { setActiveLangTab('en'); handleGenerateEnglishFromSpanish(); }}
+                            style={{
+                              background: '#1d4ed8',
+                              color: '#ffffff',
+                              border: 'none',
+                              padding: '0.35rem 0.85rem',
+                              borderRadius: '5px',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                              fontSize: '0.82rem'
+                            }}
+                          >
+                            🪄 Asistir con Borrador EN
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Hero del Artículo con H1 */}
+                      <div className="preview-hero">
+                        <span className="preview-cat-badge">{previewCategory}</span>
+                        <h1 className="preview-title">{previewTitle}</h1>
+                        <p className="preview-subtitle">{previewSubtitle}</p>
+                        
+                        <div className="preview-meta">
+                          <div className="meta-author-pill">
+                            <span className="author-circle">{parsed.author.avatar}</span>
+                            <div>
+                              <strong>{parsed.author.name}</strong>
+                              <small>{parsed.author.role}</small>
+                            </div>
+                          </div>
+                          <div className="meta-time-pill">
+                            <span>📅 {parsed.date}</span>
+                            <span>•</span>
+                            <span>⏱️ {previewReadTime}</span>
                           </div>
                         </div>
-                        <div className="meta-time-pill">
-                          <span>📅 {parsed.date}</span>
-                          <span>•</span>
-                          <span>⏱️ {parsed.readTime}</span>
+                      </div>
+
+                      {/* Imagen de Portada */}
+                      <div className="preview-image-box">
+                        <img src={parsed.image} alt={parsed.imageAlt} />
+                        <span className="image-ratio-tag">Encuadre Editorial Cuadrado / Panorámico</span>
+                      </div>
+
+                      {/* Puntos Clave */}
+                      {previewTakeaways.length > 0 && (
+                        <div className="preview-takeaways">
+                          <h4>⭐ {isPreviewEn ? 'Key Takeaways for Executive Leadership' : 'Puntos Clave para la Dirección'}</h4>
+                          <ul>
+                            {previewTakeaways.map((point, idx) => (
+                              <li key={idx}>
+                                <span className="check-bullet">✓</span>
+                                <span>{point}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                      </div>
-                    </div>
+                      )}
 
-                    {/* Imagen de Portada */}
-                    <div className="preview-image-box">
-                      <img src={parsed.image} alt={parsed.imageAlt} />
-                      <span className="image-ratio-tag">Encuadre Editorial Cuadrado / Panorámico</span>
-                    </div>
+                      {/* Cuerpo del Artículo: Directo HTML o Secciones Tradicionales */}
+                      {((isPreviewEn ? rawTextEn : rawText).trim() || (isPreviewEn ? parsed.contentHtmlEn : parsed.contentHtml)) ? (
+                        <div 
+                          className="preview-article-body article-html-direct"
+                          dangerouslySetInnerHTML={{ 
+                            __html: isPreviewEn 
+                              ? (rawTextEn.trim() || parsed.contentHtmlEn || '<p><em>No English content provided yet.</em></p>') 
+                              : (rawText.trim() || parsed.contentHtml || '') 
+                          }}
+                        />
+                      ) : (
+                        <>
+                          {/* Secciones con H2 y H3 */}
+                          <div className="preview-sections">
+                            {previewSections.map((sec, sIdx) => (
+                              <div key={sIdx} className="preview-section-item">
+                                <h2 className="preview-h2">
+                                  <span className="h2-accent-bar"></span>
+                                  {sec.heading}
+                                </h2>
 
-                    {/* Puntos Clave */}
-                    {parsed.keyTakeaways.length > 0 && (
-                      <div className="preview-takeaways">
-                        <h4>⭐ Puntos Clave para la Dirección</h4>
-                        <ul>
-                          {parsed.keyTakeaways.map((point, idx) => (
-                            <li key={idx}>
-                              <span className="check-bullet">✓</span>
-                              <span>{point}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                                {sec.paragraphs.map((p, pIdx) => (
+                                  <p key={pIdx} className={sIdx === 0 && pIdx === 0 ? 'preview-lead-p' : ''}>
+                                    {p}
+                                  </p>
+                                ))}
 
-                    {/* Secciones con H2 y H3 */}
-                    <div className="preview-sections">
-                      {parsed.sections.map((sec, sIdx) => (
-                        <div key={sIdx} className="preview-section-item">
-                          <h2 className="preview-h2">
-                            <span className="h2-accent-bar"></span>
-                            {sec.heading}
-                          </h2>
+                                {/* Renderizado de H3 Subsecciones */}
+                                {sec.subsections && sec.subsections.map((sub, subIdx) => (
+                                  <div key={subIdx} className="preview-h3-block">
+                                    <h3 className="preview-h3">
+                                      <span className="h3-bullet">▸</span>
+                                      {sub.title}
+                                    </h3>
+                                    {sub.paragraphs.map((sp, spIdx) => (
+                                      <p key={spIdx}>{sp}</p>
+                                    ))}
+                                  </div>
+                                ))}
 
-                          {sec.paragraphs.map((p, pIdx) => (
-                            <p key={pIdx} className={sIdx === 0 && pIdx === 0 ? 'preview-lead-p' : ''}>
-                              {p}
-                            </p>
-                          ))}
+                                {sec.quote && (
+                                  <blockquote className="preview-quote">
+                                    <p>"{sec.quote}"</p>
+                                  </blockquote>
+                                )}
 
-                          {/* Renderizado de H3 Subsecciones */}
-                          {sec.subsections && sec.subsections.map((sub, subIdx) => (
-                            <div key={subIdx} className="preview-h3-block">
-                              <h3 className="preview-h3">
-                                <span className="h3-bullet">▸</span>
-                                {sub.title}
-                              </h3>
-                              {sub.paragraphs.map((sp, spIdx) => (
-                                <p key={spIdx}>{sp}</p>
-                              ))}
+                                {sec.list && sec.list.length > 0 && (
+                                  <ul className="preview-list">
+                                    {sec.list.map((item, lIdx) => (
+                                      <li key={lIdx}>{item}</li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Conclusión */}
+                          {previewConclusion && previewConclusion.text && (
+                            <div className="preview-conclusion">
+                              <h3>{previewConclusion.title}</h3>
+                              <p>{previewConclusion.text}</p>
                             </div>
-                          ))}
-
-                          {sec.quote && (
-                            <blockquote className="preview-quote">
-                              <p>"{sec.quote}"</p>
-                            </blockquote>
                           )}
+                        </>
+                      )}
 
-                          {sec.list && sec.list.length > 0 && (
-                            <ul className="preview-list">
-                              {sec.list.map((item, lIdx) => (
-                                <li key={lIdx}>{item}</li>
-                              ))}
-                            </ul>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Conclusión */}
-                    {parsed.conclusion.text && (
-                      <div className="preview-conclusion">
-                        <h3>{parsed.conclusion.title}</h3>
-                        <p>{parsed.conclusion.text}</p>
+                      {/* CTA Box */}
+                      <div className="preview-cta">
+                        <h4>{isPreviewEn ? 'Is your organization facing this challenge?' : '¿Tu organización enfrenta este desafío?'}</h4>
+                        <p>{isPreviewEn ? 'Let us discuss how to adapt these strategic frameworks to your specific organizational reality.' : 'Conversemos sobre cómo adaptar estos modelos a la realidad específica de tu empresa.'}</p>
+                        <span className="preview-cta-btn">{isPreviewEn ? `Schedule executive meeting with ${parsed.author.name} →` : `Agendar reunión con ${parsed.author.name} →`}</span>
                       </div>
-                    )}
-
-                    {/* CTA Box */}
-                    <div className="preview-cta">
-                      <h4>¿Tu organización enfrenta este desafío?</h4>
-                      <p>Conversemos sobre cómo adaptar estos modelos a la realidad específica de tu empresa.</p>
-                      <span className="preview-cta-btn">Agendar reunión con {parsed.author.name} →</span>
                     </div>
-                  </div>
-                )}
+                  );
+                })()}
 
                 {/* 2. VISTA TARJETA DE GRILLA CUADRADA (1:1) */}
-                {activePreviewTab === 'card' && (
-                  <div className="card-preview-viewport">
-                    <div className="card-preview-intro">
-                      <h4>Previsualización en la Grilla del Blog (Formato Cuadrado 1:1)</h4>
-                      <p>Así lucirá la tarjeta del artículo en la página pública <code>/blog</code>:</p>
-                    </div>
+                {activePreviewTab === 'card' && (() => {
+                  const isPreviewEn = previewLocale === 'en';
+                  const cardTitle = isPreviewEn ? (parsed.titleEn || (rawTextEn.trim() ? '(Título en inglés pendiente)' : parsed.title)) : parsed.title;
+                  const cardSummary = isPreviewEn ? (parsed.summaryEn || (rawTextEn.trim() ? '(Resumen en inglés pendiente)' : parsed.summary)) : parsed.summary;
+                  const cardCategory = isPreviewEn ? (parsed.categoryEn || parsed.category) : parsed.category;
+                  const cardReadTime = isPreviewEn ? (parsed.readTimeEn || '5 min read') : parsed.readTime;
 
-                    <div className="square-card-container">
-                      <article className="mock-blog-card">
-                        <div className="mock-card-image-square">
-                          <img src={parsed.image} alt={parsed.imageAlt} />
-                          <span className="mock-cat-badge">{parsed.category}</span>
-                          <span className="mock-ratio-pill">1:1 Cuadrada</span>
-                        </div>
+                  return (
+                    <div className="card-preview-viewport">
+                      <div className="card-preview-intro">
+                        <h4>Previsualización en la Grilla del Blog ({isPreviewEn ? 'Versión Internacional /en/blog' : 'Versión Español /blog'})</h4>
+                        <p>Así lucirá la tarjeta del artículo para los visitantes:</p>
+                      </div>
 
-                        <div className="mock-card-body">
-                          <div className="mock-card-meta">
-                            <span>{parsed.date}</span>
-                            <span>•</span>
-                            <span>{parsed.readTime}</span>
+                      <div className="square-card-container">
+                        <article className="mock-blog-card">
+                          <div className="mock-card-image-square">
+                            <img src={parsed.image} alt={parsed.imageAlt} />
+                            <span className="mock-cat-badge">{cardCategory}</span>
+                            <span className="mock-ratio-pill">1:1 Cuadrada</span>
                           </div>
 
-                          <h2 className="mock-card-title">{parsed.title}</h2>
-                          <p className="mock-card-summary">{parsed.summary}</p>
+                          <div className="mock-card-body">
+                            <div className="mock-card-meta">
+                              <span>{parsed.date}</span>
+                              <span>•</span>
+                              <span>{cardReadTime}</span>
+                            </div>
 
-                          <div className="mock-card-footer">
-                            <span className="mock-read-link">Leer artículo completo →</span>
+                            <h2 className="mock-card-title">{cardTitle}</h2>
+                            <p className="mock-card-summary">{cardSummary}</p>
+
+                            <div className="mock-card-footer">
+                              <span className="mock-read-link">
+                                {isPreviewEn ? 'Read full article →' : 'Leer artículo completo →'}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      </article>
+                        </article>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  );
+                })()}
 
                 {/* 3. VISTA CÓDIGO TS / JSON */}
                 {activePreviewTab === 'code' && (

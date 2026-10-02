@@ -88,7 +88,8 @@ function LanguageSwitcherContent({ variant = 'header' }: LanguageSwitcherProps) 
 
   // Comprobar que el destino exista antes de ofrecerlo (fallback al home si la ruta no existe)
   const normalizedPath = pathname === '' ? '/' : pathname;
-  const destinationPath = VALID_ROUTES.includes(normalizedPath) ? normalizedPath : '/';
+  const isAllowedPath = VALID_ROUTES.includes(normalizedPath) || normalizedPath.startsWith('/blog');
+  const destinationPath = isAllowedPath ? normalizedPath : '/';
 
   const queryStr = filteredParams.toString();
   const targetHref = `${destinationPath}${queryStr ? `?${queryStr}` : ''}${hash}`;

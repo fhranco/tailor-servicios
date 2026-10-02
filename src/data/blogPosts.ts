@@ -41,6 +41,21 @@ export interface BlogArticle {
     title: string;
     text: string;
   };
+  contentHtml?: string;
+  titleEn?: string;
+  subtitleEn?: string;
+  categoryEn?: string;
+  summaryEn?: string;
+  readTimeEn?: string;
+  keywordsEn?: string[];
+  keyTakeawaysEn?: string[];
+  sectionsEn?: BlogArticleSection[];
+  conclusionEn?: {
+    title: string;
+    text: string;
+  };
+  contentHtmlEn?: string;
+  rawDraftEn?: string;
 }
 
 export const blogArticlesEs: BlogArticle[] = [
@@ -106,7 +121,51 @@ export const blogArticlesEs: BlogArticle[] = [
     "conclusion": {
       "title": "Reflexión Estratégica",
       "text": "La adopción de estas prácticas permite a las organizaciones consolidar ventajas sustentables a través de sus personas."
-    }
+    },
+    titleEn: 'There are places one inhabits, and others that, somehow, end up inhabiting you. Magallanes has something of that.',
+    subtitleEn: 'Strategic reflections on territorial value, external perceptions, and building human capability in southern Chile.',
+    categoryEn: 'People Strategy & Leadership',
+    summaryEn: 'For those of us born in Punta Arenas who have built our lives in this territory, its realities are not stories told to us: we live them. An executive perspective on why Magallanes is a global strategic gateway, not a peripheral outpost.',
+    readTimeEn: '6 min read',
+    keyTakeawaysEn: [
+      'Punta Arenas and Magallanes represent a strategic gateway of Antarctic and global projection.',
+      'Regional growth requires developing and retaining local talent with an ambitious long-term vision.',
+      'Organizational capabilities and human capital are the true builders of lasting economic reality in extreme zones.'
+    ],
+    conclusionEn: {
+      title: 'Strategic Reflection',
+      text: 'Championing Magallanes means acknowledging our potential with maturity to address our gaps and compete with excellence on the global stage.'
+    },
+    sectionsEn: [
+      {
+        heading: 'Magallanes: A Strategic Gateway, Not a Peripheral Outpost',
+        paragraphs: [
+          "We are close to Antarctica, close to strategic maritime routes, surrounded by nature that the world seeks to know, study, and protect. And in the midst of energetic, scientific, tourism, and logistical transformations that are drawing unprecedented international attention to this edge of the planet. Perhaps that is why, when someone speaks of Magallanes from the outside, we pay close attention.",
+          "Not because we need validation from others, but because we know firsthand the effort required to build, innovate, and grow organizations in this territory. And because we also recognize the immense potential of a region that for too long was viewed merely as the remote end of Chile, and which today, with growing momentum, is recognized as a strategic territory.",
+          "Recently, I read an article published by the Argentine newspaper Clarín about Punta Arenas. The piece addresses our city's development, its quality of life, and especially its emerging position facing Antarctica. A necessary and insightful discussion, yet one phrase lingered with me: “a big village” (aldea grande).",
+          "We could let it pass as a colloquialism or simply the subjective view of one interviewee. But those of us who know Magallanes—who work every day with its enterprises, leaders, and workforce—know that words shape perceptions. And perhaps the time has come for us to actively narrate what Magallanes truly represents.",
+          "Because Punta Arenas is not a village.",
+          "And Magallanes is far from being an irrelevant global periphery. Those of us within the region's business ecosystem have a privileged perspective on this transformation. We know many of its companies, leaders, and workers. We understand the discipline needed to sustain operations in this climate and the deep local talent driving them.",
+          "We have witnessed regional companies professionalize their structures, develop teams, foster new leadership, and look far beyond regional borders. That, too, is part of the story we must articulate.",
+          "For a long time, building a business from Magallanes meant competing under challenging conditions: distance from decision centers, logistical costs, connectivity, access to specialized human capital, and economies of scale. Yet something fundamental is changing.",
+          "Step by step, our entrepreneurs and organizations have elevated their perspective. There is sharper awareness regarding the value of people development, leadership strengthening, strategic planning, and building resilient organizations capable not just of surviving, but thriving.",
+          "And with that professionalization comes something even more critical: the ambition to compete, backed by the conviction that Magallanes possesses the capabilities to do so on a global scale.",
+          "A Position That Is Shifting",
+          "Today, Magallanes participates in strategic discussions for Chile and the world: energy transition, green hydrogen and its derivatives, maritime and air connectivity, special interest tourism, Antarctic logistics, scientific research, and infrastructure development.",
+          "And when discussing our Antarctic positioning, we must remember: Magallanes does not end at Punta Arenas; further south lies Puerto Williams, whose geographic positioning offers Chile an extraordinary projection into Antarctica. Punta Arenas, meanwhile, provides airport, business, logistical, hospitality, commercial, and service capabilities built over decades.",
+          "We do not need to pit these territories against each other. Instead, we must understand them as an integrated southern system, enabling an internationally competitive ecosystem of logistics, tourism, science, and enterprise.",
+          "Geographic advantage alone does not guarantee success. Geography can be squandered without investment, infrastructure, human capital, public-private partnership, and a shared long-term horizon.",
+          "Perhaps the most crucial question is not what outside observers think of us. The real question is: Are we ourselves sufficiently conscious of Magallanes's true value? For too long we waited for our potential to be discovered from central capitals.",
+          "Those of us inside this regional business ecosystem see daily evidence of success: businesses investing, organizations professionalizing, new generations preparing for industries that barely existed years ago, international players looking south, high-standard tourism, energy, and, above all, remarkable talent operating in one of the planet's most demanding environments.",
+          "We face real challenges attracting and retaining top talent, continuing the professionalization of our companies, and fostering a regional vision that rises above narrow interests when a transformative opportunity is at stake.",
+          "Championing Magallanes does not mean denying our obstacles; it means acknowledging our potential with maturity to address our gaps. True competition is not claiming superiority, but preparing ourselves to meet the highest global standards.",
+          "That is why the phrase “big village” sparked more reflection than resentment. Words shape perceptions, but capabilities build lasting reality.",
+          "If the world is turning its eyes toward the southern extreme, we must look even further ahead. The real discussion is what we are building so Magallanes occupies the strategic place its geography, industries, people, and leadership command.",
+          "We are not a village waiting to be discovered.",
+          "We are a strategic territory that must decide what to do with the historic opportunity before us. And that narrative, before others write it for us, must be written by ourselves."
+        ]
+      }
+    ]
   },
   {
     id: 1,
@@ -398,7 +457,26 @@ function getLiveArticles(): BlogArticle[] {
 
 export function getBlogArticleBySlug(slug: string, locale: string = 'es'): BlogArticle | undefined {
   const articles = getLiveArticles();
-  return articles.find(article => article.slug === slug);
+  const article = articles.find(a => a.slug === slug);
+  if (!article) return undefined;
+
+  if (locale === 'en') {
+    return {
+      ...article,
+      title: article.titleEn || article.title,
+      subtitle: article.subtitleEn || article.subtitle,
+      category: article.categoryEn || article.category,
+      summary: article.summaryEn || article.summary,
+      readTime: article.readTimeEn || article.readTime.replace('min de lectura', 'min read'),
+      keywords: article.keywordsEn && article.keywordsEn.length > 0 ? article.keywordsEn : article.keywords,
+      keyTakeaways: article.keyTakeawaysEn && article.keyTakeawaysEn.length > 0 ? article.keyTakeawaysEn : article.keyTakeaways,
+      sections: article.sectionsEn && article.sectionsEn.length > 0 ? article.sectionsEn : article.sections,
+      conclusion: article.conclusionEn || article.conclusion,
+      contentHtml: article.contentHtmlEn || article.contentHtml
+    };
+  }
+
+  return article;
 }
 
 export function getAllBlogSlugs(): string[] {
