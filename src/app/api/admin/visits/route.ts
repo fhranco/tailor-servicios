@@ -58,6 +58,14 @@ export async function GET(req: NextRequest) {
       headers: { 'Cache-Control': 'no-store, private' }
     });
   } catch (err: any) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('[Admin Visits] Supabase tabla pendiente o sin conexión:', err?.message);
+      return NextResponse.json({
+        totalVisits: 0,
+        pageStats: [],
+        recentVisits: []
+      }, { headers: { 'Cache-Control': 'no-store, private' } });
+    }
     return NextResponse.json({ error: err.message }, { status: 500, headers: { 'Cache-Control': 'no-store, private' } });
   }
 }

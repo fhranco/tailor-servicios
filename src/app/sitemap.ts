@@ -1,9 +1,10 @@
 import { MetadataRoute } from 'next';
+import { getAllBlogSlugs } from '@/data/blogPosts';
 
 const BASE_URL = 'https://tailorservicios.cl';
 
 // Rutas públicas indexables verificadas
-const routes = [
+const baseRoutes = [
   '',
   '/nosotros',
   '/servicios',
@@ -20,7 +21,9 @@ const routes = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Fecha real de la última actualización mayor verificada
-  const LAST_MODIFIED_RELEASE = '2026-09-14';
+  const LAST_MODIFIED_RELEASE = '2026-10-02';
+  const blogArticleRoutes = getAllBlogSlugs().map(slug => `/blog/${slug}`);
+  const routes = [...baseRoutes, ...blogArticleRoutes];
   const entries: MetadataRoute.Sitemap = [];
 
   routes.forEach((route) => {

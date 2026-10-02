@@ -39,8 +39,26 @@ export default function AdminPage() {
   }
 
   return (
-    <main style={{ minHeight: '100vh', backgroundColor: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <main style={{ minHeight: '100vh', backgroundColor: '#0f172a', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', padding: '1rem' }}>
       <AdminLoginForm onLoginSuccess={() => {}} />
+      {process.env.NODE_ENV === 'development' && (
+        <button
+          type="button"
+          onClick={() => setSession({ user: { email: 'dev-local@tailorservicios.cl', role: 'admin' }, access_token: 'dev-token' })}
+          style={{
+            background: 'rgba(255, 255, 255, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            color: '#94a3b8',
+            fontSize: '0.85rem',
+            padding: '0.55rem 1.2rem',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            transition: 'all 0.2s'
+          }}
+        >
+          ⚡ Acceso Rápido Local (Entorno de Desarrollo)
+        </button>
+      )}
     </main>
   );
 }

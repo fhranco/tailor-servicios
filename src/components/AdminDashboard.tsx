@@ -3,17 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import './AdminDashboard.css';
 
-type Candidate = {
-  id: string;
-  created_at: string;
-  full_name: string;
-  email: string;
-  phone: string;
-  specialty: string;
-  cv_path: string;
-  cv_download_url?: string;
-};
-
 type Lead = {
   id: string;
   created_at: string;
@@ -46,6 +35,7 @@ type AuditLog = {
 };
 
 import { supabase } from '@/lib/supabase';
+import BlogArticleAdapter from './BlogArticleAdapter';
 
 type PageStat = {
   path: string;
@@ -53,12 +43,12 @@ type PageStat = {
 };
 
 export default function AdminDashboard({ session }: { session: any }) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'candidates' | 'leads' | 'traffic' | 'audit' | 'jobs'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'leads' | 'blog' | 'jobs' | 'audit' | 'traffic'>('overview');
   const [loading, setLoading] = useState(true);
 
   // States for data
-  const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [blogCount, setBlogCount] = useState(0);
   const [visits, setVisits] = useState<Visit[]>([]);
   const [pageStats, setPageStats] = useState<PageStat[]>([]);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
@@ -77,18 +67,20 @@ export default function AdminDashboard({ session }: { session: any }) {
         'Authorization': `Bearer ${session?.access_token || ''}`
       };
 
-      // 1. Fetch Candidates
-      const cRes = await fetch('/api/admin/candidates', { headers });
-      if (cRes.ok) {
-        const cData = await cRes.json();
-        setCandidates(cData);
-      }
-
-      // 2. Fetch Leads
+      // 1. Fetch Leads B2B
       const lRes = await fetch('/api/admin/leads', { headers });
       if (lRes.ok) {
         const lData = await lRes.json();
         setLeads(lData);
+      }
+
+      // 2. Fetch Blog Articles Count
+      const bRes = await fetch('/api/admin/blog');
+      if (bRes.ok) {
+        const bData = await bRes.json();
+        if (Array.isArray(bData.articles)) {
+          setBlogCount(bData.articles.length);
+        }
       }
 
       // 3. Fetch Web Visits
@@ -100,7 +92,7 @@ export default function AdminDashboard({ session }: { session: any }) {
         setTotalVisits(vData.totalVisits || 0);
       }
 
-      // 4. Fetch Audit Logs
+      // 4. Fetch Audit Logs (Ley 21.719)
       const aRes = await fetch('/api/admin/audit-logs', { headers });
       if (aRes.ok) {
         const aData = await aRes.json();
@@ -148,19 +140,15 @@ export default function AdminDashboard({ session }: { session: any }) {
     }
   };
 
-  const deleteRecord = async (id: string, type: 'candidates' | 'leads') => {
-    const confirmMsg = type === 'candidates' 
-      ? '¿Estás seguro de eliminar este candidato de manera permanente? (Esto borrará su registro e historial de la base de datos)'
-      : '¿Estás seguro de eliminar este contacto de manera permanente?';
-    
+  const deleteLead = async (id: string) => {
+    const confirmMsg = '¿Estás seguro de eliminar este contacto comercial de manera permanente? (Ejercicio de derecho de supresión Ley 21.719)';
     if (!window.confirm(confirmMsg)) return;
 
     try {
       const headers = {
         'Authorization': `Bearer ${session?.access_token || ''}`
       };
-      const endpoint = type === 'candidates' ? '/api/admin/candidates' : '/api/admin/leads';
-      const res = await fetch(`${endpoint}?id=${id}`, { method: 'DELETE', headers });
+      const res = await fetch(`/api/admin/leads?id=${id}`, { method: 'DELETE', headers });
       if (res.ok) {
         alert('Registro eliminado con éxito.');
         fetchDashboardData();
@@ -209,13 +197,6 @@ export default function AdminDashboard({ session }: { session: any }) {
             📊 Resumen General
           </button>
           <button 
-            className={`admin-nav-item ${activeTab === 'candidates' ? 'active' : ''}`}
-            onClick={() => setActiveTab('candidates')}
-          >
-            👥 Postulantes / CVs
-            {candidates.length > 0 && <span className="tab-badge">{candidates.length}</span>}
-          </button>
-          <button 
             className={`admin-nav-item ${activeTab === 'leads' ? 'active' : ''}`}
             onClick={() => setActiveTab('leads')}
           >
@@ -223,16 +204,11 @@ export default function AdminDashboard({ session }: { session: any }) {
             {leads.length > 0 && <span className="tab-badge">{leads.length}</span>}
           </button>
           <button 
-            className={`admin-nav-item ${activeTab === 'traffic' ? 'active' : ''}`}
-            onClick={() => setActiveTab('traffic')}
+            className={`admin-nav-item ${activeTab === 'blog' ? 'active' : ''}`}
+            onClick={() => setActiveTab('blog')}
           >
-            📈 Tráfico y Visitas
-          </button>
-          <button 
-            className={`admin-nav-item ${activeTab === 'audit' ? 'active' : ''}`}
-            onClick={() => setActiveTab('audit')}
-          >
-            🛡️ Auditoría (Ley 21.719)
+            📰 Gestión de Blog (CMS)
+            {blogCount > 0 && <span className="tab-badge">{blogCount}</span>}
           </button>
           <button 
             className={`admin-nav-item ${activeTab === 'jobs' ? 'active' : ''}`}
@@ -242,6 +218,18 @@ export default function AdminDashboard({ session }: { session: any }) {
             {jobs.filter(j => j.active).length > 0 && (
               <span className="tab-badge">{jobs.filter(j => j.active).length}</span>
             )}
+          </button>
+          <button 
+            className={`admin-nav-item ${activeTab === 'audit' ? 'active' : ''}`}
+            onClick={() => setActiveTab('audit')}
+          >
+            🛡️ Auditoría (Ley 21.719)
+          </button>
+          <button 
+            className={`admin-nav-item ${activeTab === 'traffic' ? 'active' : ''}`}
+            onClick={() => setActiveTab('traffic')}
+          >
+            📈 Tráfico y Visitas
           </button>
         </nav>
         <div className="admin-footer-actions">
@@ -255,12 +243,12 @@ export default function AdminDashboard({ session }: { session: any }) {
       <main className="admin-main">
         <header className="admin-header">
           <h1>
-            {activeTab === 'overview' && 'Dashboard de Operaciones'}
-            {activeTab === 'candidates' && 'Bandeja de Candidatos (Reclutamiento)'}
+            {activeTab === 'overview' && 'Dashboard de Operaciones y Cumplimiento'}
             {activeTab === 'leads' && 'Bandeja de Contactos B2B (Empresas)'}
-            {activeTab === 'traffic' && 'Análisis de Tráfico Anónimo'}
-            {activeTab === 'audit' && 'Bitácora de Auditoría Legal'}
+            {activeTab === 'blog' && 'Gestión de Blog (CMS): Crear, Editar, Eliminar y Maquetar Artículos'}
             {activeTab === 'jobs' && 'Gestión y Sincronización de Ofertas (Rex+)'}
+            {activeTab === 'traffic' && 'Análisis de Tráfico Anónimo'}
+            {activeTab === 'audit' && 'Bitácora de Auditoría Legal (Ley 21.719)'}
           </h1>
           <button className="btn-refresh" onClick={fetchDashboardData}>
             🔄 Actualizar Datos
@@ -273,14 +261,19 @@ export default function AdminDashboard({ session }: { session: any }) {
             <div className="overview-tab">
               <div className="overview-grid">
                 <div className="stat-card">
-                  <div className="stat-icon">👥</div>
-                  <div className="stat-value">{candidates.length}</div>
-                  <div className="stat-label">Candidatos Totales</div>
-                </div>
-                <div className="stat-card">
                   <div className="stat-icon">🏢</div>
                   <div className="stat-value">{leads.length}</div>
                   <div className="stat-label">Solicitudes B2B</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon">📰</div>
+                  <div className="stat-value">{blogCount}</div>
+                  <div className="stat-label">Artículos Blog CMS</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon">💼</div>
+                  <div className="stat-value">{jobs.filter(j => j.active).length}</div>
+                  <div className="stat-label">Ofertas Rex+ Activas</div>
                 </div>
                 <div className="stat-card">
                   <div className="stat-icon">📈</div>
@@ -291,13 +284,13 @@ export default function AdminDashboard({ session }: { session: any }) {
 
               <div className="dashboard-double-panel">
                 <div className="recent-activity-panel">
-                  <h3>Últimas Acciones</h3>
+                  <h3>Últimas Acciones de Auditoría (Ley 21.719)</h3>
                   <div className="activity-list">
                     {auditLogs.slice(0, 5).map((log) => (
                       <div key={log.id} className="activity-item">
                         <span className="activity-time">{new Date(log.timestamp).toLocaleString('es-CL')}</span>
                         <p className="activity-text">
-                          El sistema registró acceso administrativo: <strong>{log.action}</strong>
+                          Acceso administrativo registrado: <strong>{log.action}</strong>
                         </p>
                       </div>
                     ))}
@@ -306,14 +299,14 @@ export default function AdminDashboard({ session }: { session: any }) {
                 </div>
 
                 <div className="quick-actions-panel">
-                  <h3>Exportación Consolidada</h3>
-                  <p>Descarga copias de seguridad locales en formato estructurado para auditorías externas de datos.</p>
+                  <h3>Exportación Consolidada de Datos</h3>
+                  <p>Descarga copias locales estructuradas conforme al derecho de portabilidad y auditorías externas.</p>
                   <div className="action-buttons">
-                    <button className="btn-action" onClick={() => handleExportData(candidates, 'candidatos')}>
-                      📥 Descargar Candidatos (JSON)
-                    </button>
                     <button className="btn-action" onClick={() => handleExportData(leads, 'b2b_leads')}>
                       📥 Descargar Leads B2B (JSON)
+                    </button>
+                    <button className="btn-action" onClick={() => handleExportData(auditLogs, 'auditoria_ley_21719')}>
+                      📥 Descargar Bitácora Legal (JSON)
                     </button>
                   </div>
                 </div>
@@ -321,68 +314,7 @@ export default function AdminDashboard({ session }: { session: any }) {
             </div>
           )}
 
-          {/* TAB 2: CANDIDATES */}
-          {activeTab === 'candidates' && (
-            <div className="table-view-tab">
-              <div className="table-header-controls">
-                <p>Lista de postulantes y currículums recibidos mediante el formulario web corporativo.</p>
-              </div>
-              <div className="table-container">
-                <table className="admin-table">
-                  <thead>
-                    <tr>
-                      <th>Fecha</th>
-                      <th>Nombre</th>
-                      <th>Email</th>
-                      <th>Teléfono</th>
-                      <th>CV / Documento</th>
-                      <th>Consentimiento</th>
-                      <th>Acción</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {candidates.map((c) => {
-                      const cvDownloadUrl = c.cv_download_url || '';
-                      return (
-                        <tr key={c.id}>
-                          <td>{new Date(c.created_at).toLocaleDateString('es-CL')}</td>
-                          <td>{c.full_name}</td>
-                          <td>{c.email}</td>
-                          <td>{c.phone || '-'}</td>
-                          <td>
-                            {cvDownloadUrl ? (
-                              <a href={cvDownloadUrl} target="_blank" rel="noopener noreferrer" className="btn-table-action download">
-                                📄 Descargar CV
-                              </a>
-                            ) : c.cv_path ? (
-                              <span style={{ fontSize: '0.85rem', color: '#64748b' }}>Archivo protegido</span>
-                            ) : 'No cargado'}
-                          </td>
-                          <td>
-                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', backgroundColor: '#d1fae5', color: '#065f46', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 600 }}>
-                              ✔️ Aceptado
-                            </span>
-                          </td>
-                          <td>
-                            <button className="btn-table-action delete" onClick={() => deleteRecord(c.id, 'candidates')}>
-                              🗑️ Eliminar
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                    {candidates.length === 0 && (
-                      <tr>
-                        <td colSpan={7} className="empty-row">No hay candidatos registrados en la bandeja.</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 3: LEADS */}
+          {/* TAB 2: LEADS B2B */}
           {activeTab === 'leads' && (
             <div className="table-view-tab">
               <div className="table-header-controls">
@@ -422,7 +354,7 @@ export default function AdminDashboard({ session }: { session: any }) {
                           </span>
                         </td>
                         <td>
-                          <button className="btn-table-action delete" onClick={() => deleteRecord(l.id, 'leads')}>
+                          <button className="btn-table-action delete" onClick={() => deleteLead(l.id)}>
                             🗑️ Eliminar
                           </button>
                         </td>
@@ -439,104 +371,22 @@ export default function AdminDashboard({ session }: { session: any }) {
             </div>
           )}
 
-          {/* TAB 4: TRAFFIC / VISITS */}
-          {activeTab === 'traffic' && (
-            <div className="traffic-tab">
-              <div className="traffic-grid">
-                <div className="traffic-chart-panel">
-                  <h3>Páginas más visitadas</h3>
-                  <div className="page-ranking-list">
-                    {pageStats.map((stat, idx) => (
-                      <div key={idx} className="ranking-item">
-                        <span className="ranking-path">{stat.path}</span>
-                        <div className="ranking-bar-wrapper">
-                          <div 
-                            className="ranking-bar" 
-                            style={{ width: `${(stat.count / Math.max(...pageStats.map(s => s.count))) * 100}%` }}
-                          ></div>
-                          <span className="ranking-count">{stat.count} vistas</span>
-                        </div>
-                      </div>
-                    ))}
-                    {pageStats.length === 0 && <p className="empty-text">Sin datos de tráfico registrados.</p>}
-                  </div>
-                </div>
-
-                <div className="traffic-details-panel">
-                  <h3>Visitas Recientes (Anónimas)</h3>
-                  <div className="visits-log-list">
-                    {visits.slice(0, 15).map((v) => (
-                      <div key={v.id} className="visit-log-item">
-                        <div className="visit-meta">
-                          <span className="visit-time">{new Date(v.timestamp).toLocaleTimeString('es-CL')}</span>
-                          <span className="visit-locale">{v.locale.toUpperCase()}</span>
-                        </div>
-                        <p className="visit-info">
-                          Vió <strong>{v.page_path}</strong>
-                          {v.referrer && <span className="referrer-text"> desde {v.referrer}</span>}
-                        </p>
-                      </div>
-                    ))}
-                    {visits.length === 0 && <p className="empty-text">Sin visitas recientes registradas.</p>}
-                  </div>
-                </div>
-              </div>
-            </div>
+          {/* TAB 3: GESTIÓN DE BLOG CMS */}
+          {activeTab === 'blog' && (
+            <BlogArticleAdapter session={session} />
           )}
 
-          {/* TAB 5: AUDIT LOGS */}
-          {activeTab === 'audit' && (
-            <div className="table-view-tab">
-              <div className="table-header-controls">
-                <p>Historial inmutable de accesos de administrador y operaciones sobre datos personales (Ley 21.719).</p>
-              </div>
-              <div className="table-container">
-                <table className="admin-table">
-                  <thead>
-                    <tr>
-                      <th>Fecha y Hora</th>
-                      <th>Usuario / Operador</th>
-                      <th>Acción / Operación</th>
-                      <th>ID Registro Afectado</th>
-                      <th>Dirección IP (Enmascarada)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {auditLogs.map((log) => (
-                      <tr key={log.id}>
-                        <td>{new Date(log.timestamp).toLocaleString('es-CL')}</td>
-                        <td><span className="role-badge admin">{log.performed_by}</span></td>
-                        <td><strong>{log.action}</strong></td>
-                        <td style={{fontFamily: 'monospace', fontSize: '0.85rem'}}>{log.target_id || '-'}</td>
-                        <td style={{fontFamily: 'monospace', fontSize: '0.85rem', color: '#64748b'}} title="IP enmascarada conforme a la Ley 21.719">
-                          {log.ip_address || '-'}
-                        </td>
-                      </tr>
-                    ))}
-                    {auditLogs.length === 0 && (
-                      <tr>
-                        <td colSpan={5} className="empty-row">No hay registros de auditoría de privacidad.</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 6: REX+ JOBS */}
+          {/* TAB 4: OFERTAS REX+ */}
           {activeTab === 'jobs' && (
-            <div className="table-view-tab">
-              <div className="table-header-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '16px' }}>
+            <div className="jobs-tab">
+              <div className="jobs-header-actions" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
                 <div>
-                  <p style={{ margin: 0, color: '#334155' }}>
-                    Ofertas laborales sincronizadas directamente desde la fuente oficial de verdad en <strong>Rex+</strong>.
+                  <h3 style={{ margin: 0, color: '#f8fafc' }}>Catálogo de Ofertas Laborales</h3>
+                  <p style={{ margin: '4px 0 0', color: '#94a3b8', fontSize: '0.9rem' }}>
+                    Sincronización directa con el portal de empleo ATS Rex+. Postulaciones derivadas 100% al ATS.
                   </p>
-                  <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
-                    🔒 Cumplimiento Ley 21.719: No retenemos CVs ni postulaciones de candidatos en la web; los postulantes son derivados a Rex+.
-                  </span>
                 </div>
-                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '0.75rem' }}>
                   <button 
                     className="btn-action" 
                     onClick={handleSyncJobs}
@@ -608,6 +458,94 @@ export default function AdminDashboard({ session }: { session: any }) {
                     )}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 5: AUDITORÍA LEY 21.719 */}
+          {activeTab === 'audit' && (
+            <div className="audit-tab">
+              <div className="table-header-controls">
+                <p>Trazabilidad legal obligatoria conforme a la Ley 21.719. Registra accesos y modificaciones sobre datos de contactos comerciales.</p>
+              </div>
+              <div className="table-container">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Fecha / Hora</th>
+                      <th>Acción</th>
+                      <th>Responsable</th>
+                      <th>Dirección IP (Protegida)</th>
+                      <th>Agente / Navegador</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {auditLogs.map((log) => (
+                      <tr key={log.id}>
+                        <td>{new Date(log.timestamp).toLocaleString('es-CL')}</td>
+                        <td><span className="action-tag">{log.action}</span></td>
+                        <td>{log.performed_by}</td>
+                        <td><code>{log.ip_address}</code></td>
+                        <td className="ua-cell" title={log.user_agent}>{log.user_agent}</td>
+                      </tr>
+                    ))}
+                    {auditLogs.length === 0 && (
+                      <tr>
+                        <td colSpan={5} className="empty-row">No hay eventos de auditoría registrados.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 6: TRAFFIC / VISITS */}
+          {activeTab === 'traffic' && (
+            <div className="traffic-tab">
+              <div className="traffic-grid">
+                <div className="traffic-chart-panel">
+                  <h3>Páginas más visitadas</h3>
+                  <div className="page-ranking-list">
+                    {pageStats.map((stat, idx) => (
+                      <div key={idx} className="ranking-item">
+                        <span className="ranking-path">{stat.path}</span>
+                        <div className="ranking-bar-wrapper">
+                          <div 
+                            className="ranking-bar" 
+                            style={{ width: `${(stat.count / Math.max(...pageStats.map(s => s.count || 1))) * 100}%` }}
+                          ></div>
+                          <span className="ranking-count">{stat.count} vistas</span>
+                        </div>
+                      </div>
+                    ))}
+                    {pageStats.length === 0 && <p className="empty-text">Sin datos de tráfico registrados.</p>}
+                  </div>
+                </div>
+
+                <div className="recent-visits-panel">
+                  <h3>Historial de Visitas (Anonimizado)</h3>
+                  <div className="visits-table-wrapper">
+                    <table className="admin-table simple">
+                      <thead>
+                        <tr>
+                          <th>Hora</th>
+                          <th>Página</th>
+                          <th>Origen</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {visits.slice(0, 15).map((v) => (
+                          <tr key={v.id}>
+                            <td>{new Date(v.timestamp).toLocaleTimeString('es-CL')}</td>
+                            <td>{v.page_path}</td>
+                            <td>{v.referrer ? new URL(v.referrer).hostname : 'Directo'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           )}

@@ -32,18 +32,30 @@ export async function GET(req: NextRequest) {
     console.error('Audit Log Error:', logErr);
   }
 
-  const { data, error } = await supabase
-    .from('b2b_leads')
-    .select('*')
-    .order('created_at', { ascending: false });
+  try {
+    const { data, error } = await supabase
+      .from('b2b_leads')
+      .select('*')
+      .order('created_at', { ascending: false });
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500, headers: { 'Cache-Control': 'no-store, private' } });
+    if (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('[Admin Leads] Supabase tabla pendiente o sin conexión:', error.message);
+        return NextResponse.json([], { headers: { 'Cache-Control': 'no-store, private' } });
+      }
+      return NextResponse.json({ error: error.message }, { status: 500, headers: { 'Cache-Control': 'no-store, private' } });
+    }
+
+    return NextResponse.json(data, {
+      headers: { 'Cache-Control': 'no-store, private' }
+    });
+  } catch (err: any) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('[Admin Leads] Excepción de conexión con Supabase:', err?.message);
+      return NextResponse.json([], { headers: { 'Cache-Control': 'no-store, private' } });
+    }
+    return NextResponse.json({ error: err?.message }, { status: 500, headers: { 'Cache-Control': 'no-store, private' } });
   }
-
-  return NextResponse.json(data, {
-    headers: { 'Cache-Control': 'no-store, private' }
-  });
 }
 
 export async function DELETE(req: NextRequest) {

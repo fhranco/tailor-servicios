@@ -133,6 +133,10 @@ const ALLOWED_ORIGINS = [
 
 function isAllowedOrigin(origin: string | null): boolean {
   if (!origin) return false;
+  // Permite pruebas en entorno local de desarrollo
+  if (process.env.NODE_ENV === 'development' && (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:'))) {
+    return true;
+  }
   if (ALLOWED_ORIGINS.includes(origin)) return true;
   // Permite preview deployments de Vercel: https://*.vercel.app
   if (/^https:\/\/[a-zA-Z0-9-]+-[a-zA-Z0-9-]+\.vercel\.app$/.test(origin)) return true;

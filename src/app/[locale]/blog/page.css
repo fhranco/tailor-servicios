@@ -1,69 +1,394 @@
+/* ========================================================
+   BLOG CORPORATIVO - TAILOR SERVICIOS
+   Diseño de Vanguardia, Tipografía Editorial & Alto Contraste
+   ======================================================== */
+
 .blog-page {
-  background-color: var(--color-light);
+  background-color: #f8fafc;
   min-height: 100vh;
   color: var(--color-dark);
 }
 
-.blog-content-section {
-  padding: 5rem 0 8rem;
+/* ========================================================
+   1. HERO SECTION (Identidad Visual Consistente con Nosotros/Servicios)
+   ======================================================== */
+.inner-hero.blog-hero {
+  padding: 13rem 0 6rem;
+  background-color: #0f172a;
+  position: relative;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background-image: 
+    radial-gradient(circle at 50% 20%, rgba(142, 197, 60, 0.12) 0%, transparent 60%),
+    linear-gradient(rgba(15, 23, 42, 0.86), rgba(15, 23, 42, 0.96)), 
+    url('/Images/bg-servicios.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
+.blog-hero .hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Breadcrumbs de navegación */
+.blog-breadcrumbs {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.35rem 1rem;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+}
+
+.breadcrumb-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+  color: #ffffff;
+}
+
+.breadcrumb-separator {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.breadcrumb-current {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/* Badge & Headings del Hero */
+.blog-hero .hero-badge {
+  display: inline-block;
+  padding: 0.45rem 1.4rem;
+  border-radius: 50px;
+  background-color: rgba(190, 22, 34, 0.18);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1.75rem;
+  border: 1px solid rgba(190, 22, 34, 0.45);
+  box-shadow: 0 0 20px rgba(190, 22, 34, 0.2);
+}
+
+.blog-hero .hero-title {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.blog-hero .hero-title .text-accent {
+  color: #ed4240;
+  font-style: italic;
+  font-weight: 400;
+  display: inline-block;
+}
+
+.blog-hero .hero-subtitle {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  color: #cbd5e1;
+  line-height: 1.7;
+  max-width: 760px;
+  margin: 0 auto;
+  font-weight: 300;
+}
+
+/* ========================================================
+   2. SECCIÓN PRINCIPAL & FILTROS
+   ======================================================== */
+.blog-content-section {
+  padding: 3.5rem 0 7rem;
+}
+
+/* Barra de Filtros por Categoría */
+.blog-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 3.5rem;
+  padding: 1rem 1.5rem;
+  background: #ffffff;
+  border-radius: 60px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  max-width: 950px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.filter-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin-right: 0.25rem;
+}
+
+.filter-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filter-pill {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1.15rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+}
+
+.filter-pill:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.filter-pill.active {
+  background: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+}
+
+/* ========================================================
+   3. ARTÍCULO DESTACADO (EDITORIAL HERO CARD)
+   ======================================================== */
+.featured-post-wrapper {
+  margin-bottom: 4rem;
+}
+
+.featured-card {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.featured-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 50px -10px rgba(15, 23, 42, 0.14);
+}
+
+.featured-image-container {
+  position: relative;
+  min-height: 380px;
+  overflow: hidden;
+  background-color: #0f172a;
+}
+
+.featured-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.featured-card:hover .featured-img {
+  transform: scale(1.04);
+}
+
+.featured-tag-badge {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  background: linear-gradient(135deg, #ed4240 0%, #be1622 100%);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0.9rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(237, 66, 64, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.featured-cat-badge {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  background: rgba(15, 23, 42, 0.85);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.featured-body {
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.featured-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+}
+
+.meta-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #334155;
+  font-weight: 600;
+}
+
+.meta-bullet {
+  color: #cbd5e1;
+}
+
+.meta-readtime {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #64748b;
+}
+
+.featured-title {
+  font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.25;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.featured-summary {
+  font-size: 1.05rem;
+  color: #475569;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.featured-footer {
+  margin-top: auto;
+}
+
+.btn-luxury-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-decoration: none;
+  padding: 0.85rem 1.6rem;
+  background: #f1f5f9;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-luxury-action:hover {
+  background: #0f172a;
+  color: #ffffff;
+  transform: translateX(4px);
+  border-color: #0f172a;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.2);
+}
+
+/* ========================================================
+   4. GRID DE TARJETAS REGULARES
+   ======================================================== */
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  margin-bottom: 5rem;
+  margin-bottom: 5.5rem;
 }
 
 .blog-card {
   background: #ffffff;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .blog-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.12);
+  border-color: #cbd5e1;
 }
 
 .blog-card-image-wrapper {
   position: relative;
   width: 100%;
-  height: 220px;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
+  background-color: #0f172a;
 }
 
 .blog-card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease;
 }
 
 .blog-card:hover .blog-card-img {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 .blog-category-badge {
   position: absolute;
   bottom: 1rem;
   left: 1rem;
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(15, 23, 42, 0.88);
   color: #ffffff;
   font-size: 0.75rem;
   font-weight: 600;
-  padding: 0.35rem 0.8rem;
-  border-radius: 4px;
-  backdrop-filter: blur(4px);
+  padding: 0.35rem 0.85rem;
+  border-radius: 5px;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .blog-card-body {
-  padding: 1.75rem;
+  padding: 1.75rem 1.6rem;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -75,67 +400,198 @@
   gap: 0.5rem;
   font-size: 0.8rem;
   color: #64748b;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
+  font-weight: 500;
+}
+
+.meta-sep {
+  color: #cbd5e1;
+}
+
+.meta-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #64748b;
 }
 
 .blog-card-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--color-dark);
+  color: #0f172a;
   line-height: 1.35;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
+  letter-spacing: -0.01em;
 }
 
 .blog-card-summary {
   font-size: 0.95rem;
   color: #475569;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
+  line-height: 1.65;
+  margin-bottom: 1.75rem;
   flex: 1;
+}
+
+.blog-card-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
 }
 
 .blog-card-link {
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-accent);
   text-decoration: none;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
+  gap: 0.4rem;
 }
 
-.blog-card-link:hover {
-  color: var(--color-dark);
+.blog-card:hover .blog-card-link {
+  color: #0f172a;
   transform: translateX(4px);
 }
 
+/* ========================================================
+   5. CAJA CTA EJECUTIVA (ALTO IMPACTO B2B)
+   ======================================================== */
 .blog-cta-box {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  background: 
+    radial-gradient(circle at 80% 20%, rgba(142, 197, 60, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(237, 66, 64, 0.12) 0%, transparent 50%),
+    linear-gradient(135deg, #090e17 0%, #0f172a 50%, #1e293b 100%);
   color: #ffffff;
-  padding: 3.5rem 2.5rem;
-  border-radius: 12px;
+  padding: 4.5rem 2.5rem;
+  border-radius: 20px;
   text-align: center;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-icon-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-accent);
+  padding: 0.45rem 1.25rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(6px);
 }
 
 .blog-cta-box h3 {
-  font-size: 1.75rem;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 800;
   margin-bottom: 1rem;
   color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .blog-cta-box p {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   color: #cbd5e1;
-  margin-bottom: 2rem;
-  max-width: 600px;
+  margin-bottom: 2.5rem;
+  max-width: 660px;
   margin-left: auto;
   margin-right: auto;
+  line-height: 1.7;
 }
 
-@media (max-width: 992px) {
+.cta-actions-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* Botón Luxury Oficial */
+.blog-cta-box .btn-luxury-solid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #0f172a;
+  padding: 1.1rem 2.8rem;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 1rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  border: 2px solid #ffffff;
+}
+
+.blog-cta-box .btn-luxury-solid:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.35);
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #0f172a;
+}
+
+/* ========================================================
+   6. ADAPTABILIDAD RESPONSIVE
+   ======================================================== */
+@media (max-width: 1024px) {
+  .blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .featured-card {
+    grid-template-columns: 1fr;
+  }
+  
+  .featured-image-container {
+    min-height: 280px;
+  }
+  
+  .featured-body {
+    padding: 2rem 1.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .inner-hero.blog-hero {
+    padding: 10.5rem 0 4.5rem;
+  }
+  
   .blog-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .blog-filter-bar {
+    border-radius: 16px;
+    padding: 1rem;
+  }
+  
+  .filter-pill-group {
+    justify-content: center;
+  }
+  
+  .blog-cta-box {
+    padding: 3rem 1.5rem;
+    border-radius: 16px;
+  }
+  
+  .blog-cta-box .btn-luxury-solid {
+    width: 100%;
+    padding: 1rem 1.5rem;
   }
 }
