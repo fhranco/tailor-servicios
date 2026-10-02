@@ -70,6 +70,53 @@ export async function GET(req: NextRequest) {
     } catch (logErr) {
       console.warn('Audit Log Supabase no disponible:', (logErr as any)?.message);
     }
+
+    try {
+      const { data, error } = await supabase
+        .from('blog_articles')
+        .select('*')
+        .order('published_at', { ascending: false });
+
+      if (!error && Array.isArray(data) && data.length > 0) {
+        const mapped = data.map((dbA: any) => ({
+          id: dbA.id,
+          slug: dbA.slug,
+          title: dbA.title,
+          subtitle: dbA.subtitle || '',
+          category: dbA.category || 'Gestión de Personas',
+          categoryKey: dbA.category_key || 'personas',
+          author: {
+            id: dbA.author_id || 'consultoria',
+            name: dbA.author_name || 'Equipo de Consultoría Tailor',
+            role: dbA.author_role || '',
+            institution: dbA.author_institution || 'Tailor Servicios',
+            avatar: dbA.author_avatar || 'TS'
+          },
+          image: dbA.image || '/Images/tailor-web15.webp',
+          imageAlt: dbA.image_alt || dbA.title,
+          summary: dbA.summary || '',
+          contentHtml: dbA.content_html || '',
+          sections: dbA.content_json?.sections || [],
+          keyTakeaways: dbA.key_takeaways || [],
+          conclusion: dbA.content_json?.conclusion || {},
+          keywords: dbA.keywords || [],
+          readTime: dbA.read_time || '5 min de lectura',
+          wordCount: dbA.word_count || 0,
+          published: dbA.published !== false,
+          created_at: dbA.created_at,
+          updated_at: dbA.updated_at
+        }));
+
+        return NextResponse.json({
+          success: true,
+          articles: mapped
+        }, {
+          headers: { 'Cache-Control': 'no-store, private' }
+        });
+      }
+    } catch (dbErr) {
+      console.warn('[Admin Blog GET] Supabase no disponible, usando fallback local:', dbErr);
+    }
   }
 
   // Leer desde archivo local/caché resiliente
