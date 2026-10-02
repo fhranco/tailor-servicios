@@ -43,6 +43,20 @@ async function seedBlogArticles() {
 
   const supabase = createClient(url, serviceKey);
 
+  // Detectar si existen las columnas dedicadas en inglés (title_en, content_html_en, etc.)
+  let hasEnglishColumns = false;
+  try {
+    const { error } = await supabase.from('blog_articles').select('title_en').limit(1);
+    if (!error) {
+      hasEnglishColumns = true;
+      console.log('✅ Columnas en inglés (title_en, content_html_en) detectadas en Supabase.');
+    } else {
+      console.log('ℹ️ Columnas dedicadas en inglés aún no agregadas. Guardando en content_json.');
+    }
+  } catch (e) {
+    hasEnglishColumns = false;
+  }
+
   for (const a of articles) {
     const dbPayload = {
       slug: a.slug,
@@ -83,6 +97,15 @@ async function seedBlogArticles() {
       published: true,
       updated_at: new Date().toISOString()
     };
+
+    if (hasEnglishColumns) {
+      dbPayload.title_en = a.titleEn || null;
+      dbPayload.subtitle_en = a.subtitleEn || null;
+      dbPayload.summary_en = a.summaryEn || null;
+      dbPayload.content_html_en = a.contentHtmlEn || null;
+      dbPayload.category_en = a.categoryEn || null;
+      dbPayload.read_time_en = a.readTimeEn || null;
+    }
 
     console.log(`Subiendo a Supabase: "${a.title.slice(0, 45)}..." (slug: ${a.slug}) | Autor: ${dbPayload.author_name}`);
     const { data, error } = await supabase
