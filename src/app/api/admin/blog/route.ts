@@ -233,12 +233,6 @@ export async function POST(req: NextRequest) {
           image_alt: savedArticle.imageAlt || savedArticle.title,
           summary: savedArticle.summary || '',
           content_html: savedArticle.contentHtml || null,
-          title_en: savedArticle.titleEn || null,
-          subtitle_en: savedArticle.subtitleEn || null,
-          summary_en: savedArticle.summaryEn || null,
-          content_html_en: savedArticle.contentHtmlEn || null,
-          category_en: savedArticle.categoryEn || null,
-          read_time_en: savedArticle.readTimeEn || null,
           content_json: {
             sections: savedArticle.sections || [],
             keyTakeaways: savedArticle.keyTakeaways || [],
