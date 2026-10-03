@@ -191,6 +191,7 @@
   box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
   border: 1px solid #e2e8f0;
   transition: transform 0.35s ease, box-shadow 0.35s ease;
+  min-height: 380px;
 }
 
 .featured-card:hover {
@@ -200,7 +201,9 @@
 
 .featured-image-container {
   position: relative;
-  min-height: 380px;
+  height: 100%;
+  min-height: 340px;
+  max-height: 460px;
   overflow: hidden;
   background-color: #0f172a;
 }
@@ -209,6 +212,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -357,7 +361,8 @@
 .blog-card-image-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 16 / 10;
+  max-height: 220px;
   overflow: hidden;
   background-color: #0f172a;
 }
@@ -366,6 +371,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform 0.5s ease;
 }
 
@@ -375,8 +381,8 @@
 
 .blog-category-badge {
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
+  bottom: 0.85rem;
+  left: 0.85rem;
   background: rgba(15, 23, 42, 0.88);
   color: #ffffff;
   font-size: 0.75rem;
@@ -388,7 +394,7 @@
 }
 
 .blog-card-body {
-  padding: 1.75rem 1.6rem;
+  padding: 1.5rem 1.4rem;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -400,7 +406,7 @@
   gap: 0.5rem;
   font-size: 0.8rem;
   color: #64748b;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.75rem;
   font-weight: 500;
 }
 
@@ -416,20 +422,28 @@
 }
 
 .blog-card-title {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: #0f172a;
-  line-height: 1.35;
-  margin-bottom: 0.85rem;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
   letter-spacing: -0.01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .blog-card-summary {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   color: #475569;
-  line-height: 1.65;
-  margin-bottom: 1.75rem;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
   flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .blog-card-footer {

@@ -400,7 +400,7 @@ export default function ArticleDetailPage({ params: { locale, slug } }: Props) {
               {/* Tarjeta de Autor Institucional */}
               <div className="sidebar-card author-sidebar-card">
                 <div className="author-card-header">
-                  <div className="author-card-badge">E-E-A-T</div>
+                  <div className="author-card-badge">✓ {isEn ? 'Expert Author' : 'Autoría Experta'}</div>
                   <h4>{article.author.name}</h4>
                   <p className="author-card-desc">{article.author.role}</p>
                 </div>

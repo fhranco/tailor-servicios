@@ -21,6 +21,7 @@ export default function BlogPage() {
         : "Hay lugares que uno habita y hay otros que, de alguna manera, terminan habitándolo a uno. Magallanes tiene algo de eso.",
       category: isEn ? "People & Strategy" : "Gestión de Personas",
       date: isEn ? "October 2, 2026" : "2 de octubre de 2026",
+      isoDate: "2026-10-02",
       readTime: isEn ? "7 min read" : "7 min de lectura",
       summary: isEn
         ? "For those of us born in Punta Arenas who have built our lives in this territory, its realities are not something told to us. We live them."
@@ -41,6 +42,7 @@ export default function BlogPage() {
       title: t('post1_title'),
       category: t('post1_cat'),
       date: t('post1_date'),
+      isoDate: "2024-09-15",
       readTime: t('post1_time'),
       summary: t('post1_summary'),
       image: '/Images/tailor-web15.webp',
@@ -59,6 +61,7 @@ export default function BlogPage() {
       title: t('post2_title'),
       category: t('post2_cat'),
       date: t('post2_date'),
+      isoDate: "2024-08-28",
       readTime: t('post2_time'),
       summary: t('post2_summary'),
       image: '/Images/tailor-web2.webp',
@@ -71,6 +74,7 @@ export default function BlogPage() {
       title: t('post3_title'),
       category: t('post3_cat'),
       date: t('post3_date'),
+      isoDate: "2024-07-19",
       readTime: t('post3_time'),
       summary: t('post3_summary'),
       image: '/desarrollo-organizacional.webp',
@@ -83,6 +87,7 @@ export default function BlogPage() {
       title: t('post4_title'),
       category: t('post4_cat'),
       date: t('post4_date'),
+      isoDate: "2024-06-10",
       readTime: t('post4_time'),
       summary: t('post4_summary'),
       image: '/Images/tailor-web7.webp',
@@ -112,20 +117,53 @@ export default function BlogPage() {
     return () => { isMounted = false; };
   }, []);
 
+  // Helper determinista para obtener timestamp seguro sin riesgo de NaN y proteger orden canónico
+  const getPostTimestamp = (p: any): number => {
+    const CANONICAL_TIMESTAMPS: Record<string, number> = {
+      'hay-lugares-que-uno-habita-y-hay-otros-que-de-alguna-manera-terminan-habitandolo-a-uno-magallanes-tiene-algo-de-eso': 1790975336156, // 2 de octubre de 2026 (El más reciente / Destacado)
+      'estrategias-atraccion-talento-zonas-extremas-chile': 1726358400000, // 15 de septiembre de 2024
+      'implementacion-ley-karin-cultura-organizacional-chile': 1724803200000, // 28 de agosto de 2024
+      'impacto-desarrollo-organizacional-retencion-talento': 1721347200000, // 19 de julio de 2024
+      'desafios-ley-40-horas-turnos-continuos-faenas': 1717977600000, // 10 de junio de 2024
+    };
+    if (p.slug && CANONICAL_TIMESTAMPS[p.slug]) {
+      return CANONICAL_TIMESTAMPS[p.slug];
+    }
+    if (p.isoDate) {
+      const t = new Date(p.isoDate).getTime();
+      if (!isNaN(t)) return t;
+    }
+    if (p.published_at) {
+      const t = new Date(p.published_at).getTime();
+      if (!isNaN(t)) return t;
+    }
+    if (p.created_at) {
+      const t = new Date(p.created_at).getTime();
+      if (!isNaN(t)) return t;
+    }
+    if (typeof p.id === 'number' && p.id > 1000000000) {
+      return p.id;
+    }
+    return 0;
+  };
+
+  // Garantizar orden estrictamente cronológico inverso: el artículo más reciente es siempre el índice 0 (destacado)
+  const sortedPosts = [...posts].sort((a, b) => getPostTimestamp(b) - getPostTimestamp(a));
+
   const categories = [
     { id: 'all', label: t('filter_all') },
-    ...Array.from(new Set(posts.map(p => p.category))).map(cat => ({
+    ...Array.from(new Set(sortedPosts.map(p => p.category))).map(cat => ({
       id: cat,
       label: cat
     }))
   ];
 
   const filteredPosts = selectedCategory === 'all'
-    ? posts
-    : posts.filter(p => p.category === selectedCategory);
+    ? sortedPosts
+    : sortedPosts.filter(p => p.category === selectedCategory);
 
-  const featuredPost = selectedCategory === 'all' ? posts[0] : null;
-  const gridPosts = selectedCategory === 'all' ? posts.slice(1) : filteredPosts;
+  const featuredPost = selectedCategory === 'all' ? sortedPosts[0] : null;
+  const gridPosts = selectedCategory === 'all' ? sortedPosts.slice(1) : filteredPosts;
 
   return (
     <main className="blog-page">

@@ -95,6 +95,8 @@ async function seedBlogArticles() {
       read_time: a.readTime || '5 min de lectura',
       word_count: a.wordCount || 0,
       published: true,
+      published_at: a.isoDate ? `${a.isoDate}T12:00:00.000Z` : new Date().toISOString(),
+      created_at: a.isoDate ? `${a.isoDate}T12:00:00.000Z` : new Date().toISOString(),
       updated_at: new Date().toISOString()
     };
 

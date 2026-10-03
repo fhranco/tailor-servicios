@@ -798,7 +798,8 @@
 .mock-card-image-square {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 16 / 10;
+  max-height: 220px;
   overflow: hidden;
   background-color: #0f172a;
 }

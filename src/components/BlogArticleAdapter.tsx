@@ -2305,7 +2305,7 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
                           <div className="mock-card-image-square">
                             <img src={parsed.image} alt={parsed.imageAlt} />
                             <span className="mock-cat-badge">{cardCategory}</span>
-                            <span className="mock-ratio-pill">1:1 Cuadrada</span>
+                            <span className="mock-ratio-pill">16:10 Editorial</span>
                           </div>
 
                           <div className="mock-card-body">

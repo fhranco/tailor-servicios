@@ -30,6 +30,38 @@ function readLiveArticles() {
   return blogArticlesEs;
 }
 
+// Mapa cronológico canónico por slug para proteger contra semillas o re-inserciones en BD
+const CANONICAL_ARTICLE_DATES: Record<string, string> = {
+  'hay-lugares-que-uno-habita-y-hay-otros-que-de-alguna-manera-terminan-habitandolo-a-uno-magallanes-tiene-algo-de-eso': '2026-10-02T12:00:00.000Z',
+  'estrategias-atraccion-talento-zonas-extremas-chile': '2024-09-15T12:00:00.000Z',
+  'implementacion-ley-karin-cultura-organizacional-chile': '2024-08-28T12:00:00.000Z',
+  'impacto-desarrollo-organizacional-retencion-talento': '2024-07-19T12:00:00.000Z',
+  'desafios-ley-40-horas-turnos-continuos-faenas': '2024-06-10T12:00:00.000Z',
+};
+
+function getExactPublicationDate(a: any): Date {
+  if (a.slug && CANONICAL_ARTICLE_DATES[a.slug]) {
+    return new Date(CANONICAL_ARTICLE_DATES[a.slug]);
+  }
+  if (a.isoDate) {
+    const d = new Date(a.isoDate);
+    if (!isNaN(d.getTime())) return d;
+  }
+  if (a.content_json?.isoDate) {
+    const d = new Date(a.content_json.isoDate);
+    if (!isNaN(d.getTime())) return d;
+  }
+  if (a.published_at) {
+    const d = new Date(a.published_at);
+    if (!isNaN(d.getTime())) return d;
+  }
+  if (a.created_at) {
+    const d = new Date(a.created_at);
+    if (!isNaN(d.getTime())) return d;
+  }
+  return new Date();
+}
+
 export async function GET() {
   // 1. Intentar leer desde Supabase PostgreSQL en tiempo real
   const supabase = getSupabase();
@@ -38,41 +70,46 @@ export async function GET() {
       const { data, error } = await supabase
         .from('blog_articles')
         .select('*')
-        .eq('published', true)
-        .order('published_at', { ascending: false });
+        .eq('published', true);
 
       if (!error && Array.isArray(data) && data.length > 0) {
-        const sanitized = data.map(a => ({
-          id: a.id,
-          slug: a.slug,
-          title: a.title,
-          subtitle: a.subtitle,
-          category: a.category,
-          categoryKey: a.category_key,
-          titleEn: a.title_en || a.content_json?.titleEn || null,
-          subtitleEn: a.subtitle_en || a.content_json?.subtitleEn || null,
-          summaryEn: a.summary_en || a.content_json?.summaryEn || null,
-          categoryEn: a.category_en || a.content_json?.categoryEn || null,
-          readTimeEn: a.read_time_en || a.content_json?.readTimeEn || null,
-          date: new Date(a.published_at || a.created_at).toLocaleDateString('es-CL', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          }),
-          isoDate: a.published_at || a.created_at,
-          readTime: a.read_time,
-          wordCount: a.word_count,
-          author: {
-            name: a.author_name || 'Equipo Tailor',
-            role: a.author_role || 'Consultoría',
-            institution: a.author_institution || 'Tailor Servicios',
-            avatar: a.author_avatar || 'TS'
-          },
-          image: a.image,
-          imageAlt: a.image_alt || a.title,
-          summary: a.summary,
-          featured: a.featured || false
-        }));
+        // Orden estrictamente cronológico inverso: el más nuevo siempre primero (idx === 0 es destacado)
+        const sortedData = [...data].sort((x, y) => getExactPublicationDate(y).getTime() - getExactPublicationDate(x).getTime());
+
+        const sanitized = sortedData.map((a, idx) => {
+          const exactDate = getExactPublicationDate(a);
+          return {
+            id: a.id,
+            slug: a.slug,
+            title: a.title,
+            subtitle: a.subtitle,
+            category: a.category,
+            categoryKey: a.category_key,
+            titleEn: a.title_en || a.content_json?.titleEn || null,
+            subtitleEn: a.subtitle_en || a.content_json?.subtitleEn || null,
+            summaryEn: a.summary_en || a.content_json?.summaryEn || null,
+            categoryEn: a.category_en || a.content_json?.categoryEn || null,
+            readTimeEn: a.read_time_en || a.content_json?.readTimeEn || null,
+            date: exactDate.toLocaleDateString('es-CL', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            }),
+            isoDate: exactDate.toISOString().split('T')[0],
+            readTime: a.read_time,
+            wordCount: a.word_count,
+            author: {
+              name: a.author_name || 'Equipo Tailor',
+              role: a.author_role || 'Consultoría',
+              institution: a.author_institution || 'Tailor Servicios',
+              avatar: a.author_avatar || 'TS'
+            },
+            image: a.image,
+            imageAlt: a.image_alt || a.title,
+            summary: a.summary,
+            featured: idx === 0 // El artículo destacado es SIEMPRE el último publicado
+          };
+        });
 
         return NextResponse.json({
           success: true,
@@ -92,8 +129,11 @@ export async function GET() {
   // 2. Fallback a caché local y datos estáticos
   const articles = readLiveArticles();
   
+  // Garantizar orden estrictamente cronológico inverso: el último publicado siempre es el primero
+  const sortedArticles = [...articles].sort((x, y) => getExactPublicationDate(y).getTime() - getExactPublicationDate(x).getTime());
+
   // Mapear solo los campos públicos necesarios para listados (minimización de datos y alta velocidad)
-  const sanitized = articles.map(a => ({
+  const sanitized = sortedArticles.map((a, idx) => ({
     id: a.id,
     slug: a.slug,
     title: a.title,
@@ -118,7 +158,7 @@ export async function GET() {
     image: a.image,
     imageAlt: a.imageAlt || a.title,
     summary: a.summary,
-    featured: a.featured || false
+    featured: idx === 0 // El artículo destacado es siempre el último publicado (índice 0)
   }));
 
   return NextResponse.json({

@@ -202,12 +202,15 @@ export async function POST(req: NextRequest) {
       // Editar existente
       isUpdate = true;
       savedArticle.id = articles[existingIndex].id;
+      savedArticle.created_at = articles[existingIndex].created_at || savedArticle.created_at;
+      savedArticle.published_at = articles[existingIndex].published_at || savedArticle.published_at;
       savedArticle.updated_at = new Date().toISOString();
       articles[existingIndex] = savedArticle;
     } else {
-      // Crear nuevo
+      // Crear nuevo: fecha de publicación inmediata para asegurar posición de destacado (último publicado)
       savedArticle.id = article.id || Date.now();
       savedArticle.created_at = new Date().toISOString();
+      savedArticle.published_at = savedArticle.published_at || new Date().toISOString();
       articles.unshift(savedArticle);
     }
 
@@ -218,7 +221,7 @@ export async function POST(req: NextRequest) {
     // Sincronizar en Supabase PostgreSQL (si la tabla blog_articles está disponible)
     if (supabase) {
       try {
-        const dbPayload = {
+        const dbPayload: any = {
           slug: savedArticle.slug,
           title: savedArticle.title,
           subtitle: savedArticle.subtitle || '',
@@ -257,6 +260,13 @@ export async function POST(req: NextRequest) {
           published: true,
           updated_at: new Date().toISOString()
         };
+
+        if (savedArticle.published_at) {
+          dbPayload.published_at = savedArticle.published_at;
+        } else if (!isUpdate) {
+          dbPayload.published_at = new Date().toISOString();
+        }
+
         const { error: dbError } = await supabase.from('blog_articles').upsert(dbPayload, { onConflict: 'slug' });
         if (dbError) {
           console.warn('[Admin Blog] Supabase upsert advertencia (se sincronizará tras ejecutar schema.sql):', dbError.message);
