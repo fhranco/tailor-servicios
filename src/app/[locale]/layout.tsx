@@ -106,7 +106,7 @@ export default async function RootLayout({
     "logo": "https://tailorservicios.cl/tailor-servicios-horizontal.jpeg",
     "image": "https://tailorservicios.cl/tailor-servicios-horizontal.jpeg",
     "description": "Consultoría estratégica en Reclutamiento, Selección de Personal, Gestión de Personas y Desarrollo Organizacional con presencia en Punta Arenas y Santiago de Chile.",
-    "telephone": "+56-9-9758-0085",
+    "telephone": "+56-9-3899-3516",
     "email": "contacto@tailorservicios.cl",
     "address": [
       {

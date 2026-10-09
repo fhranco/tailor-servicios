@@ -85,7 +85,7 @@ export default function ContactoPage() {
                   </div>
                   <div className="detail-text">
                     <h3>{t('wa_label')}</h3>
-                    <p><a href="https://wa.me/56997580085" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>+56 9 9758 0085</a></p>
+                    <p><a href="https://wa.me/56938993516" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>+56 9 3899 3516</a></p>
                   </div>
                 </motion.div>
 
