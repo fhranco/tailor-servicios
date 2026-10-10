@@ -14,6 +14,29 @@ export default function BlogPage() {
 
   const defaultBlogPosts = [
     {
+      id: 1791667200000,
+      slug: 'siete-anos-de-historia-y-compromiso-con-magallanes',
+      title: isEn
+        ? "Seven Years of History and Commitment to Magallanes"
+        : "Siete años de historia y compromiso con Magallanes",
+      category: isEn ? "People & Strategy" : "Gestión de Personas",
+      date: isEn ? "October 10, 2026" : "10 de octubre de 2026",
+      isoDate: "2026-10-10",
+      readTime: isEn ? "5 min read" : "5 min de lectura",
+      summary: isEn
+        ? "Today at Tailor Servicios, we celebrate seven years of history in Magallanes. A reflection on our journey, the trust built with companies and individuals, and a renewed commitment to opportunities and regional development."
+        : "Hoy, en Tailor Servicios, cumplimos siete años de historia en Magallanes. Siete años que representan mucho más que el crecimiento de una empresa: representan confianza construida, desafíos compartidos y un compromiso renovado con nuestra región.",
+      image: '/aniversario.webp',
+      featured: true,
+      categoryKey: 'personas',
+      author: {
+        name: 'Ma. Pía Avendaño A.',
+        role: isEn ? 'Executive Director - Institutional Leadership & Strategy' : 'Directora Ejecutiva - Liderazgo Institucional & Estrategia',
+        institution: 'Tailor Servicios',
+        avatar: 'MP'
+      }
+    },
+    {
       id: 1790975336156,
       slug: 'hay-lugares-que-uno-habita-y-hay-otros-que-de-alguna-manera-terminan-habitandolo-a-uno-magallanes-tiene-algo-de-eso',
       title: isEn
@@ -27,7 +50,7 @@ export default function BlogPage() {
         ? "For those of us born in Punta Arenas who have built our lives in this territory, its realities are not something told to us. We live them."
         : "Para quienes nacimos en Punta Arenas y hemos desarrollado buena parte de nuestras vidas en este territorio, sus particularidades no son algo que nos hayan contado. Las vivimos.",
       image: '/Images/tailor-web15.webp',
-      featured: true,
+      featured: false,
       categoryKey: 'personas',
       author: {
         name: 'Ma. Pía Avendaño A.',
@@ -120,7 +143,8 @@ export default function BlogPage() {
   // Helper determinista para obtener timestamp seguro sin riesgo de NaN y proteger orden canónico
   const getPostTimestamp = (p: any): number => {
     const CANONICAL_TIMESTAMPS: Record<string, number> = {
-      'hay-lugares-que-uno-habita-y-hay-otros-que-de-alguna-manera-terminan-habitandolo-a-uno-magallanes-tiene-algo-de-eso': 1790975336156, // 2 de octubre de 2026 (El más reciente / Destacado)
+      'siete-anos-de-historia-y-compromiso-con-magallanes': 1791667200000, // 10 de octubre de 2026 (7° Aniversario / Destacado)
+      'hay-lugares-que-uno-habita-y-hay-otros-que-de-alguna-manera-terminan-habitandolo-a-uno-magallanes-tiene-algo-de-eso': 1790975336156, // 2 de octubre de 2026
       'estrategias-atraccion-talento-zonas-extremas-chile': 1726358400000, // 15 de septiembre de 2024
       'implementacion-ley-karin-cultura-organizacional-chile': 1724803200000, // 28 de agosto de 2024
       'impacto-desarrollo-organizacional-retencion-talento': 1721347200000, // 19 de julio de 2024
@@ -163,7 +187,7 @@ export default function BlogPage() {
     : sortedPosts.filter(p => p.category === selectedCategory);
 
   const featuredPost = selectedCategory === 'all' ? sortedPosts[0] : null;
-  const gridPosts = selectedCategory === 'all' ? sortedPosts.slice(1) : filteredPosts;
+  const gridPosts = filteredPosts;
 
   return (
     <main className="blog-page">

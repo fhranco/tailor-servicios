@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { supabase } from '@/lib/supabase';
 import './BlogArticleAdapter.css';
 
 export interface ParsedSubsection {
@@ -928,7 +929,24 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
     }
 
     try {
-      const token = session?.access_token || 'dev-token';
+      let token = session?.access_token || '';
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (sessionData?.session?.access_token) {
+          token = sessionData.session.access_token;
+        } else {
+          const { data: refreshed } = await supabase.auth.refreshSession();
+          if (refreshed?.session?.access_token) {
+            token = refreshed.session.access_token;
+          }
+        }
+      } catch (authRefreshErr) {
+        console.warn('Silent token refresh warning:', authRefreshErr);
+      }
+      if (!token) {
+        token = session?.access_token || 'dev-token';
+      }
+
       const res = await fetch('/api/admin/blog', {
         method: 'POST',
         headers: {
@@ -970,7 +988,14 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
     setIsDeleting(true);
 
     try {
-      const token = session?.access_token || '';
+      let token = session?.access_token || '';
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (sessionData?.session?.access_token) {
+          token = sessionData.session.access_token;
+        }
+      } catch {}
+      if (!token) token = session?.access_token || '';
       const res = await fetch(`/api/admin/blog?slug=${encodeURIComponent(articleToDelete.slug)}`, {
         method: 'DELETE',
         headers: {

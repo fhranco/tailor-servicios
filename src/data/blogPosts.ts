@@ -58,11 +58,182 @@ export interface BlogArticle {
   };
   contentHtmlEn?: string;
   rawDraftEn?: string;
+  featured?: boolean;
+  published_at?: string;
 }
 
 export const blogArticlesEs: BlogArticle[] = [
   {
-    "id": 1790975336156,
+    "id": 1791667200000,
+    "slug": "siete-anos-de-historia-y-compromiso-con-magallanes",
+    "title": "Siete años de historia y compromiso con Magallanes",
+    "subtitle": "Hay aniversarios que invitan a celebrar, pero también hay otros que nos invitan a mirar hacia atrás, reconocer el camino recorrido y, sobre todo, renovar el compromiso con lo que viene.",
+    "summary": "Hoy, en Tailor Servicios, cumplimos siete años de historia en Magallanes. Siete años que representan mucho más que el crecimiento de una empresa: representan confianza construida, desafíos compartidos y un compromiso renovado con nuestra región.",
+    "category": "Gestión de Personas",
+    "categoryKey": "personas",
+    "date": "10 de octubre de 2026",
+    "isoDate": "2026-10-10",
+    "readTime": "5 min de lectura",
+    "wordCount": 817,
+    "featured": true,
+    "author": {
+      "id": "liderazgo",
+      "name": "Ma. Pía Avendaño A.",
+      "role": "Directora Ejecutiva - Liderazgo Institucional & Estrategia",
+      "institution": "Tailor Servicios",
+      "avatar": "MP"
+    },
+    "image": "/aniversario.webp",
+    "imageAlt": "Siete años de historia y compromiso con Magallanes - Tailor Servicios",
+    "keywords": [
+      "Siete años Tailor Servicios",
+      "Aniversario Magallanes",
+      "María Pía Avendaño",
+      "Consultoría Recursos Humanos Punta Arenas",
+      "Gestión de personas Magallanes",
+      "Desarrollo organizacional austral",
+      "Empleo en Magallanes"
+    ],
+    "keyTakeaways": [
+      "Cumplimos 7 años de historia en Magallanes consolidando un modelo de consultoría cercana, profesional y con profundo conocimiento del territorio.",
+      "La confianza se construye con hechos: más de 25 profesionales forman hoy el equipo de Tailor Servicios entre Magallanes y Santiago.",
+      "Dimensión humana en el centro: detrás de cada currículum hay una historia, familias y expectativas de vida que nos comprometemos a cuidar.",
+      "Mirada al futuro: la región vive un momento de grandes inversiones y transformaciones productivas que demandan talento, liderazgo y desarrollo sostenible."
+    ],
+    "sections": [
+      {
+        "heading": "Siete años de historia y compromiso con Magallanes",
+        "paragraphs": [
+          "Hay aniversarios que invitan a celebrar, pero también hay otros que nos invitan a mirar hacia atrás, reconocer el camino recorrido y, sobre todo, renovar el compromiso con lo que viene.",
+          "Hoy, en Tailor Servicios, cumplimos siete años de historia en Magallanes. Siete años que representan mucho más que el crecimiento de una empresa. Representan relaciones construidas, desafíos compartidos, oportunidades generadas y, especialmente, la confianza de cientos de personas y organizaciones que nos han permitido ser parte de sus propias historias.",
+          "Cuando pienso en lo que hemos construido, siento un profundo orgullo. No solamente por el posicionamiento que hemos alcanzado como consultora regional, sino por la manera en que lo hemos hecho: con trabajo, profesionalismo, cercanía, conocimiento del territorio y una convicción que nos ha acompañado desde nuestros inicios: las personas son y seguirán siendo el centro de todo lo que hacemos."
+        ],
+        "quote": "Las personas son y seguirán siendo el centro de todo lo que hacemos."
+      },
+      {
+        "heading": "La confianza se construye con hechos",
+        "paragraphs": [
+          "Quiero comenzar agradeciendo a las empresas que han confiado en nosotros. A aquellas que nos abrieron sus puertas cuando comenzábamos este camino y que siguen acompañándonos, y también a las muchas otras que se han ido sumando con los años. Sabemos que la confianza no se exige ni se obtiene únicamente a través de una propuesta comercial. Se construye en cada compromiso cumplido, en la calidad de cada servicio, en la capacidad de comprender los desafíos de nuestros clientes y, especialmente, en los resultados que somos capaces de entregar.",
+          "Que hoy sean cada vez más las organizaciones que confían en Tailor Servicios es, para nosotros, una enorme satisfacción, pero también una responsabilidad que asumimos con mucha seriedad."
+        ]
+      },
+      {
+        "heading": "Detrás de cada currículum hay una historia",
+        "paragraphs": [
+          "Quiero agradecer también a quienes muchas veces no aparecen en las fotografías de nuestros proyectos ni en las publicaciones corporativas: los candidatos y candidatas que cada día confían en nosotros.",
+          "Detrás de cada currículum hay una historia. Hay personas que buscan crecer, familias que esperan nuevas oportunidades, profesionales que sueñan con desarrollarse en nuestra región y trabajadores que depositan en nuestras manos una parte importante de sus expectativas laborales y, muchas veces, personales.",
+          "Nunca hemos querido perder de vista esa dimensión humana de nuestro trabajo. Porque sabemos que detrás de cada proceso de selección no existe solamente una vacante por cubrir, sino decisiones que pueden transformar vidas y abrir nuevos caminos."
+        ]
+      },
+      {
+        "heading": "Un equipo que hace posible nuestra historia",
+        "paragraphs": [
+          "Y si hay un agradecimiento especialmente significativo en este aniversario, es para nuestro equipo.",
+          "Hoy somos más de 25 personas trabajando por Tailor Servicios. Más de 25 personas que, desde distintos roles, responsabilidades y lugares, contribuyen diariamente a sostener nuestra operación, cuidar nuestra reputación y fortalecer una marca que hemos construido con esfuerzo y dedicación.",
+          "A cada integrante de nuestro equipo, gracias. Por representar nuestros valores, por asumir desafíos, por cuidar las relaciones con nuestros clientes y por comprender que la excelencia no es un discurso, sino una forma de trabajar. La consolidación que hoy hemos alcanzado no sería posible sin ustedes."
+        ],
+        "callout": {
+          "title": "Consolidación Regional",
+          "text": "Más de 25 personas trabajando diariamente desde distintos roles y responsabilidades en Magallanes y Santiago de Chile."
+        }
+      },
+      {
+        "heading": "Mirar hacia adelante: nuevas oportunidades para Magallanes",
+        "paragraphs": [
+          "Pero cumplir siete años también nos obliga a mirar hacia adelante.",
+          "Magallanes está viviendo un momento de grandes oportunidades. Nuevas industrias, inversiones, proyectos y transformaciones productivas nos desafían a pensar en una región capaz de crecer, diversificarse y generar mejores oportunidades para su gente.",
+          "Desde Tailor Servicios queremos seguir siendo parte activa de ese desarrollo.",
+          "Nuestra experiencia acompañando la instalación y puesta en marcha de nuevas operaciones e industrias nos ha permitido comprender que detrás de cada inversión existe un desafío igualmente importante: contar con las personas, las capacidades, el liderazgo y las condiciones organizacionales necesarias para hacerla sostenible.",
+          "Por eso, nuestro compromiso es seguir buscando y promoviendo nuevas oportunidades de negocios para Magallanes, contribuyendo desde nuestra experiencia a que más proyectos puedan instalarse, desarrollarse y generar empleo de calidad en nuestro territorio.",
+          "Creemos profundamente en el talento regional, en la capacidad de nuestras empresas y en el valor de articular esfuerzos entre quienes compartimos la convicción de que Magallanes tiene mucho más por ofrecer.",
+          "Queremos seguir creciendo, por supuesto. Pero no entendemos ese crecimiento únicamente como una expansión de nuestra cartera de clientes o de nuestros servicios. Aspiramos a que el crecimiento de Tailor Servicios también se traduzca en más oportunidades para las personas, mayor desarrollo para las organizaciones y una contribución concreta al futuro de nuestra región."
+        ]
+      }
+    ],
+    "conclusion": {
+      "title": "Todavía tenemos mucho por construir juntos",
+      "text": "Siete años después, seguimos aprendiendo, evolucionando y desafiándonos a hacer las cosas cada día mejor. Y si algo hemos confirmado en este camino, es que las empresas pueden construir negocios, pero son las personas quienes construyen su historia, su reputación y su trascendencia. Gracias a quienes han confiado, a quienes nos han acompañado y a quienes hacen posible que hoy podamos mirar estos siete años con orgullo y los que vienen con entusiasmo. Porque si algo tenemos claro, es que todavía tenemos mucho por construir juntos."
+    },
+    "contentHtml": "<h2>Siete años de historia y compromiso con Magallanes</h2>\n<p>Hay aniversarios que invitan a celebrar, pero también hay otros que nos invitan a mirar hacia atrás, reconocer el camino recorrido y, sobre todo, renovar el compromiso con lo que viene.</p>\n<p>Hoy, en Tailor Servicios, cumplimos siete años de historia en Magallanes. Siete años que representan mucho más que el crecimiento de una empresa. Representan relaciones construidas, desafíos compartidos, oportunidades generadas y, especialmente, la confianza de cientos de personas y organizaciones que nos han permitido ser parte de sus propias historias.</p>\n<p>Cuando pienso en lo que hemos construido, siento un profundo orgullo. No solamente por el posicionamiento que hemos alcanzado como consultora regional, sino por la manera en que lo hemos hecho: con trabajo, profesionalismo, cercanía, conocimiento del territorio y una convicción que nos ha acompañado desde nuestros inicios: <strong>las personas son y seguirán siendo el centro de todo lo que hacemos.</strong></p>\n\n<h2>La confianza se construye con hechos</h2>\n<p>Quiero comenzar agradeciendo a las empresas que han confiado en nosotros. A aquellas que nos abrieron sus puertas cuando comenzábamos este camino y que siguen acompañándonos, y también a las muchas otras que se han ido sumando con los años. Sabemos que la confianza no se exige ni se obtiene únicamente a través de una propuesta comercial. Se construye en cada compromiso cumplido, en la calidad de cada servicio, en la capacidad de comprender los desafíos de nuestros clientes y, especialmente, en los resultados que somos capaces de entregar.</p>\n<p>Que hoy sean cada vez más las organizaciones que confían en Tailor Servicios es, para nosotros, una enorme satisfacción, pero también una responsabilidad que asumimos con mucha seriedad.</p>\n\n<h2>Detrás de cada currículum hay una historia</h2>\n<p>Quiero agradecer también a quienes muchas veces no aparecen en las fotografías de nuestros proyectos ni en las publicaciones corporativas: los candidatos y candidatas que cada día confían en nosotros.</p>\n<p>Detrás de cada currículum hay una historia. Hay personas que buscan crecer, familias que esperan nuevas oportunidades, profesionales que sueñan con desarrollarse en nuestra región y trabajadores que depositan en nuestras manos una parte importante de sus expectativas laborales y, muchas veces, personales.</p>\n<p>Nunca hemos querido perder de vista esa dimensión humana de nuestro trabajo. Porque sabemos que detrás de cada proceso de selección no existe solamente una vacante por cubrir, sino decisiones que pueden transformar vidas y abrir nuevos caminos.</p>\n\n<h2>Un equipo que hace posible nuestra historia</h2>\n<p>Y si hay un agradecimiento especialmente significativo en este aniversario, es para nuestro equipo.</p>\n<p>Hoy somos <strong>más de 25 personas trabajando por Tailor Servicios.</strong> Más de 25 personas que, desde distintos roles, responsabilidades y lugares, contribuyen diariamente a sostener nuestra operación, cuidar nuestra reputación y fortalecer una marca que hemos construido con esfuerzo y dedicación.</p>\n<p>A cada integrante de nuestro equipo, gracias. Por representar nuestros valores, por asumir desafíos, por cuidar las relaciones con nuestros clientes y por comprender que la excelencia no es un discurso, sino una forma de trabajar. La consolidación que hoy hemos alcanzado no sería posible sin ustedes.</p>\n\n<h2>Mirar hacia adelante: nuevas oportunidades para Magallanes</h2>\n<p>Pero cumplir siete años también nos obliga a mirar hacia adelante.</p>\n<p>Magallanes está viviendo un momento de grandes oportunidades. Nuevas industrias, inversiones, proyectos y transformaciones productivas nos desafían a pensar en una región capaz de crecer, diversificarse y generar mejores oportunidades para su gente.</p>\n<p>Desde Tailor Servicios queremos seguir siendo parte activa de ese desarrollo.</p>\n<p>Nuestra experiencia acompañando la instalación y puesta en marcha de nuevas operaciones e industrias nos ha permitido comprender que detrás de cada inversión existe un desafío igualmente importante: contar con las personas, las capacidades, el liderazgo y las condiciones organizacionales necesarias para hacerla sostenible.</p>\n<p>Por eso, nuestro compromiso es seguir buscando y promoviendo nuevas oportunidades de negocios para Magallanes, contribuyendo desde nuestra experiencia a que más proyectos puedan instalarse, desarrollarse y generar empleo de calidad en nuestro territorio.</p>\n<p>Creemos profundamente en el talento regional, en la capacidad de nuestras empresas y en el valor de articular esfuerzos entre quienes compartimos la convicción de que Magallanes tiene mucho más por ofrecer.</p>\n<p>Queremos seguir creciendo, por supuesto. Pero no entendemos ese crecimiento únicamente como una expansión de nuestra cartera de clientes o de nuestros servicios. Aspiramos a que el crecimiento de Tailor Servicios también se traduzca en más oportunidades para las personas, mayor desarrollo para las organizaciones y una contribución concreta al futuro de nuestra región.</p>\n\n<h2>Todavía tenemos mucho por construir juntos</h2>\n<p>Siete años después, seguimos aprendiendo, evolucionando y desafiándonos a hacer las cosas cada día mejor.</p>\n<p>Y si algo hemos confirmado en este camino, es que las empresas pueden construir negocios, pero son las personas quienes construyen su historia, su reputación y su trascendencia.</p>\n<p>Gracias a quienes han confiado, a quienes nos han acompañado y a quienes hacen posible que hoy podamos mirar estos siete años con orgullo y los que vienen con entusiasmo.</p>\n<p><strong>Porque si algo tenemos claro, es que todavía tenemos mucho por construir juntos.</strong></p>\n\n<p><strong>María Pía Avendaño</strong><br>Directora Ejecutiva | Tailor Servicios</p>",
+    "titleEn": "Seven Years of History and Commitment to Magallanes",
+    "subtitleEn": "There are anniversaries that invite celebration, but also those that invite us to look back, acknowledge the journey, and renew our commitment to what lies ahead.",
+    "summaryEn": "Today at Tailor Servicios, we celebrate seven years of history in Magallanes. Seven years that represent much more than the growth of a company: they represent relationships built, shared challenges, and a renewed commitment to our region.",
+    "categoryEn": "People & Strategy",
+    "readTimeEn": "5 min read",
+    "keywordsEn": [
+      "Tailor Servicios 7th anniversary",
+      "Magallanes human resources",
+      "Maria Pia Avendano",
+      "Executive search Punta Arenas",
+      "People management Magallanes",
+      "Organizational development Chile",
+      "Employment in Magallanes"
+    ],
+    "keyTakeawaysEn": [
+      "Celebrating 7 years in Magallanes consolidating a human-centered, professional consulting model with deep regional knowledge.",
+      "Trust is built through facts: over 25 professionals now comprise the Tailor Servicios team across Magallanes and Santiago.",
+      "Human dimension at the center: behind every resume lies a personal story, families, and life aspirations that we honor and protect.",
+      "Looking forward: Magallanes is experiencing a wave of strategic investments demanding top talent, leadership, and sustainable development."
+    ],
+    "sectionsEn": [
+      {
+        "heading": "Seven Years of History and Commitment to Magallanes",
+        "paragraphs": [
+          "There are anniversaries that invite celebration, but also those that invite us to look back, acknowledge the path traveled, and, above all, renew our commitment to what is to come.",
+          "Today at Tailor Servicios, we celebrate seven years of history in Magallanes. Seven years that represent much more than the growth of a company. They represent relationships built, shared challenges, opportunities generated, and especially the trust of hundreds of people and organizations who have allowed us to be part of their own stories.",
+          "When I think about what we have built, I feel profound pride. Not only for the positioning we have achieved as a regional consulting firm, but for how we have done it: with hard work, professionalism, closeness, territorial knowledge, and a conviction that has guided us since our beginnings: people are and will always be the center of everything we do."
+        ],
+        "quote": "People are and will always be the center of everything we do."
+      },
+      {
+        "heading": "Trust Is Built on Facts",
+        "paragraphs": [
+          "I want to begin by thanking the companies that have trusted us. Those that opened their doors to us when we began this journey and continue to accompany us, as well as the many others that have joined over the years. We know trust cannot be demanded nor obtained solely through a commercial proposal. It is built with every fulfilled commitment, in the quality of every service, in the capacity to understand our clients' challenges, and especially in the results we deliver.",
+          "Having more and more organizations place their trust in Tailor Servicios is an immense satisfaction for us, but also a responsibility we embrace with great seriousness."
+        ]
+      },
+      {
+        "heading": "Behind Every Resume, There Is a Story",
+        "paragraphs": [
+          "I also want to thank those who often do not appear in our project photographs or corporate publications: the candidates who place their trust in us every single day.",
+          "Behind every resume, there is a story. There are people seeking to grow, families awaiting new opportunities, professionals dreaming of developing in our region, and workers who entrust us with an important part of their career and personal aspirations.",
+          "We have never wanted to lose sight of that human dimension of our work. Because we know that behind every recruitment process, there is not merely a vacancy to fill, but decisions that can transform lives and open new paths."
+        ]
+      },
+      {
+        "heading": "A Team That Makes Our Story Possible",
+        "paragraphs": [
+          "And if there is one especially meaningful acknowledgment on this anniversary, it is for our team.",
+          "Today, more than 25 people work for Tailor Servicios. Over 25 individuals who, across diverse roles, responsibilities, and locations, contribute daily to sustaining our operations, protecting our reputation, and strengthening a brand we have built with dedication and effort.",
+          "To each member of our team, thank you. For embodying our values, taking on challenges, nurturing client relationships, and understanding that excellence is not rhetoric, but a way of working. The consolidation we have achieved today would not be possible without you."
+        ],
+        "callout": {
+          "title": "Regional Consolidation",
+          "text": "More than 25 professionals working daily across diverse roles and responsibilities in Magallanes and Santiago de Chile."
+        }
+      },
+      {
+        "heading": "Looking Ahead: New Opportunities for Magallanes",
+        "paragraphs": [
+          "Yet celebrating seven years also compels us to look forward.",
+          "Magallanes is experiencing a moment of significant opportunities. New industries, investments, projects, and productive transformations challenge us to envision a region capable of growing, diversifying, and generating better opportunities for its people.",
+          "At Tailor Servicios, we want to remain an active participant in that development.",
+          "Our experience supporting the setup and launch of new operations and industries has shown us that behind every investment lies an equally vital challenge: having the people, capabilities, leadership, and organizational conditions needed to make it sustainable.",
+          "Therefore, our commitment is to continue seeking and promoting new business opportunities for Magallanes, contributing from our expertise so more projects can establish themselves, grow, and generate high-quality employment across our territory.",
+          "We believe deeply in regional talent, the capability of our enterprises, and the power of collaborative efforts among those who share the conviction that Magallanes has so much more to offer.",
+          "We wish to continue growing, naturally. But we do not see growth merely as expanding our client roster or services. We aspire for the growth of Tailor Servicios to translate into more opportunities for individuals, greater organizational development, and a concrete contribution to our region's future."
+        ]
+      }
+    ],
+    "conclusionEn": {
+      "title": "We Still Have So Much to Build Together",
+      "text": "Seven years later, we continue learning, evolving, and challenging ourselves to do things better every day. And if there is one thing we have confirmed along this journey, it is that businesses can build ventures, but it is people who build their history, their reputation, and their lasting impact. Thank you to those who have trusted us, those who have stood beside us, and those who make it possible for us to look at these seven years with pride and at the years ahead with enthusiasm. Because if one thing is clear to us, it is that we still have so much to build together."
+    },
+    "contentHtmlEn": "<h2>Seven Years of History and Commitment to Magallanes</h2>\n<p>There are anniversaries that invite celebration, but also those that invite us to look back, acknowledge the path traveled, and, above all, renew our commitment to what is to come.</p>\n<p>Today at Tailor Servicios, we celebrate seven years of history in Magallanes. Seven years that represent much more than the growth of a company. They represent relationships built, shared challenges, opportunities generated, and especially the trust of hundreds of people and organizations who have allowed us to be part of their own stories.</p>\n<p>When I think about what we have built, I feel profound pride. Not only for the positioning we have achieved as a regional consulting firm, but for how we have done it: with hard work, professionalism, closeness, territorial knowledge, and a conviction that has guided us since our beginnings: <strong>people are and will always be the center of everything we do.</strong></p>\n\n<h2>Trust Is Built on Facts</h2>\n<p>I want to begin by thanking the companies that have trusted us. Those that opened their doors to us when we began this journey and continue to accompany us, as well as the many others that have joined over the years. We know trust cannot be demanded nor obtained solely through a commercial proposal. It is built with every fulfilled commitment, in the quality of every service, in the capacity to understand our clients' challenges, and especially in the results we deliver.</p>\n<p>Having more and more organizations place their trust in Tailor Servicios is an immense satisfaction for us, but also a responsibility we embrace with great seriousness.</p>\n\n<h2>Behind Every Resume, There Is a Story</h2>\n<p>I also want to thank those who often do not appear in our project photographs or corporate publications: the candidates who place their trust in us every single day.</p>\n<p>Behind every resume, there is a story. There are people seeking to grow, families awaiting new opportunities, professionals dreaming of developing in our region, and workers who entrust us with an important part of their career and personal aspirations.</p>\n<p>We have never wanted to lose sight of that human dimension of our work. Because we know that behind every recruitment process, there is not merely a vacancy to fill, but decisions that can transform lives and open new paths.</p>\n\n<h2>A Team That Makes Our Story Possible</h2>\n<p>And if there is one especially meaningful acknowledgment on this anniversary, it is for our team.</p>\n<p>Today, <strong>more than 25 people work for Tailor Servicios.</strong> Over 25 individuals who, across diverse roles, responsibilities, and locations, contribute daily to sustaining our operations, protecting our reputation, and strengthening a brand we have built with dedication and effort.</p>\n<p>To each member of our team, thank you. For embodying our values, taking on challenges, nurturing client relationships, and understanding that excellence is not rhetoric, but a way of working. The consolidation we have achieved today would not be possible without you.</p>\n\n<h2>Looking Ahead: New Opportunities for Magallanes</h2>\n<p>Yet celebrating seven years also compels us to look forward.</p>\n<p>Magallanes is experiencing a moment of significant opportunities. New industries, investments, projects, and productive transformations challenge us to envision a region capable of growing, diversifying, and generating better opportunities for its people.</p>\n<p>At Tailor Servicios, we want to remain an active participant in that development.</p>\n<p>Our experience supporting the setup and launch of new operations and industries has shown us that behind every investment lies an equally vital challenge: having the people, capabilities, leadership, and organizational conditions needed to make it sustainable.</p>\n<p>Therefore, our commitment is to continue seeking and promoting new business opportunities for Magallanes, contributing from our expertise so more projects can establish themselves, grow, and generate high-quality employment across our territory.</p>\n<p>We believe deeply in regional talent, the capability of our enterprises, and the power of collaborative efforts among those who share the conviction that Magallanes has so much more to offer.</p>\n<p>We wish to continue growing, naturally. But we do not see growth merely as expanding our client roster or services. We aspire for the growth of Tailor Servicios to translate into more opportunities for individuals, greater organizational development, and a concrete contribution to our region's future.</p>\n\n<h2>We Still Have So Much to Build Together</h2>\n<p>Seven years later, we continue learning, evolving, and challenging ourselves to do things better every day.</p>\n<p>And if there is one thing we have confirmed along this journey, it is that businesses can build ventures, but it is people who build their history, their reputation, and their lasting impact.</p>\n<p>Thank you to those who have trusted us, those who have stood beside us, and those who make it possible for us to look at these seven years with pride and at the years ahead with enthusiasm.</p>\n<p><strong>Because if one thing is clear to us, it is that we still have so much to build together.</strong></p>\n\n<p><strong>María Pía Avendaño</strong><br>Executive Director | Tailor Servicios</p>",
+    "published_at": "2026-10-10T12:00:00.000Z"
+  },
+  {
+  "id": 1790975336156,
     "slug": "hay-lugares-que-uno-habita-y-hay-otros-que-de-alguna-manera-terminan-habitandolo-a-uno-magallanes-tiene-algo-de-eso",
     "title": "Hay lugares que uno habita y hay otros que, de alguna manera, terminan habitándolo a uno. Magallanes tiene algo de eso.",
     "subtitle": "Para quienes nacimos en Punta Arenas y hemos desarrollado buena parte de nuestras vidas en este territorio, sus particularidades no son algo que nos hayan contado. Las vivimos.",
