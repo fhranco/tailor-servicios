@@ -34,11 +34,11 @@ export default function NosotrosPage() {
       logo: '/alianzas/hyst.png'
     },
     {
-      id: 'ist',
-      name: 'IST',
-      desc: t('ist_desc'),
-      tag: t('ist_tag'),
-      logo: '/alianzas/ist.png'
+      id: 'mutual',
+      name: 'Mutual de Seguridad',
+      desc: t('mutual_desc'),
+      tag: t('mutual_tag'),
+      logo: '/Logos/logo-mutual-de-seguridad.jpg'
     },
     {
       id: 'britanico',
