@@ -5,6 +5,7 @@ import './B2B_LeadForm.css';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { supabase } from '../lib/supabase';
+import { trackEvent } from '@/lib/analytics';
 
 interface FormState {
   nombre: { value: string; error: string };
@@ -39,10 +40,15 @@ export default function B2B_LeadForm() {
   const [shouldLoadTurnstile, setShouldLoadTurnstile] = useState(false);
   const turnstileContainerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
+  const hasTrackedFormStart = useRef(false);
 
   const handleFormInteraction = () => {
     if (!shouldLoadTurnstile) {
       setShouldLoadTurnstile(true);
+    }
+    if (!hasTrackedFormStart.current) {
+      hasTrackedFormStart.current = true;
+      trackEvent('form_start', { form_name: 'b2b_lead_form' });
     }
   };
 
@@ -240,6 +246,14 @@ export default function B2B_LeadForm() {
       }
 
       setIsSuccess(true);
+      trackEvent('generate_lead', {
+        form_name: 'b2b_lead_form',
+        service_category: formData.servicio.value || 'general'
+      });
+      trackEvent('form_submit_success', {
+        form_name: 'b2b_lead_form',
+        service_category: formData.servicio.value || 'general'
+      });
     } catch (err) {
       console.error('Supabase Error:', err);
       setServerError(t('err_network'));

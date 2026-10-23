@@ -29,18 +29,18 @@ const nextConfig = {
   },
   async headers() {
     const scriptSrc = isDev
-      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://challenges.cloudflare.com"
-      : "script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://challenges.cloudflare.com";
+      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://challenges.cloudflare.com https://www.googletagmanager.com"
+      : "script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://challenges.cloudflare.com https://www.googletagmanager.com";
 
     const connectSrc = isDev
-      ? "connect-src 'self' ws: wss: http://localhost:* https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com"
-      : "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com";
+      ? "connect-src 'self' ws: wss: http://localhost:* https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com"
+      : "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com";
 
     const cspDirectives = [
       "default-src 'self'",
       scriptSrc,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "img-src 'self' data: blob: https://images.unsplash.com https://maps.gstatic.com https://*.googleapis.com",
+      "img-src 'self' data: blob: https://images.unsplash.com https://maps.gstatic.com https://*.googleapis.com https://*.google-analytics.com https://*.googletagmanager.com",
       "font-src 'self' https://fonts.gstatic.com data:",
       "frame-src 'self' https://maps.google.com https://www.google.com https://challenges.cloudflare.com",
       connectSrc,

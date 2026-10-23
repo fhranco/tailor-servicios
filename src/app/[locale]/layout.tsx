@@ -9,6 +9,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
 import VisitLogger from "@/components/VisitLogger";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -154,6 +155,7 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider messages={messages}>
           <VisitLogger />
+          <GoogleAnalytics />
           <Header />
           {children}
           <Footer />
