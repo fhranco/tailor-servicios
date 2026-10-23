@@ -46,10 +46,17 @@ export async function getAuthorizedUser(req: Request) {
     }
     
     // Verificación estricta de privilegios de administrador (Ley 21.719 - Control de acceso)
+    const DEFAULT_ADMIN_EMAILS = [
+      'tailorservicioschile@gmail.com',
+      'marketing@tailorservicios.cl',
+      'contacto@tailorservicios.cl',
+      'dev-local@tailorservicios.cl'
+    ];
     const rawAdminEmails = process.env.ADMIN_ALLOWED_EMAILS || '';
-    const adminEmails = rawAdminEmails
+    const envAdminEmails = rawAdminEmails
       ? rawAdminEmails.split(',').map(e => e.trim().toLowerCase()).filter(Boolean)
       : [];
+    const adminEmails = Array.from(new Set([...DEFAULT_ADMIN_EMAILS, ...envAdminEmails]));
 
     const userEmail = (user.email || '').toLowerCase();
     const hasAdminRole = user.app_metadata?.role === 'admin';
