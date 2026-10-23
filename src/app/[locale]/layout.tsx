@@ -132,6 +132,20 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/impulsando-el-desarrollo-mobile.webp"
+          media="(max-width: 768px)"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/impulsando-el-desarrollo.webp"
+          media="(min-width: 769px)"
+          fetchPriority="high"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

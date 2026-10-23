@@ -1,12 +1,14 @@
+import dynamic from 'next/dynamic';
 import HeroDual from "@/components/HeroDual";
-import ClientLogos from "@/components/ClientLogos";
 import MetricsBar from "@/components/MetricsBar";
-import BusinessLines from "@/components/BusinessLines";
-import TestimonialSection from "@/components/TestimonialSection";
 import AboutUsBlock from "@/components/AboutUsBlock";
-import LocationMap from "@/components/LocationMap";
+import BusinessLines from "@/components/BusinessLines";
 import ContactSection from "@/components/ContactSection";
 import { setRequestLocale } from 'next-intl/server';
+
+const ClientLogos = dynamic(() => import("@/components/ClientLogos"), { ssr: true });
+const TestimonialSection = dynamic(() => import("@/components/TestimonialSection"), { ssr: true });
+const LocationMap = dynamic(() => import("@/components/LocationMap"), { ssr: false });
 
 export default function Home({ params: { locale } }: { params: { locale: string } }) {
   setRequestLocale(locale);

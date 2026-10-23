@@ -28,6 +28,8 @@ export default function AboutUsBlock() {
             alt="Equipo de Tailor Servicios en Magallanes" 
             loading="lazy"
             decoding="async"
+            width={1400}
+            height={598}
             style={{
               scale: 1.1,
               y: yImage // Parallax effect

@@ -6,14 +6,26 @@ import { motion, useInView, animate } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { useRef, useEffect } from 'react';
 
-function AnimatedCounter({ from = 0, to, prefix = "", suffix = "", colorClass = "color-accent" }: { from?: number, to: number, prefix?: string, suffix?: string, colorClass?: string }) {
+function AnimatedCounter({ 
+  to, 
+  prefix = "", 
+  suffix = "", 
+  colorClass = "color-accent" 
+}: { 
+  to: number; 
+  prefix?: string; 
+  suffix?: string; 
+  colorClass?: string; 
+}) {
   const nodeRef = useRef<HTMLSpanElement>(null);
-  const inView = useInView(nodeRef, { once: true, amount: 0.5 });
+  const inView = useInView(nodeRef, { once: true, amount: 0.3 });
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (inView && nodeRef.current) {
-      const controls = animate(from, to, {
-        duration: 2.5,
+    if (inView && nodeRef.current && !hasAnimated.current) {
+      hasAnimated.current = true;
+      const controls = animate(0, to, {
+        duration: 2.2,
         ease: "easeOut",
         onUpdate(value) {
           if (nodeRef.current) {
@@ -23,9 +35,13 @@ function AnimatedCounter({ from = 0, to, prefix = "", suffix = "", colorClass = 
       });
       return () => controls.stop();
     }
-  }, [from, to, inView, prefix, suffix]);
+  }, [to, inView, prefix, suffix]);
 
-  return <span ref={nodeRef} className={`metric-number ${colorClass}`}>{prefix}{from}{suffix}</span>;
+  return (
+    <span ref={nodeRef} className={`metric-number ${colorClass}`}>
+      {prefix}{to}{suffix}
+    </span>
+  );
 }
 
 export default function MetricsBar() {

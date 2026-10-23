@@ -66,19 +66,20 @@ export default function HeroDual() {
       {/* Background Image: Pure static container on initial paint (zero Framer Motion dependency on critical path) */}
       {!hasInteracted ? (
         <div className="hero-bg-container">
-          <Image 
-            src={slides[0].bg} 
-            alt="Fondo Tailor" 
-            fill
-            priority
-            sizes="100vw"
-            quality={80}
-            className="hero-bg-image"
-            style={{ 
-              objectFit: 'cover',
-              objectPosition: slides[0].objectPosition || "center right" 
-            }}
-          />
+          <picture className="hero-picture">
+            <source media="(max-width: 768px)" srcSet="/impulsando-el-desarrollo-mobile.webp" type="image/webp" />
+            <img 
+              src={slides[0].bg} 
+              alt="Fondo Tailor" 
+              fetchPriority="high"
+              decoding="async"
+              className="hero-bg-image"
+              style={{ 
+                objectFit: 'cover',
+                objectPosition: slides[0].objectPosition || "center right" 
+              }}
+            />
+          </picture>
         </div>
       ) : (
         <AnimatePresence mode="popLayout" initial={false}>
@@ -90,19 +91,22 @@ export default function HeroDual() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Image 
-              src={slides[currentSlide].bg} 
-              alt="Fondo Tailor" 
-              fill
-              priority={currentSlide === 0}
-              sizes="100vw"
-              quality={80}
-              className="hero-bg-image"
-              style={{ 
-                objectFit: 'cover',
-                objectPosition: slides[currentSlide].objectPosition || "center right" 
-              }}
-            />
+            <picture className="hero-picture">
+              {slides[currentSlide].id === 1 && (
+                <source media="(max-width: 768px)" srcSet="/impulsando-el-desarrollo-mobile.webp" type="image/webp" />
+              )}
+              <img 
+                src={slides[currentSlide].bg} 
+                alt="Fondo Tailor" 
+                fetchPriority={currentSlide === 0 ? "high" : "auto"}
+                decoding="async"
+                className="hero-bg-image"
+                style={{ 
+                  objectFit: 'cover',
+                  objectPosition: slides[currentSlide].objectPosition || "center right" 
+                }}
+              />
+            </picture>
           </motion.div>
         </AnimatePresence>
       )}

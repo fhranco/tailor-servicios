@@ -35,10 +35,49 @@ export default function B2B_LeadForm() {
   const [renderTime] = useState<number>(() => Date.now());
   const [honeypot, setHoneypot] = useState('');
   const [turnstileToken, setTurnstileToken] = useState<string>('');
+  const formRef = useRef<HTMLFormElement>(null);
+  const [shouldLoadTurnstile, setShouldLoadTurnstile] = useState(false);
   const turnstileContainerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
 
+  const handleFormInteraction = () => {
+    if (!shouldLoadTurnstile) {
+      setShouldLoadTurnstile(true);
+    }
+  };
+
   useEffect(() => {
+    // Si la URL contiene un ancla a contacto o b2b, activar inmediatamente
+    if (typeof window !== 'undefined' && (window.location.hash.includes('contacto') || window.location.hash.includes('b2b'))) {
+      setShouldLoadTurnstile(true);
+      return;
+    }
+
+    if (!formRef.current || shouldLoadTurnstile) return;
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setShouldLoadTurnstile(true);
+              observer.disconnect();
+            }
+          });
+        },
+        { rootMargin: '300px 0px' }
+      );
+
+      observer.observe(formRef.current);
+      return () => observer.disconnect();
+    } else {
+      setShouldLoadTurnstile(true);
+    }
+  }, [shouldLoadTurnstile]);
+
+  useEffect(() => {
+    if (!shouldLoadTurnstile) return;
+
     const renderTurnstileWidget = () => {
       if (
         typeof window !== 'undefined' &&
@@ -87,7 +126,7 @@ export default function B2B_LeadForm() {
     }, 300);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [shouldLoadTurnstile]);
 
   useEffect(() => {
     // Check global validity
@@ -148,6 +187,10 @@ export default function B2B_LeadForm() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!isValid) return;
+
+    if (!shouldLoadTurnstile) {
+      setShouldLoadTurnstile(true);
+    }
 
     const activeToken = turnstileToken || (document.querySelector('input[name="cf-turnstile-response"]') as HTMLInputElement)?.value || '';
     if (!activeToken) {
@@ -221,7 +264,13 @@ export default function B2B_LeadForm() {
   }
 
   return (
-    <form className="b2b-form" onSubmit={handleSubmit}>
+    <form 
+      ref={formRef} 
+      className="b2b-form" 
+      onSubmit={handleSubmit}
+      onFocus={handleFormInteraction}
+      onPointerDown={handleFormInteraction}
+    >
       {serverError && (
         <div className="server-error" role="alert">
           {serverError}
@@ -330,14 +379,13 @@ export default function B2B_LeadForm() {
         ref={turnstileContainerRef}
         id="b2b-turnstile-container"
         style={{ margin: '14px 0', minHeight: '65px', display: 'flex', justifyContent: 'center' }}
-        aria-label="Verificación de seguridad"
       ></div>
 
       <div className="submit-container">
         <button
           type="submit"
           className={`submit-button ${isSubmitting ? 'loading' : ''}`}
-          disabled={!isValid || isSubmitting}
+          disabled={!isValid || isSubmitting || !turnstileToken}
         >
           {isSubmitting ? <span className="spinner" aria-hidden="true"></span> : t('btn_submit')}
         </button>
