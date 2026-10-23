@@ -72,7 +72,7 @@ export default function HeroDual() {
               src={slides[0].bg} 
               alt="Fondo Tailor" 
               fetchPriority="high"
-              decoding="async"
+              decoding="sync"
               className="hero-bg-image"
               style={{ 
                 objectFit: 'cover',
