@@ -24,7 +24,7 @@ export default function CookieBanner() {
   }, []);
 
   const handleAccept = () => {
-    document.cookie = "tailor_cookie_consent=all; path=/; max-age=31536000; SameSite=Lax"; // 1 año
+    document.cookie = "tailor_cookie_consent=all; path=/; max-age=31536000; SameSite=Lax; Secure"; // 1 año
     setShowBanner(false);
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('tailor_consent_updated', { detail: { consent: 'all' } }));
@@ -32,7 +32,7 @@ export default function CookieBanner() {
   };
 
   const handleReject = () => {
-    document.cookie = "tailor_cookie_consent=essential; path=/; max-age=31536000; SameSite=Lax"; // 1 año
+    document.cookie = "tailor_cookie_consent=essential; path=/; max-age=31536000; SameSite=Lax; Secure"; // 1 año
     setShowBanner(false);
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('tailor_consent_updated', { detail: { consent: 'essential' } }));

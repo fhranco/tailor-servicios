@@ -5,7 +5,12 @@ export const routing = defineRouting({
   locales: ['es', 'en'],
   defaultLocale: 'es',
   localePrefix: 'as-needed',
-  localeDetection: false
+  localeDetection: false,
+  localeCookie: {
+    name: 'NEXT_LOCALE',
+    sameSite: 'lax',
+    secure: true,
+  }
 });
  
 export const {Link, redirect, usePathname, useRouter, getPathname} =

@@ -4,6 +4,8 @@ export async function POST(req: NextRequest) {
   const response = NextResponse.json({ success: true });
   response.cookies.set('tailor_admin_session', '', {
     httpOnly: true,
+    secure: true,
+    sameSite: 'lax',
     expires: new Date(0),
     path: '/'
   });
