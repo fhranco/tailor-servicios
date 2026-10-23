@@ -136,7 +136,9 @@ function getSupabaseClient() {
  * Cliente HTTP resiliente: intenta fetch nativo primero,
  * y usa /usr/bin/curl si fetch es bloqueado por sandbox/DNS en entornos locales.
  */
-async function performRexmasRequest(url: string): Promise<RexmasApiResponse> {
+async function performRexmasRequest(rawUrl: string): Promise<RexmasApiResponse> {
+  // Garantizar HTTPS: la API de Rex+ rechaza conexiones en el puerto 80 (HTTP)
+  const url = rawUrl.replace(/^http:\/\//i, 'https://');
   const headers = {
     'Accept': 'application/json',
     'X-Tenant-Subdomain': TENANT_SUBDOMAIN,
@@ -185,11 +187,12 @@ export async function fetchRexmasJobs(): Promise<{ results: RexmasRawPublication
 
   while (nextUrl && pageCount < maxPages) {
     pageCount++;
-    const data = await performRexmasRequest(nextUrl);
+    const secureUrl = nextUrl.replace(/^http:\/\//i, 'https://');
+    const data = await performRexmasRequest(secureUrl);
     if (Array.isArray(data.results)) {
       allResults.push(...data.results);
     }
-    nextUrl = data.next;
+    nextUrl = data.next ? data.next.replace(/^http:\/\//i, 'https://') : null;
   }
 
   return {
