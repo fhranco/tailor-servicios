@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { maskIp } from '@/lib/auth';
+import { createClient } from '@supabase/supabase-js';
 
 let nodemailerInstance: any = null;
 try {
@@ -376,6 +377,32 @@ export async function POST(request: Request) {
     if (botCheck.isBot) {
       console.warn(`[Send-Email] Bot spam neutralizado por filtro heurístico: ${botCheck.reason} [${safeEmpresa} - ${safeNombre}] (IP: ${maskIp(clientIp)})`);
       return NextResponse.json({ success: true, message: 'Solicitud procesada.' });
+    }
+
+    // 10. Inserción protegida en Supabase b2b_leads (exclusivamente server-side con service_role)
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (supabaseUrl && serviceKey) {
+      try {
+        const supabase = createClient(supabaseUrl, serviceKey);
+        const { error: dbError } = await supabase
+          .from('b2b_leads')
+          .insert([
+            {
+              full_name: safeNombre,
+              email: safeEmail,
+              company_name: safeEmpresa,
+              service_interest: safeServicio,
+            }
+          ]);
+        if (dbError) {
+          console.error('[Send-Email] Error insertando lead en Supabase:', dbError.message);
+        } else {
+          console.log('[Send-Email] Lead insertado exitosamente en b2b_leads con service_role.');
+        }
+      } catch (dbErr) {
+        console.error('[Send-Email] Excepción al conectar con Supabase:', dbErr);
+      }
     }
 
     const adminEmail = process.env.LEADS_NOTIFICATION_EMAIL || 'contacto@tailorservicios.cl';

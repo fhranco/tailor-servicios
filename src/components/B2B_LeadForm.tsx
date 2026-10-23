@@ -4,7 +4,6 @@ import React, { useState, FocusEvent, FormEvent, useEffect, useRef } from 'react
 import './B2B_LeadForm.css';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
-import { supabase } from '../lib/supabase';
 import { trackEvent } from '@/lib/analytics';
 
 interface FormState {
@@ -208,41 +207,27 @@ export default function B2B_LeadForm() {
     setServerError('');
 
     try {
-      const { error: dbError } = await supabase
-        .from('b2b_leads')
-        .insert([
-          {
-            full_name: formData.nombre.value,
-            email: formData.correo.value,
-            company_name: formData.empresa.value,
-            service_interest: formData.servicio.value
-            // privacy_accepted_at is handled by DB default now()
-          }
-        ]);
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'lead',
+          nombre: formData.nombre.value,
+          email: formData.correo.value,
+          empresa: formData.empresa.value,
+          servicio: formData.servicio.value,
+          privacyAccepted: formData.legal.value,
+          turnstile_token: activeToken,
+          _t: renderTime,
+          website: honeypot,
+        }),
+      });
 
-      if (dbError) throw dbError;
-
-      // Send Email Notifications (Alert & Auto-responder) con protecciones anti-bot
-      try {
-        await fetch('/api/send-email', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            type: 'lead',
-            nombre: formData.nombre.value,
-            email: formData.correo.value,
-            empresa: formData.empresa.value,
-            servicio: formData.servicio.value,
-            privacyAccepted: formData.legal.value,
-            turnstile_token: activeToken,
-            _t: renderTime,
-            website: honeypot,
-          }),
-        });
-      } catch (mailErr) {
-        console.error('Failed to trigger email notification:', mailErr);
+      const result = await res.json();
+      if (!res.ok || !result.success) {
+        throw new Error(result.error || 'Error al procesar la solicitud.');
       }
 
       setIsSuccess(true);

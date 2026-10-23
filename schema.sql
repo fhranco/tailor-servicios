@@ -38,25 +38,13 @@ CREATE TABLE IF NOT EXISTS public.b2b_leads (
 
 ALTER TABLE public.b2b_leads ENABLE ROW LEVEL SECURITY;
 
--- Inserción pública (formulario web de contacto comercial)
+-- Hardening RLS (Ley 21.719): Acceso mediado exclusivamente vía Route Handlers con service_role.
+-- Cero privilegios para roles anon y authenticated.
+REVOKE ALL PRIVILEGES ON TABLE public.b2b_leads FROM anon, authenticated;
 DROP POLICY IF EXISTS "Allow public inserts for b2b_leads" ON public.b2b_leads;
-CREATE POLICY "Allow public inserts for b2b_leads" 
-  ON public.b2b_leads FOR INSERT 
-  WITH CHECK (true);
-
--- Lectura exclusiva para administradores autenticados o backend Service Role
+DROP POLICY IF EXISTS "Permitir inserts publicos en b2b_leads" ON public.b2b_leads;
 DROP POLICY IF EXISTS "Allow authenticated admins to read b2b_leads" ON public.b2b_leads;
-CREATE POLICY "Allow authenticated admins to read b2b_leads" 
-  ON public.b2b_leads FOR SELECT 
-  TO authenticated 
-  USING (true);
-
--- Eliminación / Derecho de Supresión (Ley 21.719)
 DROP POLICY IF EXISTS "Allow authenticated admins to delete b2b_leads" ON public.b2b_leads;
-CREATE POLICY "Allow authenticated admins to delete b2b_leads" 
-  ON public.b2b_leads FOR DELETE 
-  TO authenticated 
-  USING (true);
 
 -- =========================================================================
 -- 2. Tabla 'privacy_audit_logs': Bitácora legal de auditoría (Ley 21.719)
@@ -73,17 +61,12 @@ CREATE TABLE IF NOT EXISTS public.privacy_audit_logs (
 );
 
 ALTER TABLE public.privacy_audit_logs ENABLE ROW LEVEL SECURITY;
+REVOKE ALL PRIVILEGES ON TABLE public.privacy_audit_logs FROM anon, authenticated;
 
+-- Políticas eliminadas: toda operación es realizada exclusivamente server-side
+-- por Route Handlers autorizados utilizando el rol de servicio (service_role).
 DROP POLICY IF EXISTS "Allow system to insert logs" ON public.privacy_audit_logs;
-CREATE POLICY "Allow system to insert logs" 
-  ON public.privacy_audit_logs FOR INSERT 
-  WITH CHECK (true);
-
 DROP POLICY IF EXISTS "Allow admin to select logs" ON public.privacy_audit_logs;
-CREATE POLICY "Allow admin to select logs" 
-  ON public.privacy_audit_logs FOR SELECT 
-  TO authenticated 
-  USING (true);
 
 -- =========================================================================
 -- 3. Tabla 'web_visits': Registro de navegación sin perfilamiento individual
@@ -95,21 +78,16 @@ CREATE TABLE IF NOT EXISTS public.web_visits (
   referrer TEXT,
   locale TEXT,
   user_agent TEXT,
-  ip_hash TEXT                   -- Hash irreversible para cálculo de sesiones
+  ip_hash TEXT                   -- HMAC-SHA256 con secreto server-side (no IP en texto plano)
 );
 
 ALTER TABLE public.web_visits ENABLE ROW LEVEL SECURITY;
+REVOKE ALL PRIVILEGES ON TABLE public.web_visits FROM anon, authenticated;
 
+-- Políticas eliminadas: la inserción se canaliza por /api/log-visit
+-- y la consulta administrativa por /api/admin/visits vía service_role.
 DROP POLICY IF EXISTS "Allow public inserts for web_visits" ON public.web_visits;
-CREATE POLICY "Allow public inserts for web_visits" 
-  ON public.web_visits FOR INSERT 
-  WITH CHECK (true);
-
 DROP POLICY IF EXISTS "Allow admin to select web_visits" ON public.web_visits;
-CREATE POLICY "Allow admin to select web_visits" 
-  ON public.web_visits FOR SELECT 
-  TO authenticated 
-  USING (true);
 
 -- =========================================================================
 -- 4. Tabla 'blog_articles': Artículos del Blog (CMS Tailor)
@@ -158,20 +136,12 @@ ALTER TABLE public.blog_articles ADD COLUMN IF NOT EXISTS category_en TEXT;
 ALTER TABLE public.blog_articles ADD COLUMN IF NOT EXISTS read_time_en TEXT;
 
 ALTER TABLE public.blog_articles ENABLE ROW LEVEL SECURITY;
+REVOKE ALL PRIVILEGES ON TABLE public.blog_articles FROM anon, authenticated;
 
--- Lectura pública: artículos publicados
+-- Políticas eliminadas: la lectura pública se canaliza por /api/blog (filtrando published = true)
+-- y la gestión CMS por /api/admin/blog vía service_role tras validar sesión administrativa.
 DROP POLICY IF EXISTS "Allow public read for published articles" ON public.blog_articles;
-CREATE POLICY "Allow public read for published articles" 
-  ON public.blog_articles FOR SELECT 
-  USING (published = true);
-
--- Gestión administrativa (crear, editar, eliminar)
 DROP POLICY IF EXISTS "Allow admin to manage blog articles" ON public.blog_articles;
-CREATE POLICY "Allow admin to manage blog articles" 
-  ON public.blog_articles FOR ALL 
-  TO authenticated 
-  USING (true)
-  WITH CHECK (true);
 
 -- =========================================================================
 -- 5. Tabla 'jobs': Ofertas sincronizadas de Rex+ (Solo lectura pública)
