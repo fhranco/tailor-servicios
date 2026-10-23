@@ -45,6 +45,9 @@ export default function GoogleAnalytics() {
     if (typeof window === 'undefined') return;
     if (isInitialized.current) return;
 
+    // 0. Reactivar medición en la ventana si fue previamente desactivada por revocación
+    (window as any)[`ga-disable-${GA_MEASUREMENT_ID}`] = false;
+
     // 1. Inyectar script oficial de Google Tag Manager de manera asíncrona
     if (!document.getElementById('ga4-script')) {
       const script = document.createElement('script');
@@ -54,18 +57,27 @@ export default function GoogleAnalytics() {
       document.head.appendChild(script);
     }
 
-    // 2. Inicializar dataLayer y función gtag global
+    // 2. Inicializar dataLayer y función gtag global conforme al estándar oficial de Google
     (window as any).dataLayer = (window as any).dataLayer || [];
-    function gtag(...args: any[]) {
-      (window as any).dataLayer.push(args);
+    function gtag(..._args: any[]) {
+      // eslint-disable-next-line prefer-rest-params
+      (window as any).dataLayer.push(arguments);
     }
     (window as any).gtag = gtag;
 
     gtag('js', new Date());
+
+    // Activar debug_mode si está presente el parámetro gtm_debug o debug_ga para Tag Assistant / DebugView
+    const isDebugMode = typeof window !== 'undefined' && 
+      (window.location.search.includes('gtm_debug') || 
+       window.location.search.includes('debug_ga') || 
+       process.env.NODE_ENV !== 'production');
+
     gtag('config', GA_MEASUREMENT_ID, {
       send_page_view: false, // Desactivar auto-pageview para evitar duplicados en SPA
       anonymize_ip: true,
       cookie_flags: 'SameSite=Lax;Secure',
+      ...(isDebugMode ? { debug_mode: true } : {}),
     });
 
     isInitialized.current = true;
@@ -94,6 +106,7 @@ export default function GoogleAnalytics() {
         // Revocación / Rechazo: Desactivar telemetría y purgar cookies _ga
         deleteGACookies();
         isInitialized.current = false;
+        lastTrackedUrl.current = '';
       }
     };
 
