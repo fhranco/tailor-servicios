@@ -14,6 +14,29 @@ export default function BlogPage() {
 
   const defaultBlogPosts = [
     {
+      id: 1793050000000,
+      slug: 'creer-en-las-personas-decision-de-negocio',
+      title: isEn
+        ? "Believing in People is Also a Business Decision"
+        : "Creer en las personas también es una decisión de negocio",
+      category: isEn ? "People & Strategy" : "Gestión de Personas",
+      date: isEn ? "October 27, 2026" : "27 de octubre de 2026",
+      isoDate: "2026-10-27",
+      readTime: isEn ? "6 min read" : "6 min de lectura",
+      summary: isEn
+        ? "Putting people at the center is neither charity nor romanticism: it is a strategic investment that directly impacts operational continuity, culture, and business profitability."
+        : "Poner a las personas en el centro no es asistencialismo ni romanticismo: es una inversión estratégica que incide en la continuidad operacional, la cultura y los resultados del negocio.",
+      image: '/creer-en-las-personas.webp',
+      featured: true,
+      categoryKey: 'personas',
+      author: {
+        name: 'Ma. Pía Avendaño A.',
+        role: isEn ? 'Executive Director - Institutional Leadership & Strategy' : 'Directora Ejecutiva - Liderazgo Institucional & Estrategia',
+        institution: 'Tailor Servicios',
+        avatar: 'MP'
+      }
+    },
+    {
       id: 1791667200000,
       slug: 'siete-anos-de-historia-y-compromiso-con-magallanes',
       title: isEn
@@ -27,7 +50,7 @@ export default function BlogPage() {
         ? "Today at Tailor Servicios, we celebrate seven years of history in Magallanes. A reflection on our journey, the trust built with companies and individuals, and a renewed commitment to opportunities and regional development."
         : "Hoy, en Tailor Servicios, cumplimos siete años de historia en Magallanes. Siete años que representan mucho más que el crecimiento de una empresa: representan confianza construida, desafíos compartidos y un compromiso renovado con nuestra región.",
       image: '/aniversario.webp',
-      featured: true,
+      featured: false,
       categoryKey: 'personas',
       author: {
         name: 'Ma. Pía Avendaño A.',

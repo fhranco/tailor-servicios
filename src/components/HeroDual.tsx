@@ -20,8 +20,8 @@ export default function HeroDual() {
       titleAccent: t('slides.1.titleAccent'),
       titleEnd: "",
       desc: t('slides.1.desc'),
-      bg: "/impulsando-el-desarrollo.webp",
-      thumb: "/impulsando-el-desarrollo.webp",
+      bg: "/tailor-hero-1.webp",
+      thumb: "/tailor-hero-1.webp",
       align: "left",
       objectPosition: "center right"
     },
@@ -67,7 +67,7 @@ export default function HeroDual() {
       {!hasInteracted ? (
         <div className="hero-bg-container">
           <picture className="hero-picture">
-            <source media="(max-width: 768px)" srcSet="/impulsando-el-desarrollo-mobile.webp" type="image/webp" />
+            <source media="(max-width: 768px)" srcSet="/tailor-hero-1-mobile.webp" type="image/webp" />
             <img 
               src={slides[0].bg} 
               alt="Fondo Tailor" 
@@ -93,7 +93,7 @@ export default function HeroDual() {
           >
             <picture className="hero-picture">
               {slides[currentSlide].id === 1 && (
-                <source media="(max-width: 768px)" srcSet="/impulsando-el-desarrollo-mobile.webp" type="image/webp" />
+                <source media="(max-width: 768px)" srcSet="/tailor-hero-1-mobile.webp" type="image/webp" />
               )}
               <img 
                 src={slides[currentSlide].bg} 

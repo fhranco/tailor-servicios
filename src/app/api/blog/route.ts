@@ -32,6 +32,7 @@ function readLiveArticles() {
 
 // Mapa cronológico canónico por slug para proteger contra semillas o re-inserciones en BD
 const CANONICAL_ARTICLE_DATES: Record<string, string> = {
+  'creer-en-las-personas-decision-de-negocio': '2026-10-27T12:00:00.000Z',
   'siete-anos-de-historia-y-compromiso-con-magallanes': '2026-10-10T12:00:00.000Z',
   'hay-lugares-que-uno-habita-y-hay-otros-que-de-alguna-manera-terminan-habitandolo-a-uno-magallanes-tiene-algo-de-eso': '2026-10-02T12:00:00.000Z',
   'estrategias-atraccion-talento-zonas-extremas-chile': '2024-09-15T12:00:00.000Z',

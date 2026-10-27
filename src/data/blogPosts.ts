@@ -64,6 +64,181 @@ export interface BlogArticle {
 
 export const blogArticlesEs: BlogArticle[] = [
   {
+    "id": 1793050000000,
+    "slug": "creer-en-las-personas-decision-de-negocio",
+    "title": "Creer en las personas también es una decisión de negocio",
+    "subtitle": "Hay algo que, después de años en la gestión de personas y transformaciones organizacionales, se ha convertido en una convicción profunda: no se puede liderar verdaderamente si no se cree genuinamente en ellas.",
+    "summary": "Poner a las personas en el centro no es asistencialismo ni romanticismo: es una inversión estratégica que incide en la continuidad operacional, la cultura y los resultados del negocio.",
+    "category": "Gestión de Personas",
+    "categoryKey": "personas",
+    "date": "27 de octubre de 2026",
+    "isoDate": "2026-10-27",
+    "readTime": "6 min de lectura",
+    "wordCount": 1050,
+    "featured": true,
+    "author": {
+      "id": "liderazgo",
+      "name": "Ma. Pía Avendaño A.",
+      "role": "Directora Ejecutiva - Liderazgo Institucional & Estrategia",
+      "institution": "Tailor Servicios",
+      "avatar": "MP"
+    },
+    "image": "/creer-en-las-personas.webp",
+    "imageAlt": "Creer en las personas también es una decisión de negocio - Tailor Servicios",
+    "keywords": [
+      "Creer en las personas",
+      "Gestión estratégica de personas",
+      "María Pía Avendaño",
+      "Liderazgo organizacional",
+      "Cultura laboral Magallanes",
+      "Talento y negocio",
+      "Recursos Humanos estratégicos",
+      "Tailor Servicios"
+    ],
+    "keyTakeaways": [
+      "No se puede liderar verdaderamente la gestión de personas si no se cree genuinamente en ellas.",
+      "Poner a las personas al centro no significa poner al negocio en segundo plano: ambos están profundamente conectados.",
+      "Quien lidera Gestión de Personas administra el activo más valioso y frágil de la empresa: la confianza organizacional.",
+      "Gestionar personas no es elegir entre humanidad y resultados, sino tener la capacidad de construir ambos."
+    ],
+    "sections": [
+      {
+        "heading": "Una convicción nacida de la experiencia",
+        "paragraphs": [
+          "Hay algo que, después de años vinculada al mundo de la gestión de personas y acompañando a distintas organizaciones en sus procesos de desarrollo, profesionalización y transformación, se ha convertido para mí en una convicción profunda: no se puede liderar verdaderamente la gestión de personas si no se cree genuinamente en ellas.",
+          "Puede parecer una afirmación evidente. Incluso algo obvia en tiempos en que abundan los discursos sobre el talento, el bienestar, la experiencia del colaborador y las personas al centro. Sin embargo, entre declarar esa convicción y ejercerla en la práctica existe una distancia que, en muchas organizaciones, sigue siendo considerable.",
+          "Porque creer en las personas no significa simplemente tratarlas bien. Tampoco significa complacerlas, evitar conversaciones difíciles, flexibilizar todas las reglas o transformar las áreas de Recursos Humanos en espacios de asistencialismo organizacional.",
+          "Creer en las personas significa reconocer que en ellas existe una de las principales capacidades de una organización para sostenerse, evolucionar, competir y proyectarse en el tiempo. Y, sobre todo, actuar en consecuencia.",
+          "Significa comprender que desarrollar el talento interno no es un beneficio adicional que las empresas entregan cuando tienen recursos disponibles. Es una inversión estratégica. Que identificar potencial, gestionar el desempeño, construir planes de sucesión, formar liderazgos y generar oportunidades de crecimiento no son actividades aisladas de un departamento, sino decisiones que inciden directamente en la continuidad operacional, la calidad de los servicios y la sostenibilidad del negocio.",
+          "Una organización que no desarrolla a sus personas termina, tarde o temprano, dependiendo excesivamente de determinadas individualidades, buscando permanentemente capacidades fuera de sus propias fronteras o enfrentando dificultades para responder a nuevos desafíos.",
+          "Por el contrario, aquellas que conocen a su gente, identifican sus fortalezas, reconocen sus brechas y se comprometen con su desarrollo construyen algo mucho más valioso que una buena dotación: construyen capacidad organizacional. Y esa capacidad no se improvisa."
+        ],
+        "quote": "Creer en las personas significa reconocer que en ellas reside la principal capacidad de una organización para sostenerse y evolucionar."
+      },
+      {
+        "heading": "Las personas al centro, pero con el negocio siempre presente",
+        "paragraphs": [
+          "Durante mucho tiempo, la gestión de Recursos Humanos estuvo asociada principalmente al cumplimiento de obligaciones laborales, la administración de contratos, remuneraciones y relaciones laborales. Todas ellas funciones indispensables, por cierto. Pero cumplir la normativa es el punto de partida, no el destino.",
+          "La verdadera gestión estratégica de personas comienza cuando somos capaces de conectar las decisiones sobre talento con los desafíos presentes y futuros de la organización.",
+          "Cuando entendemos que una evaluación de desempeño debe servir para mejorar resultados y desarrollar capacidades. Que un proceso de selección no consiste únicamente en cubrir una vacante, sino en incorporar competencias y comportamientos que fortalezcan la cultura y el negocio. Que la sucesión no es un ejercicio reservado para grandes corporaciones, sino una herramienta fundamental para asegurar continuidad. Y que formar líderes no puede limitarse a entregarles herramientas técnicas, sino que debe involucrar también la manera en que ejercen su autoridad y se relacionan con sus equipos.",
+          "Porque poner a las personas al centro no significa poner al negocio en segundo plano. Significa comprender que ambos están profundamente conectados.",
+          "También implica establecer límites, exigir resultados, gestionar el bajo desempeño y tomar decisiones difíciles cuando corresponde. Una cultura saludable no se construye evitando la exigencia, sino combinándola con respeto, justicia, coherencia y oportunidades reales de desarrollo. No hay contradicción entre ser una organización exigente y ser una organización humana. De hecho, creo firmemente que las mejores organizaciones son aquellas que logran ambas cosas.",
+          "Y aunque a veces parezca necesario justificarlo desde indicadores de productividad, rotación, ausentismo o compromiso, existe una verdad bastante sencilla detrás de todo esto: tener personas que se sienten valoradas, escuchadas y comprometidas también es un buen negocio. No porque la felicidad deba convertirse en una nueva obligación laboral, sino porque las condiciones en que las personas trabajan influyen profundamente en su disposición a contribuir, aprender, innovar y permanecer."
+        ],
+        "callout": {
+          "title": "Equilibrio Estratégico",
+          "text": "No hay contradicción entre ser una organización exigente y ser una organización humana: las organizaciones de alto desempeño construyen ambas cosas."
+        }
+      },
+      {
+        "heading": "El enorme poder de quienes lideran Gestión de Personas",
+        "paragraphs": [
+          "Hay, sin embargo, una dimensión de esta reflexión que considero especialmente relevante y que muchas veces no recibe la atención que merece: la elección de quienes lideran las áreas de Recursos Humanos o Gestión de Personas.",
+          "Las organizaciones suelen ser muy rigurosas al seleccionar a sus líderes comerciales, financieros u operacionales. Evalúan experiencia, conocimientos técnicos, resultados y capacidad para conducir equipos.",
+          "Pero cuando se trata de elegir a quien tendrá una influencia transversal sobre la cultura, el desarrollo del talento, las relaciones laborales y la experiencia de cientos o miles de trabajadores, debiéramos comprender que estamos frente a una decisión igualmente estratégica.",
+          "Porque quien lidera Gestión de Personas no administra únicamente procesos. Administra, en buena medida, la confianza que las personas depositan en la organización. Y esa confianza es uno de los activos más difíciles de construir y más fáciles de deteriorar.",
+          "Se pueden invertir años desarrollando liderazgos, instalando prácticas de reconocimiento, profesionalizando procesos, construyendo canales de comunicación y promoviendo una cultura de colaboración. Sin embargo, basta que llegue a esa posición una persona que no crea genuinamente en el valor de los trabajadores, que confunda autoridad con imposición o que entienda su función únicamente desde el control, para que buena parte de esos avances comience a debilitarse.",
+          "No siempre ocurre de manera inmediata ni evidente. A veces comienza con decisiones inconsistentes, con conversaciones que dejan de producirse, con promesas que no se cumplen, con talentos que dejan de ser considerados o con líderes que pierden la confianza para plantear sus inquietudes. Y poco a poco, aquello que tomó años construir comienza a retroceder.",
+          "Lo más complejo es que el impacto de una mala conducción de Gestión de Personas rara vez queda circunscrito a esa área. Se extiende a las jefaturas, a los equipos, a la cultura y, finalmente, a los resultados del negocio. Por eso, elegir a quien liderará la gestión de personas no debiera ser simplemente una decisión de contratación. Debiera ser una decisión de resguardo del futuro organizacional."
+        ],
+        "quote": "Quien lidera Gestión de Personas no administra únicamente procesos: administra la confianza que las personas depositan en la organización."
+      },
+      {
+        "heading": "No basta con hablar de personas: hay que creer en ellas",
+        "paragraphs": [
+          "Un buen líder de Gestión de Personas necesita conocimientos técnicos, criterio, comprensión del negocio, capacidad de negociación y valentía para tomar decisiones complejas.",
+          "Pero necesita también algo que no siempre aparece en los perfiles de cargo ni resulta sencillo de evaluar en una entrevista: una convicción auténtica respecto del potencial humano.",
+          "Debe ser alguien capaz de reconocer talento incluso donde todavía no es evidente. De comprender que las personas pueden aprender, evolucionar y sorprendernos cuando encuentran las condiciones adecuadas. Alguien que sepa acompañar, pero también exigir; escuchar, pero también decidir; proteger la dignidad de las personas, sin perder de vista las responsabilidades y objetivos de la organización.",
+          "Y, especialmente, alguien cuya conducta sea coherente con aquello que promueve. Porque las personas perciben rápidamente cuando el discurso de una organización no coincide con las acciones de quienes la representan.",
+          "No basta con instalar el concepto de personas al centro en una presentación corporativa, incorporarlo a los valores organizacionales o repetirlo en cada encuentro de liderazgo. Hay que lograr que esa convicción se vea, se sienta y se experimente en las decisiones cotidianas. Y eso comienza, necesariamente, por quienes tienen la responsabilidad de conducir esta función."
+        ]
+      },
+      {
+        "heading": "Una convicción que debe trascender a las personas",
+        "paragraphs": [
+          "También creo que las organizaciones deben aspirar a algo más profundo: construir modelos de gestión de personas que no dependan exclusivamente de la voluntad o sensibilidad de un determinado líder.",
+          "Profesionalizar esta función significa instalar criterios, procesos, capacidades y mecanismos de seguimiento que permitan dar continuidad a las buenas prácticas, independientemente de quién ocupe circunstancialmente una posición.",
+          "Pero incluso los mejores sistemas necesitan líderes capaces de comprender su sentido. Porque un proceso puede estar técnicamente bien diseñado y, aun así, perder completamente su valor cuando se ejecuta sin criterio, sin coherencia o sin una comprensión genuina de las personas a quienes impacta. Por eso, desarrollar una cultura organizacional sólida requiere tanto buenas estructuras como buenos liderazgos. Ninguna reemplaza a la otra.",
+          "En definitiva, sigo creyendo que una de las decisiones más inteligentes que puede tomar una empresa es invertir seriamente en su talento interno. No desde la ingenuidad ni desde el asistencialismo, sino desde la convicción de que las organizaciones crecen cuando sus personas también tienen oportunidades de crecer.",
+          "Y que gestionar personas no es elegir entre humanidad y resultados, sino tener la capacidad de construir ambos.",
+          "Porque creer en las personas no es una postura romántica frente al mundo del trabajo. Es una forma de entender el liderazgo, una responsabilidad organizacional y, sobre todo, una decisión estratégica."
+        ]
+      }
+    ],
+    "conclusion": {
+      "title": "El resguardo del futuro organizacional",
+      "text": "Quizás por eso, cuando una organización elige a quien estará al frente de su Gestión de Personas, debiera hacerse una pregunta que va mucho más allá de su experiencia o conocimientos técnicos: ¿Estamos poniendo el futuro de nuestra gente en manos de alguien que realmente cree en ella? Porque cuando la respuesta es sí, el impacto puede trascender generaciones de trabajadores. Pero cuando la respuesta es no, el costo puede ser mucho mayor de lo que cualquier indicador financiero alcance a reflejar."
+    },
+    "titleEn": "Believing in People is Also a Business Decision",
+    "subtitleEn": "After years in people management and organizational transformations, one deep conviction remains: you cannot truly lead people management if you do not genuinely believe in people.",
+    "summaryEn": "Putting people at the center is neither charity nor romanticism: it is a strategic investment that directly impacts operational continuity, culture, and business profitability.",
+    "categoryEn": "People & Strategy",
+    "readTimeEn": "6 min read",
+    "keywordsEn": [
+      "Believing in people",
+      "Strategic human resources",
+      "Maria Pia Avendano",
+      "Organizational leadership",
+      "Corporate culture",
+      "Talent and business",
+      "Executive leadership Chile"
+    ],
+    "keyTakeawaysEn": [
+      "You cannot truly lead people management if you do not genuinely believe in people.",
+      "Putting people at the center does not mean sidelining the business: both are deeply intertwined.",
+      "Whoever leads People Management oversees the company's most precious and fragile asset: organizational trust.",
+      "Managing people is not choosing between humanity and results, but building both simultaneously."
+    ],
+    "sectionsEn": [
+      {
+        "heading": "A Conviction Born from Experience",
+        "paragraphs": [
+          "After years connected to people management and accompanying organizations through their processes of growth, professionalization, and transformation, one conviction has deepened: you cannot truly lead people management if you do not genuinely believe in people.",
+          "It may seem obvious in times filled with rhetoric about talent, well-being, employee experience, and people-first culture. Yet between stating that conviction and practicing it, a substantial gap still persists in many companies.",
+          "Believing in people does not mean merely treating them nicely, avoiding tough conversations, or turning HR into an organizational welfare department.",
+          "Believing in people means recognizing that within them lies an organization's primary capability to sustain itself, evolve, compete, and project into the future. And, above all, acting accordingly.",
+          "Developing internal talent is not an optional perk granted when excess resources exist. It is a strategic investment that directly impacts operational continuity, service excellence, and long-term sustainability."
+        ],
+        "quote": "Believing in people means recognizing that within them lies the fundamental capability of an organization to sustain itself and evolve."
+      },
+      {
+        "heading": "People at the Center, with Business Firmly in Sight",
+        "paragraphs": [
+          "For a long time, Human Resources was primarily associated with compliance, payroll, and labor administration. Indispensable functions, indeed, but compliance is merely the starting line, not the destination.",
+          "Strategic people management begins when talent decisions directly align with the current and future challenges of the business.",
+          "Putting people at the center does not relegate the business to second place. It means understanding that both are profoundly connected.",
+          "A healthy culture is not built by avoiding high standards, but by combining rigor with respect, fairness, consistency, and genuine development opportunities. There is no contradiction between being a demanding organization and a deeply human one."
+        ]
+      },
+      {
+        "heading": "The Tremendous Power of People Leaders",
+        "paragraphs": [
+          "Organizations are usually rigorous when selecting commercial, financial, or operational executives. Yet when choosing who will hold a transversal influence over company culture and employee trust, it is an equally strategic decision.",
+          "Whoever leads People Management does not simply manage workflows; they steward the trust that employees place in the organization. And trust is one of the hardest assets to build and the easiest to dismantle."
+        ],
+        "quote": "Whoever leads People Management does not simply run processes: they steward the organizational trust that people invest in the company."
+      },
+      {
+        "heading": "Genuine Belief Transcending Slogans",
+        "paragraphs": [
+          "A true people leader requires technical mastery, business acumen, negotiation skills, and moral courage. But they also need an authentic conviction regarding human potential.",
+          "It is not enough to place people-first slogans in corporate slide decks. That conviction must be seen, felt, and experienced in daily decisions."
+        ]
+      },
+      {
+        "heading": "Building Systems that Outlast Individuals",
+        "paragraphs": [
+          "Organizations must build models of people management that do not depend solely on the sensitivity of one leader. Professionalizing this function means establishing criteria, processes, and governance that endure over time.",
+          "Believing in people is not a romantic sentiment about work: it is an organizational responsibility, a leadership philosophy, and above all, a clear business decision."
+        ]
+      }
+    ],
+    "conclusionEn": {
+      "title": "Safeguarding Organizational Future",
+      "text": "When choosing who will lead People Management, every organization must ask: Are we placing the future of our people in the hands of someone who genuinely believes in them? When the answer is yes, the impact transcends generations."
+    }
+  },
+  {
     "id": 1791667200000,
     "slug": "siete-anos-de-historia-y-compromiso-con-magallanes",
     "title": "Siete años de historia y compromiso con Magallanes",
@@ -75,7 +250,7 @@ export const blogArticlesEs: BlogArticle[] = [
     "isoDate": "2026-10-10",
     "readTime": "5 min de lectura",
     "wordCount": 817,
-    "featured": true,
+    "featured": false,
     "author": {
       "id": "liderazgo",
       "name": "Ma. Pía Avendaño A.",
