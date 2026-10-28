@@ -247,16 +247,13 @@ async function verifyTurnstile(token: string | undefined): Promise<{ valid: bool
     const outcome = await res.json();
     if (!outcome.success) {
       const errorCodes: string[] = outcome['error-codes'] || [];
-      console.warn('[Turnstile] Aviso siteverify (delegando a capas heurísticas, origin y time-trap):', errorCodes);
-      // Si el cliente completó el widget en navegador (token presente) pero Cloudflare siteverify
-      // reporta desajuste de clave secreta, expiración o cambio de red IPv6/IPv4,
-      // no bloqueamos al prospecto comercial y dejamos actuar las 5 capas anti-bot del servidor.
-      return { valid: true, reason: errorCodes.join(',') };
+      console.warn('[Turnstile] Token inválido o expirado:', errorCodes);
+      return { valid: false, reason: errorCodes.join(',') || 'invalid_turnstile_token' };
     }
     return { valid: true };
   } catch (err) {
     console.error('[Turnstile] Error en consulta a Cloudflare siteverify:', err);
-    return { valid: true };
+    return { valid: false, reason: 'turnstile_exception' };
   }
 }
 
@@ -296,7 +293,7 @@ export async function POST(request: Request) {
     }
 
     // 3. Honeypot check (detección silenciosa de bots spam)
-    if (body._hp || body.honeypot || body.website || body.company_fax || body.b_email) {
+    if (body._hp || body.honeypot || body.website || body.company_fax || body.b2b_hp_fax || body.b_email) {
       console.warn(`[Send-Email] Bot neutralizado por Honeypot (IP: ${maskIp(clientIp)})`);
       return NextResponse.json({ success: true, message: 'Solicitud procesada.' });
     }
@@ -353,8 +350,9 @@ export async function POST(request: Request) {
     }
 
     // Detección de posibles payloads base64 o Data URIs incrustados en campos de texto
-    const containsEncodedPayload = Object.values(body).some(v => 
-      typeof v === 'string' && (v.startsWith('data:') || v.includes(';base64,') || v.length > 500)
+    // IMPORTANTE: Excluir 'turnstile_token' ya que los tokens criptográficos de Cloudflare superan los 500 caracteres (~600-2048 chars).
+    const containsEncodedPayload = Object.entries(body).some(([k, v]) => 
+      k !== 'turnstile_token' && typeof v === 'string' && (v.startsWith('data:') || v.includes(';base64,') || v.length > 500)
     );
     if (containsEncodedPayload) {
       return NextResponse.json(
@@ -399,6 +397,7 @@ export async function POST(request: Request) {
     }
 
     // 10. Inserción protegida en Supabase b2b_leads (exclusivamente server-side con service_role)
+    let dbSaved = false;
     const supabaseUrl = cleanEnv(process.env.NEXT_PUBLIC_SUPABASE_URL);
     const serviceKey = cleanEnv(process.env.SUPABASE_SERVICE_ROLE_KEY);
     if (supabaseUrl && serviceKey) {
@@ -417,6 +416,7 @@ export async function POST(request: Request) {
         if (dbError) {
           console.error('[Send-Email] Error insertando lead en Supabase:', dbError.message);
         } else {
+          dbSaved = true;
           console.log('[Send-Email] Lead insertado exitosamente en b2b_leads con service_role.');
         }
       } catch (dbErr) {
@@ -456,7 +456,14 @@ export async function POST(request: Request) {
       </div>
     `;
 
-    await deliverEmail({ to: adminEmail, subject: adminSubject, html: adminHtml });
+    const adminEmailSent = await deliverEmail({ to: adminEmail, subject: adminSubject, html: adminHtml });
+
+    if (!dbSaved && !adminEmailSent) {
+      return NextResponse.json(
+        { success: false, error: 'No fue posible registrar tu solicitud en este momento. Por favor, intenta nuevamente.' },
+        { status: 500 }
+      );
+    }
 
     // 6. Auto-responder to User (Lead B2B)
     const userSubject = 'Hemos recibido su solicitud de contacto - Tailor Servicios';
