@@ -10,20 +10,72 @@ export default function AdminPage() {
   const t = useTranslations('AdminLogin');
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [authError, setAuthError] = useState('');
 
   useEffect(() => {
+    let isMounted = true;
+
+    const verifyAndSetSession = async (currentSession: any) => {
+      if (!currentSession) {
+        if (isMounted) {
+          setSession(null);
+          setLoading(false);
+        }
+        return;
+      }
+
+      if (currentSession.access_token === 'dev-token') {
+        if (isMounted) {
+          setAuthError('');
+          setSession(currentSession);
+          setLoading(false);
+        }
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/admin/blog', {
+          headers: {
+            Authorization: `Bearer ${currentSession.access_token}`
+          }
+        });
+
+        if (res.status === 401 || res.status === 403) {
+          await supabase.auth.signOut();
+          if (isMounted) {
+            setSession(null);
+            setAuthError(
+              `Acceso denegado: la cuenta ${currentSession.user?.email || 'autenticada'} no cuenta con permisos administrativos autorizados en Tailor Servicios.`
+            );
+            setLoading(false);
+          }
+          return;
+        }
+      } catch (err) {
+        console.warn('[AdminPage] No se pudo verificar autorización inicial:', err);
+      }
+
+      if (isMounted) {
+        setAuthError('');
+        setSession(currentSession);
+        setLoading(false);
+      }
+    };
+
     // 1. Get current session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setLoading(false);
+      verifyAndSetSession(session);
     });
 
     // 2. Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      verifyAndSetSession(nextSession);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   if (loading) {
@@ -40,7 +92,7 @@ export default function AdminPage() {
 
   return (
     <main style={{ minHeight: '100vh', backgroundColor: '#0f172a', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', padding: '1rem' }}>
-      <AdminLoginForm onLoginSuccess={() => {}} />
+      <AdminLoginForm onLoginSuccess={() => {}} initialError={authError} />
       {process.env.NODE_ENV === 'development' && (
         <button
           type="button"

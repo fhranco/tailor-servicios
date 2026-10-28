@@ -7,14 +7,21 @@ import './AdminLoginForm.css';
 
 interface AdminLoginFormProps {
   onLoginSuccess: () => void;
+  initialError?: string;
 }
 
-export default function AdminLoginForm({ onLoginSuccess }: AdminLoginFormProps) {
+export default function AdminLoginForm({ onLoginSuccess, initialError = '' }: AdminLoginFormProps) {
   const t = useTranslations('AdminLogin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(initialError);
+
+  React.useEffect(() => {
+    if (initialError) {
+      setError(initialError);
+    }
+  }, [initialError]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

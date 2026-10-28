@@ -87,47 +87,78 @@ export async function GET(req: NextRequest) {
         .order('published_at', { ascending: false });
 
       if (!error && Array.isArray(data) && data.length > 0) {
-        const mapped = data.map((dbA: any) => ({
-          id: dbA.id,
-          slug: dbA.slug,
-          title: dbA.title,
-          subtitle: dbA.subtitle || '',
-          category: dbA.category || 'Gestión de Personas',
-          categoryKey: dbA.category_key || 'personas',
-          author: {
-            id: dbA.author_id || 'consultoria',
-            name: dbA.author_name || 'Equipo de Consultoría Tailor',
-            role: dbA.author_role || '',
-            institution: dbA.author_institution || 'Tailor Servicios',
-            avatar: dbA.author_avatar || 'TS'
-          },
-          image: dbA.image || '/Images/tailor-web15.webp',
-          imageAlt: dbA.image_alt || dbA.title,
-          summary: dbA.summary || '',
-          contentHtml: dbA.content_html || '',
-          sections: dbA.content_json?.sections || [],
-          keyTakeaways: dbA.key_takeaways || dbA.content_json?.keyTakeaways || [],
-          conclusion: dbA.content_json?.conclusion || {},
-          keywords: dbA.keywords || [],
-          readTime: dbA.read_time || '5 min de lectura',
-          wordCount: dbA.word_count || 0,
-          published: dbA.published !== false,
-          created_at: dbA.created_at,
-          updated_at: dbA.updated_at,
-          // Bilingual English fields
-          titleEn: dbA.content_json?.titleEn || dbA.title_en || '',
-          subtitleEn: dbA.content_json?.subtitleEn || dbA.subtitle_en || '',
-          categoryEn: dbA.content_json?.categoryEn || dbA.category_en || '',
-          summaryEn: dbA.content_json?.summaryEn || dbA.summary_en || '',
-          readTimeEn: dbA.content_json?.readTimeEn || dbA.read_time_en || '',
-          keywordsEn: dbA.content_json?.keywordsEn || [],
-          keyTakeawaysEn: dbA.content_json?.keyTakeawaysEn || [],
-          sectionsEn: dbA.content_json?.sectionsEn || [],
-          conclusionEn: dbA.content_json?.conclusionEn || null,
-          contentHtmlEn: dbA.content_json?.contentHtmlEn || dbA.content_html_en || '',
-          rawDraft: dbA.content_json?.rawDraft || '',
-          rawDraftEn: dbA.content_json?.rawDraftEn || ''
-        }));
+        const localArticles = readLocalArticles();
+        const localBySlug = new Map(localArticles.map((la: any) => [la.slug, la]));
+
+        const mapped = data.map((dbA: any) => {
+          const localFallback = localBySlug.get(dbA.slug) || {};
+          const rawDate = dbA.published_at || dbA.created_at || localFallback.isoDate || new Date().toISOString();
+          const parsedDate = new Date(rawDate);
+          const formattedDate = localFallback.date || (!isNaN(parsedDate.getTime())
+            ? parsedDate.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' })
+            : '');
+          const isoDate = (!isNaN(parsedDate.getTime()) ? parsedDate.toISOString().split('T')[0] : '') || localFallback.isoDate || '';
+
+          const dbSections = Array.isArray(dbA.content_json?.sections) && dbA.content_json.sections.length > 0
+            ? dbA.content_json.sections
+            : (Array.isArray(localFallback.sections) ? localFallback.sections : []);
+          const dbTakeaways = Array.isArray(dbA.key_takeaways) && dbA.key_takeaways.length > 0
+            ? dbA.key_takeaways
+            : (Array.isArray(dbA.content_json?.keyTakeaways) && dbA.content_json.keyTakeaways.length > 0
+                ? dbA.content_json.keyTakeaways
+                : (Array.isArray(localFallback.keyTakeaways) ? localFallback.keyTakeaways : []));
+
+          return {
+            id: dbA.id,
+            slug: dbA.slug,
+            title: dbA.title,
+            subtitle: dbA.subtitle || localFallback.subtitle || '',
+            category: dbA.category || localFallback.category || 'Gestión de Personas',
+            categoryKey: dbA.category_key || localFallback.categoryKey || 'personas',
+            date: formattedDate,
+            isoDate,
+            author: {
+              id: dbA.author_id || localFallback.author?.id || 'consultoria',
+              name: dbA.author_name || localFallback.author?.name || 'Equipo de Consultoría Tailor',
+              role: dbA.author_role || localFallback.author?.role || '',
+              institution: dbA.author_institution || localFallback.author?.institution || 'Tailor Servicios',
+              avatar: dbA.author_avatar || localFallback.author?.avatar || 'TS'
+            },
+            image: dbA.image || localFallback.image || '/Images/tailor-web15.webp',
+            imageAlt: dbA.image_alt || localFallback.imageAlt || dbA.title,
+            summary: dbA.summary || localFallback.summary || '',
+            contentHtml: dbA.content_html || localFallback.contentHtml || '',
+            sections: dbSections,
+            keyTakeaways: dbTakeaways,
+            conclusion: dbA.content_json?.conclusion || localFallback.conclusion || { title: 'Reflexión Estratégica', text: '' },
+            keywords: Array.isArray(dbA.keywords) && dbA.keywords.length > 0 ? dbA.keywords : (localFallback.keywords || []),
+            readTime: dbA.read_time || localFallback.readTime || '5 min de lectura',
+            wordCount: dbA.word_count || localFallback.wordCount || 0,
+            published: dbA.published !== false,
+            created_at: dbA.created_at,
+            updated_at: dbA.updated_at,
+            // Bilingual English fields
+            titleEn: dbA.content_json?.titleEn || dbA.title_en || localFallback.titleEn || '',
+            subtitleEn: dbA.content_json?.subtitleEn || dbA.subtitle_en || localFallback.subtitleEn || '',
+            categoryEn: dbA.content_json?.categoryEn || dbA.category_en || localFallback.categoryEn || '',
+            summaryEn: dbA.content_json?.summaryEn || dbA.summary_en || localFallback.summaryEn || '',
+            readTimeEn: dbA.content_json?.readTimeEn || dbA.read_time_en || localFallback.readTimeEn || '',
+            keywordsEn: Array.isArray(dbA.content_json?.keywordsEn) ? dbA.content_json.keywordsEn : (localFallback.keywordsEn || []),
+            keyTakeawaysEn: Array.isArray(dbA.content_json?.keyTakeawaysEn) ? dbA.content_json.keyTakeawaysEn : (localFallback.keyTakeawaysEn || []),
+            sectionsEn: Array.isArray(dbA.content_json?.sectionsEn) ? dbA.content_json.sectionsEn : (localFallback.sectionsEn || []),
+            conclusionEn: dbA.content_json?.conclusionEn || localFallback.conclusionEn || null,
+            contentHtmlEn: dbA.content_json?.contentHtmlEn || dbA.content_html_en || localFallback.contentHtmlEn || '',
+            rawDraft: dbA.content_json?.rawDraft || localFallback.rawDraft || '',
+            rawDraftEn: dbA.content_json?.rawDraftEn || localFallback.rawDraftEn || ''
+          };
+        });
+
+        const dbSlugs = new Set(mapped.map((m: any) => m.slug));
+        for (const local of localArticles) {
+          if (!dbSlugs.has(local.slug)) {
+            mapped.push(local);
+          }
+        }
 
         return NextResponse.json({
           success: true,

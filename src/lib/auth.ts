@@ -48,6 +48,7 @@ export async function getAuthorizedUser(req: Request) {
     // Verificación estricta de privilegios de administrador (Ley 21.719 - Control de acceso)
     const DEFAULT_ADMIN_EMAILS = [
       'tailorservicioschile@gmail.com',
+      'patagoniacoach@gmail.com',
       'marketing@tailorservicios.cl',
       'contacto@tailorservicios.cl',
       'dev-local@tailorservicios.cl'

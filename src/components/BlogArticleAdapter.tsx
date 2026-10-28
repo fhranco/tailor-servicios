@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
+import { blogArticlesEs } from '@/data/blogPosts';
 import './BlogArticleAdapter.css';
 
 export interface ParsedSubsection {
@@ -182,6 +183,38 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
     }
   }, [rawTextEn]);
 
+  const normalizeArticle = (rawArticle: any): ParsedArticle => {
+    const seedMatch: any = blogArticlesEs.find((b) => b.slug === rawArticle?.slug) || {};
+    const sections = Array.isArray(rawArticle?.sections) && rawArticle.sections.length > 0
+      ? rawArticle.sections
+      : (Array.isArray(seedMatch.sections) ? seedMatch.sections : []);
+    const keyTakeaways = Array.isArray(rawArticle?.keyTakeaways) && rawArticle.keyTakeaways.length > 0
+      ? rawArticle.keyTakeaways
+      : (Array.isArray(seedMatch.keyTakeaways) ? seedMatch.keyTakeaways : []);
+    const keywords = Array.isArray(rawArticle?.keywords) && rawArticle.keywords.length > 0
+      ? rawArticle.keywords
+      : (Array.isArray(seedMatch.keywords) ? seedMatch.keywords : []);
+
+    return {
+      ...seedMatch,
+      ...rawArticle,
+      author: {
+        id: rawArticle?.author?.id || seedMatch.author?.id || 'consultoria',
+        name: rawArticle?.author?.name || seedMatch.author?.name || 'Equipo de Consultoría Tailor',
+        role: rawArticle?.author?.role || seedMatch.author?.role || '',
+        institution: rawArticle?.author?.institution || seedMatch.author?.institution || 'Tailor Servicios',
+        avatar: rawArticle?.author?.avatar || seedMatch.author?.avatar || 'TS'
+      },
+      keywords,
+      keyTakeaways,
+      sections,
+      conclusion: rawArticle?.conclusion || seedMatch.conclusion || { title: 'Reflexión Estratégica', text: '' },
+      keywordsEn: Array.isArray(rawArticle?.keywordsEn) ? rawArticle.keywordsEn : [],
+      keyTakeawaysEn: Array.isArray(rawArticle?.keyTakeawaysEn) ? rawArticle.keyTakeawaysEn : [],
+      sectionsEn: Array.isArray(rawArticle?.sectionsEn) ? rawArticle.sectionsEn : []
+    };
+  };
+
   const fetchArticles = async () => {
     setLoadingList(true);
     try {
@@ -194,14 +227,15 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
       if (res.ok) {
         const data = await res.json();
         if (data.success && Array.isArray(data.articles)) {
-          setArticlesList(data.articles);
+          setArticlesList(data.articles.map(normalizeArticle));
         }
       } else {
+        console.warn(`[BlogArticleAdapter] /api/admin/blog respondió ${res.status}. Aplicando hidratación segura.`);
         const fallbackRes = await fetch('/api/blog');
         if (fallbackRes.ok) {
           const fallbackData = await fallbackRes.json();
           if (fallbackData.success && Array.isArray(fallbackData.articles)) {
-            setArticlesList(fallbackData.articles);
+            setArticlesList(fallbackData.articles.map(normalizeArticle));
           }
         }
       }
@@ -644,24 +678,24 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
     }
     
     for (const sec of sections) {
-      html += `<h2>${sec.heading}</h2>\n`;
-      for (const p of sec.paragraphs) {
+      html += `<h2>${sec.heading || ''}</h2>\n`;
+      for (const p of (sec.paragraphs || [])) {
         html += `<p>${p}</p>\n`;
       }
       if (sec.quote) {
         html += `<blockquote>"${sec.quote}"</blockquote>\n`;
       }
-      if (sec.list && sec.list.length > 0) {
+      if (Array.isArray(sec.list) && sec.list.length > 0) {
         html += `<ul>\n`;
         for (const item of sec.list) {
           html += `  <li>${item}</li>\n`;
         }
         html += `</ul>\n`;
       }
-      if (sec.subsections && sec.subsections.length > 0) {
+      if (Array.isArray(sec.subsections) && sec.subsections.length > 0) {
         for (const sub of sec.subsections) {
-          html += `<h3>${sub.title}</h3>\n`;
-          for (const sp of sub.paragraphs) {
+          html += `<h3>${sub.title || ''}</h3>\n`;
+          for (const sp of (sub.paragraphs || [])) {
             html += `<p>${sp}</p>\n`;
           }
         }
@@ -1017,7 +1051,8 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
   };
 
   // Iniciar edición de un artículo existente
-  const handleEditClick = (article: ParsedArticle) => {
+  const handleEditClick = (rawArticle: ParsedArticle) => {
+    const article = normalizeArticle(rawArticle);
     setIsEditingExisting(true);
     setParsed(article);
     setSelectedAuthorId(article.author?.id || 'consultoria');
@@ -1129,9 +1164,9 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
   const filteredArticles = articlesList.filter(article => {
     const matchesCategory = selectedCategoryFilter === 'all' || article.category === selectedCategoryFilter;
     const matchesSearch = !searchQuery || 
-      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.author.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.summary.toLowerCase().includes(searchQuery.toLowerCase());
+      (article.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (article.author?.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (article.summary || '').toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -2146,8 +2181,12 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
                   const previewTitle = isPreviewEn ? (parsed.titleEn || (rawTextEn.trim() ? '(Haz clic en ⚡ Adaptar o 💾 Guardar para procesar)' : '⚠️ Sin versión en inglés aún')) : parsed.title;
                   const previewSubtitle = isPreviewEn ? (parsed.subtitleEn || 'Strategic analysis and key considerations for executive leadership.') : parsed.subtitle;
                   const previewCategory = isPreviewEn ? (parsed.categoryEn || parsed.category) : parsed.category;
-                  const previewTakeaways = isPreviewEn ? (parsed.keyTakeawaysEn && parsed.keyTakeawaysEn.length > 0 ? parsed.keyTakeawaysEn : []) : parsed.keyTakeaways;
-                  const previewSections = isPreviewEn ? (parsed.sectionsEn && parsed.sectionsEn.length > 0 ? parsed.sectionsEn : []) : parsed.sections;
+                  const previewTakeaways = isPreviewEn
+                    ? (Array.isArray(parsed.keyTakeawaysEn) && parsed.keyTakeawaysEn.length > 0 ? parsed.keyTakeawaysEn : [])
+                    : (Array.isArray(parsed.keyTakeaways) ? parsed.keyTakeaways : []);
+                  const previewSections = isPreviewEn
+                    ? (Array.isArray(parsed.sectionsEn) && parsed.sectionsEn.length > 0 ? parsed.sectionsEn : [])
+                    : (Array.isArray(parsed.sections) ? parsed.sections : []);
                   const previewConclusion = isPreviewEn ? (parsed.conclusionEn || null) : parsed.conclusion;
                   const previewReadTime = isPreviewEn ? (parsed.readTimeEn || '5 min read') : parsed.readTime;
 
@@ -2198,10 +2237,10 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
                         
                         <div className="preview-meta">
                           <div className="meta-author-pill">
-                            <span className="author-circle">{parsed.author.avatar}</span>
+                            <span className="author-circle">{parsed.author?.avatar || 'TS'}</span>
                             <div>
-                              <strong>{parsed.author.name}</strong>
-                              <small>{parsed.author.role}</small>
+                              <strong>{parsed.author?.name || 'Equipo Tailor'}</strong>
+                              <small>{parsed.author?.role || ''}</small>
                             </div>
                           </div>
                           <div className="meta-time-pill">
@@ -2254,20 +2293,20 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
                                   {sec.heading}
                                 </h2>
 
-                                {sec.paragraphs.map((p, pIdx) => (
+                                {(sec.paragraphs || []).map((p, pIdx) => (
                                   <p key={pIdx} className={sIdx === 0 && pIdx === 0 ? 'preview-lead-p' : ''}>
                                     {p}
                                   </p>
                                 ))}
 
                                 {/* Renderizado de H3 Subsecciones */}
-                                {sec.subsections && sec.subsections.map((sub, subIdx) => (
+                                {Array.isArray(sec.subsections) && sec.subsections.map((sub, subIdx) => (
                                   <div key={subIdx} className="preview-h3-block">
                                     <h3 className="preview-h3">
                                       <span className="h3-bullet">▸</span>
                                       {sub.title}
                                     </h3>
-                                    {sub.paragraphs.map((sp, spIdx) => (
+                                    {(sub.paragraphs || []).map((sp, spIdx) => (
                                       <p key={spIdx}>{sp}</p>
                                     ))}
                                   </div>
@@ -2279,7 +2318,7 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
                                   </blockquote>
                                 )}
 
-                                {sec.list && sec.list.length > 0 && (
+                                {Array.isArray(sec.list) && sec.list.length > 0 && (
                                   <ul className="preview-list">
                                     {sec.list.map((item, lIdx) => (
                                       <li key={lIdx}>{item}</li>
@@ -2304,7 +2343,7 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
                       <div className="preview-cta">
                         <h4>{isPreviewEn ? 'Is your organization facing this challenge?' : '¿Tu organización enfrenta este desafío?'}</h4>
                         <p>{isPreviewEn ? 'Let us discuss how to adapt these strategic frameworks to your specific organizational reality.' : 'Conversemos sobre cómo adaptar estos modelos a la realidad específica de tu empresa.'}</p>
-                        <span className="preview-cta-btn">{isPreviewEn ? `Schedule executive meeting with ${parsed.author.name} →` : `Agendar reunión con ${parsed.author.name} →`}</span>
+                        <span className="preview-cta-btn">{isPreviewEn ? `Schedule executive meeting with ${parsed.author?.name || 'Tailor Team'} →` : `Agendar reunión con ${parsed.author?.name || 'Equipo Tailor'} →`}</span>
                       </div>
                     </div>
                   );
