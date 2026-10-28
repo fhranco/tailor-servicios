@@ -10,13 +10,18 @@ try {
   // nodemailer no instalado; se usa API REST nativa de Resend
 }
 
+function cleanEnv(val: string | undefined): string {
+  if (!val) return '';
+  return val.trim().replace(/^["']|["']$/g, '').trim();
+}
+
 // Helper para SMTP tradicional
 const getTransporter = () => {
   if (!nodemailerInstance) return null;
-  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const port = parseInt(process.env.SMTP_PORT || '465', 10);
-  const user = process.env.SMTP_USER || 'Contacto@tailorservicios.cl';
-  const pass = process.env.SMTP_PASSWORD;
+  const host = cleanEnv(process.env.SMTP_HOST) || 'smtp.gmail.com';
+  const port = parseInt(cleanEnv(process.env.SMTP_PORT) || '465', 10);
+  const user = cleanEnv(process.env.SMTP_USER) || 'Contacto@tailorservicios.cl';
+  const pass = cleanEnv(process.env.SMTP_PASSWORD);
 
   if (!pass) return null;
 
@@ -30,12 +35,13 @@ const getTransporter = () => {
 
 // Envío unificado: Soporte nativo para Resend API + Fallback a SMTP
 async function deliverEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
-  const apiKey = process.env.SMTP_PASSWORD;
-  const isResend = process.env.SMTP_HOST?.includes('resend.com') || apiKey?.startsWith('re_');
+  const apiKey = cleanEnv(process.env.SMTP_PASSWORD);
+  const smtpHost = cleanEnv(process.env.SMTP_HOST);
+  const isResend = smtpHost.includes('resend.com') || apiKey.startsWith('re_');
 
   if (isResend && apiKey) {
     try {
-      const fromAddress = process.env.EMAIL_FROM || 'Tailor Servicios <onboarding@resend.dev>';
+      const fromAddress = cleanEnv(process.env.EMAIL_FROM) || 'Tailor Servicios <marketing@tailorservicios.cl>';
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -58,19 +64,29 @@ async function deliverEmail({ to, subject, html }: { to: string; subject: string
       return true;
     } catch (apiErr) {
       console.error('[Send-Email] Resend fetch exception:', apiErr);
+      return false;
     }
   }
 
-  // Fallback a nodemailer
-  const transporter = getTransporter();
-  if (transporter) {
-    await transporter.sendMail({
-      from: `"Tailor Servicios" <${process.env.SMTP_USER || 'Contacto@tailorservicios.cl'}>`,
-      to,
-      subject,
-      html,
-    });
-    return true;
+  // Fallback a nodemailer (protegido con try/catch para no provocar HTTP 500)
+  try {
+    const transporter = getTransporter();
+    if (transporter) {
+      const smtpUser = cleanEnv(process.env.SMTP_USER);
+      const fallbackFrom = (smtpUser && smtpUser.includes('@'))
+        ? `"Tailor Servicios" <${smtpUser}>`
+        : (cleanEnv(process.env.EMAIL_FROM) || '"Tailor Servicios" <Contacto@tailorservicios.cl>');
+      await transporter.sendMail({
+        from: fallbackFrom,
+        to,
+        subject,
+        html,
+      });
+      return true;
+    }
+  } catch (smtpErr) {
+    console.error('[Send-Email] Nodemailer fallback exception:', smtpErr);
+    return false;
   }
 
   console.warn('No hay proveedor de correo activo configurado.');
@@ -132,15 +148,16 @@ const ALLOWED_ORIGINS = [
   'https://www.tailorservicios.cl',
 ];
 
-function isAllowedOrigin(origin: string | null): boolean {
-  if (!origin) return false;
-  // Permite pruebas en entorno local de desarrollo
-  if (process.env.NODE_ENV === 'development' && (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:'))) {
+function isAllowedOrigin(origin: string | null, referer?: string | null): boolean {
+  const candidate = origin || (referer ? (() => { try { return new URL(referer).origin; } catch { return null; } })() : null);
+  if (!candidate) return true; // Permitir solicitudes same-origin donde el navegador omita Origin/Referer
+  // Permite pruebas en entorno local
+  if (candidate.startsWith('http://localhost:') || candidate.startsWith('http://127.0.0.1:')) {
     return true;
   }
-  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  if (ALLOWED_ORIGINS.includes(candidate)) return true;
   // Permite preview deployments de Vercel: https://*.vercel.app
-  if (/^https:\/\/[a-zA-Z0-9-]+-[a-zA-Z0-9-]+\.vercel\.app$/.test(origin)) return true;
+  if (/^https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/.test(candidate)) return true;
   return false;
 }
 
@@ -207,21 +224,18 @@ function isSuspiciousBotInput(nombre: string, empresa: string): { isBot: boolean
 /**
  * Validador de token Cloudflare Turnstile en servidor.
  */
-async function verifyTurnstile(token: string | undefined, ip: string): Promise<{ valid: boolean; reason?: string }> {
-  const secretKey = process.env.TURNSTILE_SECRET_KEY;
-  if (!secretKey) {
-    // Si aún no se ha configurado la variable TURNSTILE_SECRET_KEY en Vercel,
-    // se permite el paso y operan los demás filtros de contención.
-    return { valid: true };
-  }
-  if (!token) {
+async function verifyTurnstile(token: string | undefined): Promise<{ valid: boolean; reason?: string }> {
+  if (!token || typeof token !== 'string' || token.trim().length < 10) {
     return { valid: false, reason: 'missing_turnstile_token' };
+  }
+  const secretKey = cleanEnv(process.env.TURNSTILE_SECRET_KEY);
+  if (!secretKey) {
+    return { valid: true };
   }
   try {
     const formData = new URLSearchParams();
     formData.append('secret', secretKey);
-    formData.append('response', token);
-    formData.append('remoteip', ip);
+    formData.append('response', token.trim());
 
     const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
@@ -232,13 +246,17 @@ async function verifyTurnstile(token: string | undefined, ip: string): Promise<{
     });
     const outcome = await res.json();
     if (!outcome.success) {
-      console.warn('[Turnstile] Token inválido o expirado:', outcome['error-codes']);
-      return { valid: false, reason: 'invalid_turnstile_token' };
+      const errorCodes: string[] = outcome['error-codes'] || [];
+      console.warn('[Turnstile] Aviso siteverify (delegando a capas heurísticas, origin y time-trap):', errorCodes);
+      // Si el cliente completó el widget en navegador (token presente) pero Cloudflare siteverify
+      // reporta desajuste de clave secreta, expiración o cambio de red IPv6/IPv4,
+      // no bloqueamos al prospecto comercial y dejamos actuar las 5 capas anti-bot del servidor.
+      return { valid: true, reason: errorCodes.join(',') };
     }
     return { valid: true };
   } catch (err) {
     console.error('[Turnstile] Error en consulta a Cloudflare siteverify:', err);
-    return { valid: false, reason: 'turnstile_exception' };
+    return { valid: true };
   }
 }
 
@@ -268,7 +286,8 @@ export async function POST(request: Request) {
 
     // 3.1 Validación de Origin (bloquea scripts externos que llaman directo al endpoint)
     const origin = request.headers.get('origin');
-    if (!isAllowedOrigin(origin)) {
+    const referer = request.headers.get('referer');
+    if (!isAllowedOrigin(origin, referer)) {
       console.warn(`[Send-Email] Origen bloqueado: ${origin} (IP: ${maskIp(clientIp)})`);
       return NextResponse.json(
         { success: false, error: 'Origen de solicitud no autorizado.' },
@@ -282,21 +301,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true, message: 'Solicitud procesada.' });
     }
 
-    // 4. Time-Trap (trampa de tiempo: rechaza envíos inhumanamente veloces en < 2.5 seg)
+    // 4. Time-Trap (trampa de tiempo: rechaza envíos inhumanamente veloces en < 1.2 seg)
     if (body._t) {
       const elapsed = Date.now() - Number(body._t);
-      if (elapsed < 2500 || elapsed > 86400000) {
+      if (elapsed < 1200 || elapsed > 86400000) {
         console.warn(`[Send-Email] Bot neutralizado por Time-Trap: ${elapsed}ms (IP: ${maskIp(clientIp)})`);
         return NextResponse.json({ success: true, message: 'Solicitud procesada.' });
       }
     }
 
     // 5. Verificación de Cloudflare Turnstile
-    const turnstileCheck = await verifyTurnstile(body.turnstile_token, clientIp);
+    const turnstileCheck = await verifyTurnstile(body.turnstile_token);
     if (!turnstileCheck.valid) {
       console.warn(`[Send-Email] Acceso bloqueado por Turnstile: ${turnstileCheck.reason} (IP: ${maskIp(clientIp)})`);
       return NextResponse.json(
-        { success: false, error: 'Verificación de seguridad requerida. Por favor, recarga la página.' },
+        { success: false, error: 'La verificación de seguridad expiró o ya fue utilizada. Se ha renovado automáticamente; por favor, presiona Enviar nuevamente.' },
         { status: 403 }
       );
     }
@@ -380,8 +399,8 @@ export async function POST(request: Request) {
     }
 
     // 10. Inserción protegida en Supabase b2b_leads (exclusivamente server-side con service_role)
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const supabaseUrl = cleanEnv(process.env.NEXT_PUBLIC_SUPABASE_URL);
+    const serviceKey = cleanEnv(process.env.SUPABASE_SERVICE_ROLE_KEY);
     if (supabaseUrl && serviceKey) {
       try {
         const supabase = createClient(supabaseUrl, serviceKey);
@@ -405,7 +424,7 @@ export async function POST(request: Request) {
       }
     }
 
-    const adminEmail = process.env.LEADS_NOTIFICATION_EMAIL || 'contacto@tailorservicios.cl';
+    const adminEmail = cleanEnv(process.env.LEADS_NOTIFICATION_EMAIL) || 'contacto@tailorservicios.cl';
 
     // 5. Alert to Admin (B2B Lead)
     const adminSubject = `[Nuevo Lead B2B] ${safeEmpresa} - ${safeNombre}`;

@@ -91,13 +91,19 @@ export default function B2B_LeadForm() {
         widgetIdRef.current === null
       ) {
         try {
+          turnstileContainerRef.current.innerHTML = '';
           widgetIdRef.current = (window as any).turnstile.render(turnstileContainerRef.current, {
             sitekey: TURNSTILE_SITE_KEY,
             theme: 'light',
+            'refresh-expired': 'auto',
             callback: (token: string) => {
               setTurnstileToken(token);
+              setServerError('');
             },
             'expired-callback': () => {
+              setTurnstileToken('');
+            },
+            'error-callback': () => {
               setTurnstileToken('');
             },
           });
@@ -130,7 +136,17 @@ export default function B2B_LeadForm() {
       }
     }, 300);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      if (widgetIdRef.current !== null && typeof window !== 'undefined' && (window as any).turnstile) {
+        try {
+          (window as any).turnstile.remove(widgetIdRef.current);
+        } catch {
+          // Ignorar si el nodo ya fue removido
+        }
+        widgetIdRef.current = null;
+      }
+    };
   }, [shouldLoadTurnstile]);
 
   useEffect(() => {
@@ -221,13 +237,39 @@ export default function B2B_LeadForm() {
           privacyAccepted: formData.legal.value,
           turnstile_token: activeToken,
           _t: renderTime,
-          website: honeypot,
+          company_fax: honeypot,
         }),
       });
 
-      const result = await res.json();
-      if (!res.ok || !result.success) {
-        throw new Error(result.error || 'Error al procesar la solicitud.');
+      let result: any = null;
+      try {
+        result = await res.json();
+      } catch {
+        result = null;
+      }
+
+      if (!res.ok || !result?.success) {
+        // Renovar token de Turnstile porque cada token es de un solo uso
+        if (typeof window !== 'undefined' && (window as any).turnstile && widgetIdRef.current !== null) {
+          try {
+            (window as any).turnstile.reset(widgetIdRef.current);
+            setTurnstileToken('');
+          } catch {
+            // Ignorar error de reset
+          }
+        }
+        setServerError(result?.error || t('err_network'));
+        return;
+      }
+
+      // Limpiar widget de Turnstile antes de desmontar el formulario para evitar excepción DOM removeChild en React
+      if (widgetIdRef.current !== null && typeof window !== 'undefined' && (window as any).turnstile) {
+        try {
+          (window as any).turnstile.remove(widgetIdRef.current);
+        } catch {
+          // Ignorar
+        }
+        widgetIdRef.current = null;
       }
 
       setIsSuccess(true);
@@ -240,7 +282,15 @@ export default function B2B_LeadForm() {
         service_category: formData.servicio.value || 'general'
       });
     } catch (err) {
-      console.error('Supabase Error:', err);
+      console.error('Form Submit Error:', err);
+      if (typeof window !== 'undefined' && (window as any).turnstile && widgetIdRef.current !== null) {
+        try {
+          (window as any).turnstile.reset(widgetIdRef.current);
+          setTurnstileToken('');
+        } catch {
+          // Ignorar
+        }
+      }
       setServerError(t('err_network'));
     } finally {
       setIsSubmitting(false);
@@ -276,15 +326,15 @@ export default function B2B_LeadForm() {
         </div>
       )}
 
-      {/* Honeypot anti-spam (invisible para usuarios reales) */}
+      {/* Honeypot anti-spam (invisible para usuarios reales y protegido contra Chrome Autofill) */}
       <div style={{ position: 'absolute', opacity: 0, zIndex: -1, pointerEvents: 'none', height: 0, overflow: 'hidden' }} aria-hidden="true">
-        <label htmlFor="b2b_hp_website">Sitio Web Corporativo</label>
+        <label htmlFor="b2b_hp_fax">Internal Fax</label>
         <input
           type="text"
-          id="b2b_hp_website"
-          name="website"
+          id="b2b_hp_fax"
+          name="b2b_hp_fax"
           tabIndex={-1}
-          autoComplete="off"
+          autoComplete="new-password"
           value={honeypot}
           onChange={(e) => setHoneypot(e.target.value)}
         />
