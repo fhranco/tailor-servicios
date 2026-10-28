@@ -42,20 +42,20 @@ const CANONICAL_ARTICLE_DATES: Record<string, string> = {
 };
 
 function getExactPublicationDate(a: any): Date {
-  if (a.slug && CANONICAL_ARTICLE_DATES[a.slug]) {
-    return new Date(CANONICAL_ARTICLE_DATES[a.slug]);
-  }
-  if (a.isoDate) {
-    const d = new Date(a.isoDate);
+  if (a.content_json?.isoDate) {
+    const d = new Date(`${a.content_json.isoDate}T12:00:00.000Z`);
     if (!isNaN(d.getTime())) return d;
   }
-  if (a.content_json?.isoDate) {
-    const d = new Date(a.content_json.isoDate);
+  if (a.isoDate) {
+    const d = new Date(a.isoDate.includes('T') ? a.isoDate : `${a.isoDate}T12:00:00.000Z`);
     if (!isNaN(d.getTime())) return d;
   }
   if (a.published_at) {
     const d = new Date(a.published_at);
     if (!isNaN(d.getTime())) return d;
+  }
+  if (a.slug && CANONICAL_ARTICLE_DATES[a.slug]) {
+    return new Date(CANONICAL_ARTICLE_DATES[a.slug]);
   }
   if (a.created_at) {
     const d = new Date(a.created_at);

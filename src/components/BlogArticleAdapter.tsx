@@ -140,6 +140,20 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
   // Modal de confirmación para eliminar
   const [articleToDelete, setArticleToDelete] = useState<ParsedArticle | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [savingDateSlug, setSavingDateSlug] = useState<string | null>(null);
+
+  const formatDateEsFromIso = (iso: string): string => {
+    if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso.trim())) return '';
+    const [y, m, d] = iso.trim().split('-').map(Number);
+    const utcDate = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+    if (isNaN(utcDate.getTime())) return '';
+    return utcDate.toLocaleDateString('es-CL', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      timeZone: 'UTC'
+    });
+  };
 
   // Estados de Imagen
   const [imageSourceMode, setImageSourceMode] = useState<'catalog' | 'upload' | 'url'>('catalog');
@@ -1050,6 +1064,54 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
     }
   };
 
+  // Cambio rápido de fecha de publicación directamente desde la tabla del listado
+  const handleQuickDateChange = async (rawArticle: ParsedArticle, newIsoDate: string) => {
+    if (!newIsoDate || !/^\d{4}-\d{2}-\d{2}$/.test(newIsoDate)) return;
+    const formattedDate = formatDateEsFromIso(newIsoDate);
+    const updatedArticle: ParsedArticle = {
+      ...normalizeArticle(rawArticle),
+      isoDate: newIsoDate,
+      date: formattedDate || rawArticle.date
+    };
+
+    setSavingDateSlug(rawArticle.slug);
+    setArticlesList((prev) =>
+      prev.map((a) => (a.slug === rawArticle.slug ? updatedArticle : a))
+    );
+
+    try {
+      let token = session?.access_token || '';
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (sessionData?.session?.access_token) {
+          token = sessionData.session.access_token;
+        }
+      } catch {}
+      if (!token) token = session?.access_token || 'dev-token';
+
+      const res = await fetch('/api/admin/blog', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ article: updatedArticle })
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        alert(`⚠️ No se pudo actualizar la fecha: ${errData?.error || res.status}`);
+        await fetchArticles();
+      } else {
+        await fetchArticles();
+      }
+    } catch (err: any) {
+      alert(`⚠️ Error de conexión al actualizar fecha: ${err?.message}`);
+    } finally {
+      setSavingDateSlug(null);
+    }
+  };
+
   // Iniciar edición de un artículo existente
   const handleEditClick = (rawArticle: ParsedArticle) => {
     const article = normalizeArticle(rawArticle);
@@ -1425,8 +1487,29 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
                         </div>
                       </td>
                       <td>
-                        <div style={{ fontSize: '0.82rem', color: '#64748b', lineHeight: 1.4 }}>
-                          <div>{article.date}</div>
+                        <div style={{ fontSize: '0.82rem', color: '#64748b', lineHeight: 1.4, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                          <div style={{ fontWeight: 600, color: '#334155' }}>{article.date}</div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <input
+                              type="date"
+                              value={article.isoDate || ''}
+                              onChange={(e) => handleQuickDateChange(article, e.target.value)}
+                              disabled={savingDateSlug === article.slug}
+                              title="Cambiar fecha de publicación de este artículo"
+                              style={{
+                                fontSize: '0.76rem',
+                                padding: '2px 6px',
+                                borderRadius: '4px',
+                                border: '1px solid #cbd5e1',
+                                color: '#1e293b',
+                                background: '#f8fafc',
+                                cursor: 'pointer'
+                              }}
+                            />
+                            {savingDateSlug === article.slug && (
+                              <span style={{ fontSize: '0.72rem', color: '#16a34a', fontWeight: 700 }}>Guardando...</span>
+                            )}
+                          </div>
                           <div style={{ fontSize: '0.76rem', color: '#94a3b8' }}>⏱️ {article.readTime}</div>
                         </div>
                       </td>
@@ -1871,8 +1954,25 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
                     )}
                   </div>
 
-                  {/* Slug & Resumen SEO */}
+                  {/* Fecha de Publicación & URL Slug SEO */}
                   <div className="form-row-dual">
+                    <div className="form-group-col">
+                      <label><strong>📅 Fecha de Publicación ({parsed.date || 'Selecciona fecha'}):</strong></label>
+                      <input
+                        type="date"
+                        value={parsed.isoDate || ''}
+                        onChange={(e) => {
+                          const nextIso = e.target.value;
+                          const nextDateText = formatDateEsFromIso(nextIso);
+                          setParsed({
+                            ...parsed,
+                            isoDate: nextIso,
+                            date: nextDateText || parsed.date
+                          });
+                        }}
+                        className="adapter-input"
+                      />
+                    </div>
                     <div className="form-group-col">
                       <label><strong>🔗 URL Slug SEO (amigable):</strong></label>
                       <input
@@ -1882,16 +1982,18 @@ export default function BlogArticleAdapter({ session }: { session?: any }) {
                         className="adapter-input"
                       />
                     </div>
-                    <div className="form-group-col">
-                      <label><strong>🔍 Resumen SEO (Meta description ES):</strong></label>
-                      <input
-                        type="text"
-                        value={parsed.summary}
-                        onChange={(e) => setParsed({ ...parsed, summary: e.target.value })}
-                        className="adapter-input"
-                        placeholder="Breve resumen para Google y vista previa..."
-                      />
-                    </div>
+                  </div>
+
+                  {/* Resumen SEO ES */}
+                  <div className="form-group-row">
+                    <label><strong>🔍 Resumen SEO (Meta description ES):</strong></label>
+                    <input
+                      type="text"
+                      value={parsed.summary}
+                      onChange={(e) => setParsed({ ...parsed, summary: e.target.value })}
+                      className="adapter-input"
+                      placeholder="Breve resumen para Google y vista previa..."
+                    />
                   </div>
 
                   {parsed.titleEn && (

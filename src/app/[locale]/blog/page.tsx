@@ -163,26 +163,26 @@ export default function BlogPage() {
     return () => { isMounted = false; };
   }, []);
 
-  // Helper determinista para obtener timestamp seguro sin riesgo de NaN y proteger orden canónico
+  // Helper determinista para obtener timestamp seguro sin riesgo de NaN respetando ediciones de fecha en el CMS
   const getPostTimestamp = (p: any): number => {
-    const CANONICAL_TIMESTAMPS: Record<string, number> = {
-      'siete-anos-de-historia-y-compromiso-con-magallanes': 1791667200000, // 10 de octubre de 2026 (7° Aniversario / Destacado)
-      'hay-lugares-que-uno-habita-y-hay-otros-que-de-alguna-manera-terminan-habitandolo-a-uno-magallanes-tiene-algo-de-eso': 1790975336156, // 2 de octubre de 2026
-      'estrategias-atraccion-talento-zonas-extremas-chile': 1726358400000, // 15 de septiembre de 2024
-      'implementacion-ley-karin-cultura-organizacional-chile': 1724803200000, // 28 de agosto de 2024
-      'impacto-desarrollo-organizacional-retencion-talento': 1721347200000, // 19 de julio de 2024
-      'desafios-ley-40-horas-turnos-continuos-faenas': 1717977600000, // 10 de junio de 2024
-    };
-    if (p.slug && CANONICAL_TIMESTAMPS[p.slug]) {
-      return CANONICAL_TIMESTAMPS[p.slug];
-    }
     if (p.isoDate) {
-      const t = new Date(p.isoDate).getTime();
+      const t = new Date(p.isoDate.includes('T') ? p.isoDate : `${p.isoDate}T12:00:00.000Z`).getTime();
       if (!isNaN(t)) return t;
     }
     if (p.published_at) {
       const t = new Date(p.published_at).getTime();
       if (!isNaN(t)) return t;
+    }
+    const CANONICAL_TIMESTAMPS: Record<string, number> = {
+      'siete-anos-de-historia-y-compromiso-con-magallanes': 1791667200000,
+      'hay-lugares-que-uno-habita-y-hay-otros-que-de-alguna-manera-terminan-habitandolo-a-uno-magallanes-tiene-algo-de-eso': 1790975336156,
+      'estrategias-atraccion-talento-zonas-extremas-chile': 1726358400000,
+      'implementacion-ley-karin-cultura-organizacional-chile': 1724803200000,
+      'impacto-desarrollo-organizacional-retencion-talento': 1721347200000,
+      'desafios-ley-40-horas-turnos-continuos-faenas': 1717977600000,
+    };
+    if (p.slug && CANONICAL_TIMESTAMPS[p.slug]) {
+      return CANONICAL_TIMESTAMPS[p.slug];
     }
     if (p.created_at) {
       const t = new Date(p.created_at).getTime();

@@ -92,12 +92,13 @@ export async function GET(req: NextRequest) {
 
         const mapped = data.map((dbA: any) => {
           const localFallback = localBySlug.get(dbA.slug) || {};
-          const rawDate = dbA.published_at || dbA.created_at || localFallback.isoDate || new Date().toISOString();
-          const parsedDate = new Date(rawDate);
-          const formattedDate = localFallback.date || (!isNaN(parsedDate.getTime())
-            ? parsedDate.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' })
-            : '');
-          const isoDate = (!isNaN(parsedDate.getTime()) ? parsedDate.toISOString().split('T')[0] : '') || localFallback.isoDate || '';
+          const customIso = dbA.content_json?.isoDate || '';
+          const rawDate = (customIso ? `${customIso}T12:00:00.000Z` : '') || dbA.published_at || dbA.created_at || localFallback.isoDate || new Date().toISOString();
+          const parsedDate = new Date(rawDate.includes('T') ? rawDate : `${rawDate}T12:00:00.000Z`);
+          const isoDate = customIso || (!isNaN(parsedDate.getTime()) ? parsedDate.toISOString().split('T')[0] : '') || localFallback.isoDate || '';
+          const formattedDate = dbA.content_json?.date || (!isNaN(parsedDate.getTime())
+            ? parsedDate.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+            : '') || localFallback.date || '';
 
           const dbSections = Array.isArray(dbA.content_json?.sections) && dbA.content_json.sections.length > 0
             ? dbA.content_json.sections
@@ -229,12 +230,29 @@ export async function POST(req: NextRequest) {
     let isUpdate = false;
     let savedArticle = { ...article };
 
+    // Si se envió isoDate (YYYY-MM-DD), sincronizar published_at y texto de fecha en español
+    if (savedArticle.isoDate && /^\d{4}-\d{2}-\d{2}$/.test(savedArticle.isoDate.trim())) {
+      const cleanIso = savedArticle.isoDate.trim();
+      savedArticle.isoDate = cleanIso;
+      savedArticle.published_at = `${cleanIso}T12:00:00.000Z`;
+      const [y, m, d] = cleanIso.split('-').map(Number);
+      const utcDate = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+      if (!isNaN(utcDate.getTime())) {
+        savedArticle.date = utcDate.toLocaleDateString('es-CL', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          timeZone: 'UTC'
+        });
+      }
+    }
+
     if (existingIndex >= 0) {
       // Editar existente
       isUpdate = true;
       savedArticle.id = articles[existingIndex].id;
       savedArticle.created_at = articles[existingIndex].created_at || savedArticle.created_at;
-      savedArticle.published_at = articles[existingIndex].published_at || savedArticle.published_at;
+      savedArticle.published_at = savedArticle.published_at || articles[existingIndex].published_at;
       savedArticle.updated_at = new Date().toISOString();
       articles[existingIndex] = savedArticle;
     } else {
@@ -245,9 +263,16 @@ export async function POST(req: NextRequest) {
       articles.unshift(savedArticle);
     }
 
+    // Ordenar cronológicamente (más reciente primero)
+    articles.sort((a, b) => {
+      const dateA = new Date(a.published_at || (a.isoDate ? `${a.isoDate}T12:00:00.000Z` : 0)).getTime();
+      const dateB = new Date(b.published_at || (b.isoDate ? `${b.isoDate}T12:00:00.000Z` : 0)).getTime();
+      return (isNaN(dateB) ? 0 : dateB) - (isNaN(dateA) ? 0 : dateA);
+    });
+
     // Persistir localmente en caché
     writeLocalArticles(articles);
-    console.log(`[Admin Blog] Artículo guardado exitosamente: "${savedArticle.title}" (slug: ${savedArticle.slug}, acción: ${isUpdate ? 'update' : 'create'})`);
+    console.log(`[Admin Blog] Artículo guardado exitosamente: "${savedArticle.title}" (slug: ${savedArticle.slug}, fecha: ${savedArticle.isoDate}, acción: ${isUpdate ? 'update' : 'create'})`);
 
     // Sincronizar en Supabase PostgreSQL (si la tabla blog_articles está disponible)
     if (supabase) {
@@ -268,6 +293,8 @@ export async function POST(req: NextRequest) {
           summary: savedArticle.summary || '',
           content_html: savedArticle.contentHtml || null,
           content_json: {
+            date: savedArticle.date || null,
+            isoDate: savedArticle.isoDate || null,
             sections: savedArticle.sections || [],
             keyTakeaways: savedArticle.keyTakeaways || [],
             conclusion: savedArticle.conclusion || {},

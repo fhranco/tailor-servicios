@@ -1,11 +1,13 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import { createClient } from '@supabase/supabase-js';
 import { Link } from '@/i18n/routing';
-import { getBlogArticleBySlug, getAllBlogSlugs, blogArticlesEs } from '@/data/blogPosts';
+import { getBlogArticleBySlug, getAllBlogSlugs, blogArticlesEs, BlogArticle } from '@/data/blogPosts';
 import './page.css';
 
 export const dynamicParams = true;
+export const revalidate = 0;
 
 interface Props {
   params: {
@@ -14,8 +16,88 @@ interface Props {
   };
 }
 
+async function resolveBlogArticle(slug: string, locale: string): Promise<BlogArticle | undefined> {
+  const localArticle = getBlogArticleBySlug(slug, locale);
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (url && key) {
+    try {
+      const supabase = createClient(url, key);
+      const { data: dbA, error } = await supabase
+        .from('blog_articles')
+        .select('*')
+        .eq('slug', slug)
+        .maybeSingle();
+
+      if (!error && dbA) {
+        const isEn = locale === 'en';
+        const customIso = dbA.content_json?.isoDate || '';
+        const rawDate = (customIso ? `${customIso}T12:00:00.000Z` : '') || dbA.published_at || localArticle?.isoDate || dbA.created_at || new Date().toISOString();
+        const parsedDate = new Date(rawDate.includes('T') ? rawDate : `${rawDate}T12:00:00.000Z`);
+        const isoDate = customIso || (!isNaN(parsedDate.getTime()) ? parsedDate.toISOString().split('T')[0] : '') || localArticle?.isoDate || '';
+        const formattedDate = dbA.content_json?.date || (!isNaN(parsedDate.getTime())
+          ? parsedDate.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+          : '') || localArticle?.date || '';
+
+        const sectionsEs = Array.isArray(dbA.content_json?.sections) && dbA.content_json.sections.length > 0
+          ? dbA.content_json.sections
+          : (localArticle?.sections || []);
+        const takeawaysEs = Array.isArray(dbA.key_takeaways) && dbA.key_takeaways.length > 0
+          ? dbA.key_takeaways
+          : (Array.isArray(dbA.content_json?.keyTakeaways) && dbA.content_json.keyTakeaways.length > 0
+              ? dbA.content_json.keyTakeaways
+              : (localArticle?.keyTakeaways || []));
+
+        const merged: BlogArticle = {
+          id: dbA.id || localArticle?.id || Date.now(),
+          slug: dbA.slug,
+          title: isEn ? (dbA.content_json?.titleEn || dbA.title_en || dbA.title) : dbA.title,
+          subtitle: isEn ? (dbA.content_json?.subtitleEn || dbA.subtitle_en || dbA.subtitle || localArticle?.subtitle || '') : (dbA.subtitle || localArticle?.subtitle || ''),
+          category: isEn ? (dbA.content_json?.categoryEn || dbA.category_en || dbA.category || 'Gestión de Personas') : (dbA.category || 'Gestión de Personas'),
+          categoryKey: dbA.category_key || localArticle?.categoryKey || 'personas',
+          date: formattedDate,
+          isoDate,
+          readTime: isEn
+            ? (dbA.content_json?.readTimeEn || dbA.read_time_en || (dbA.read_time || '5 min de lectura').replace('min de lectura', 'min read'))
+            : (dbA.read_time || localArticle?.readTime || '5 min de lectura'),
+          wordCount: dbA.word_count || localArticle?.wordCount || 500,
+          author: {
+            id: dbA.author_id || localArticle?.author?.id || 'consultoria',
+            name: dbA.author_name || localArticle?.author?.name || 'Equipo de Consultoría Tailor',
+            role: dbA.author_role || localArticle?.author?.role || '',
+            institution: dbA.author_institution || localArticle?.author?.institution || 'Tailor Servicios',
+            avatar: dbA.author_avatar || localArticle?.author?.avatar || 'TS'
+          },
+          image: dbA.image || localArticle?.image || '/Images/tailor-web15.webp',
+          imageAlt: dbA.image_alt || localArticle?.imageAlt || dbA.title,
+          summary: isEn ? (dbA.content_json?.summaryEn || dbA.summary_en || dbA.summary || '') : (dbA.summary || localArticle?.summary || ''),
+          keywords: isEn && Array.isArray(dbA.content_json?.keywordsEn) && dbA.content_json.keywordsEn.length > 0
+            ? dbA.content_json.keywordsEn
+            : (Array.isArray(dbA.keywords) && dbA.keywords.length > 0 ? dbA.keywords : (localArticle?.keywords || [])),
+          keyTakeaways: isEn && Array.isArray(dbA.content_json?.keyTakeawaysEn) && dbA.content_json.keyTakeawaysEn.length > 0
+            ? dbA.content_json.keyTakeawaysEn
+            : takeawaysEs,
+          sections: isEn && Array.isArray(dbA.content_json?.sectionsEn) && dbA.content_json.sectionsEn.length > 0
+            ? dbA.content_json.sectionsEn
+            : sectionsEs,
+          conclusion: (isEn ? dbA.content_json?.conclusionEn : null) || dbA.content_json?.conclusion || localArticle?.conclusion || { title: 'Reflexión Estratégica', text: '' },
+          contentHtml: isEn
+            ? (dbA.content_json?.contentHtmlEn || dbA.content_html_en || dbA.content_html || localArticle?.contentHtml)
+            : (dbA.content_html || localArticle?.contentHtml)
+        };
+        return merged;
+      }
+    } catch {
+      // Fallback to localArticle
+    }
+  }
+
+  return localArticle;
+}
+
 export async function generateMetadata({ params: { locale, slug } }: Props): Promise<Metadata> {
-  const article = getBlogArticleBySlug(slug, locale);
+  const article = await resolveBlogArticle(slug, locale);
   if (!article) return {};
 
   const isEn = locale === 'en';
@@ -68,8 +150,8 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ArticleDetailPage({ params: { locale, slug } }: Props) {
-  const article = getBlogArticleBySlug(slug, locale);
+export default async function ArticleDetailPage({ params: { locale, slug } }: Props) {
+  const article = await resolveBlogArticle(slug, locale);
 
   if (!article) {
     notFound();
