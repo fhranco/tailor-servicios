@@ -45,7 +45,7 @@ export default function AdminPage() {
           if (isMounted) {
             setSession(null);
             setAuthError(
-              `Acceso denegado: la cuenta ${currentSession.user?.email || 'autenticada'} no cuenta con permisos administrativos autorizados en Tailor Servicios.`
+              `Acceso denegado: la cuenta de Google (${currentSession.user?.email || 'autenticada'}) no está autorizada como administrador en Tailor Servicios.`
             );
             setLoading(false);
           }
@@ -55,6 +55,10 @@ export default function AdminPage() {
         console.warn('[AdminPage] No se pudo verificar autorización inicial:', err);
       }
 
+      if (typeof window !== 'undefined' && (window.location.hash.includes('access_token') || window.location.search.includes('code='))) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
       if (isMounted) {
         setAuthError('');
         setSession(currentSession);
@@ -62,10 +66,32 @@ export default function AdminPage() {
       }
     };
 
-    // 1. Get current session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const initAuth = async () => {
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+        const oauthError = params.get('error_description') || hashParams.get('error_description') || params.get('error');
+        if (oauthError) {
+          setAuthError(`Error de autenticación con Google: ${oauthError}`);
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        const code = params.get('code');
+        if (code) {
+          try {
+            await supabase.auth.exchangeCodeForSession(code);
+          } catch (exchangeErr) {
+            console.warn('[AdminPage] Intercambio PKCE manejado por cliente Supabase:', exchangeErr);
+          }
+        }
+      }
+
+      const { data: { session } } = await supabase.auth.getSession();
       verifyAndSetSession(session);
-    });
+    };
+
+    // 1. Initialize and verify current session
+    initAuth();
 
     // 2. Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, nextSession) => {

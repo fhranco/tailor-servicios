@@ -176,6 +176,7 @@
   height: 100%;
   max-height: 520px;
   object-fit: cover;
+  object-position: center 22%;
   display: block;
 }
 

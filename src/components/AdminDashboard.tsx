@@ -75,7 +75,7 @@ export default function AdminDashboard({ session }: { session: any }) {
       }
 
       // 2. Fetch Blog Articles Count
-      const bRes = await fetch('/api/admin/blog');
+      const bRes = await fetch('/api/admin/blog', { headers });
       if (bRes.ok) {
         const bData = await bRes.json();
         if (Array.isArray(bData.articles)) {

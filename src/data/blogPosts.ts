@@ -64,6 +64,122 @@ export interface BlogArticle {
 
 export const blogArticlesEs: BlogArticle[] = [
   {
+    id: 1793404000000,
+    slug: 'lo-que-no-se-aprende-detras-de-un-escritorio-tampoco-se-puede-copiar',
+    title: 'Lo que no se aprende detrás de un escritorio, tampoco se puede copiar',
+    subtitle: 'Porque una cosa es comprender una organización desde sus indicadores y otra muy distinta es conocerla desde donde verdaderamente ocurren las cosas: sus operaciones y sus personas.',
+    summary: 'Las mejores decisiones estratégicas no nacen exclusivamente de un escritorio. Se construyen combinando experiencia, criterio y presencia en terreno: se puede copiar una metodología, pero no el criterio profesional que la sostiene.',
+    category: 'Desarrollo Organizacional',
+    categoryKey: 'do',
+    date: '30 de octubre de 2026',
+    isoDate: '2026-10-30',
+    readTime: '6 min de lectura',
+    wordCount: 890,
+    featured: true,
+    author: {
+      id: 'liderazgo',
+      name: 'Ma. Pía Avendaño A.',
+      role: 'Directora Ejecutiva - Liderazgo Institucional & Estrategia',
+      institution: 'Tailor Servicios',
+      avatar: 'MP'
+    },
+    image: '/Images/lo-que-no-se-aprende-detras-de-un-escritorio.webp',
+    imageAlt: 'Lo que no se aprende detrás de un escritorio, tampoco se puede copiar - María Pía Avendaño',
+    keywords: [
+      'Liderazgo en terreno',
+      'Desarrollo Organizacional',
+      'María Pía Avendaño',
+      'Gestión de personas Magallanes',
+      'Estrategia e implementación',
+      'Cultura y operaciones',
+      'Consultoría estratégica',
+      'Tailor Servicios'
+    ],
+    keyTakeaways: [
+      'Las mejores decisiones estratégicas no nacen exclusivamente de un escritorio: se construyen desde el terreno y con quienes ejecutan los procesos.',
+      'Dirigir sin conocer la operación conduce a gestionar supuestos en lugar de realidades, restando impacto a las iniciativas.',
+      'Se puede copiar una metodología, pero no se puede copiar el criterio profesional ni la experiencia que la sustenta.',
+      'Creer en las personas no es asistencialismo ni romanticismo: exige rigor técnico, estándares claros y articulación con los objetivos del negocio.'
+    ],
+    sections: [
+      {
+        heading: 'Una convicción nacida de la realidad operativa',
+        paragraphs: [
+          'En el mundo empresarial hablamos constantemente de estrategia, transformación, liderazgo, innovación y desarrollo organizacional. Conceptos que forman parte habitual de las conversaciones en directorios, comités ejecutivos y equipos gerenciales. Sin embargo, pocas veces nos detenemos a reflexionar sobre algo tan elemental como determinante: ¿cuánto conocemos realmente del negocio que pretendemos dirigir, transformar o desarrollar?',
+          'Porque una cosa es comprender una organización desde sus indicadores, sus reportes de gestión o sus presentaciones ejecutivas, y otra muy distinta es conocerla desde donde verdaderamente ocurren las cosas. Desde sus operaciones, sus procesos, sus dificultades cotidianas y, especialmente, desde las personas que hacen posible que esa organización funcione.',
+          'A lo largo de mi trayectoria profesional he ido reafirmando una convicción: las mejores decisiones estratégicas no nacen exclusivamente de un escritorio. Se construyen combinando conocimiento, experiencia, criterio y una comprensión genuina de la realidad organizacional.',
+          'Y esa comprensión difícilmente se adquiere sin haber estado alguna vez en terreno, sin haber escuchado a quienes ejecutan los procesos, sin haber conocido las particularidades de una operación o sin haber experimentado las dificultades que muchas veces no aparecen reflejadas en ningún informe.'
+        ],
+        quote: 'Las mejores decisiones estratégicas no nacen exclusivamente de un escritorio: se construyen combinando conocimiento, experiencia, criterio y presencia en terreno.'
+      },
+      {
+        heading: 'El terreno no es una visita: es una fuente de conocimiento',
+        paragraphs: [
+          'Conocer una organización requiere bastante más que recorrer sus instalaciones, participar de algunas reuniones o revisar sus principales indicadores.',
+          'Implica comprender su cultura, reconocer sus liderazgos formales e informales, identificar las brechas entre lo que la organización declara y lo que efectivamente ocurre, y entender cómo las decisiones tomadas en los niveles superiores impactan en quienes deben llevarlas a la práctica.',
+          'Por supuesto, no significa que todo ejecutivo deba haber desempeñado cada una de las funciones que supervisa. Sería poco realista. Pero sí considero fundamental que quienes asumen responsabilidades de dirección tengan la humildad profesional de conocer, escuchar y comprender antes de intervenir.',
+          'Porque dirigir sin conocer puede llevarnos a administrar supuestos en lugar de realidades. Y cuando eso ocurre, incluso las estrategias mejor presentadas pueden terminar convirtiéndose en iniciativas de escaso impacto, desconectadas de las verdaderas necesidades del negocio.',
+          'Una buena presentación no garantiza una buena estrategia. Y una buena estrategia, por sí sola, tampoco garantiza una implementación exitosa.'
+        ]
+      },
+      {
+        heading: 'La experiencia no se improvisa y el conocimiento no se copia',
+        paragraphs: [
+          'Existe otro fenómeno sobre el cual considero importante reflexionar. En una época donde acceder a información, metodologías, herramientas y buenas prácticas resulta cada vez más sencillo, también se ha vuelto habitual observar cómo determinadas iniciativas organizacionales son replicadas sin necesariamente comprender los fundamentos que les dieron origen.',
+          'Programas de liderazgo, modelos de gestión, talleres de desarrollo, iniciativas de clima organizacional o procesos de transformación cultural pueden parecer relativamente fáciles de reproducir. Después de todo, muchas veces sus componentes visibles son similares: una metodología, una presentación, determinadas dinámicas o un plan de actividades.',
+          'Sin embargo, el verdadero valor de una intervención profesional no está solamente en aquello que se ve, sino en todo el conocimiento que existe detrás de su diseño.',
+          'Está en el diagnóstico previo, en las conversaciones sostenidas, en la comprensión del contexto, en la experiencia acumulada y, especialmente, en el criterio utilizado para decidir qué hacer, cómo hacerlo, cuándo intervenir y cuándo no.',
+          'Y eso no se obtiene simplemente replicando una actividad. Porque quien diseña una intervención con conocimiento de causa comprende el propósito de cada decisión metodológica. Sabe qué busca provocar, qué riesgos debe anticipar, qué adaptar cuando las circunstancias cambian y cómo evaluar si realmente está generando valor.',
+          'Quien se limita a reproducirla, en cambio, puede conocer perfectamente los pasos, pero no necesariamente comprender su sentido. Se puede copiar una metodología. Lo que no se puede copiar con la misma facilidad es el criterio profesional que la sostiene. Y esa diferencia, aunque a veces resulte invisible para quienes contratan o supervisan estos procesos, suele hacerse evidente en los resultados.'
+        ],
+        quote: 'Se puede copiar una metodología. Lo que no se puede copiar con la misma facilidad es el criterio profesional que la sostiene.'
+      },
+      {
+        heading: 'Creer en las personas también exige rigor y competencias',
+        paragraphs: [
+          'Algo similar ocurre con la gestión y el desarrollo del talento. Hoy prácticamente todas las organizaciones declaran que las personas están en el centro de su estrategia. Se habla de liderazgo cercano, desarrollo interno, compromiso, bienestar y fortalecimiento de capacidades.',
+          'Pero creer genuinamente en las personas es bastante más exigente que incorporar estos conceptos en un discurso corporativo, pues significa comprender que el desarrollo del talento debe responder a las necesidades reales del negocio. Que formar líderes requiere continuidad, seguimiento y coherencia. Que gestionar personas implica tomar decisiones difíciles, establecer estándares, exigir resultados y, al mismo tiempo, generar condiciones para que las personas puedan desplegar su potencial.',
+          'No se trata de asistencialismo ni de construir organizaciones donde todo esté permitido. Se trata de reconocer que una empresa que desarrolla adecuadamente a sus personas también fortalece su capacidad de competir, adaptarse y sostener sus operaciones.',
+          'Pero para conseguirlo no basta con tener buenas intenciones. Se necesita conocimiento técnico, experiencia, comprensión organizacional y una convicción auténtica respecto del valor estratégico de las personas. Porque cuando la gestión de personas se transforma en una sucesión de actividades desconectadas de los objetivos del negocio, pierde precisamente aquello que debería justificar su existencia: su capacidad de generar valor.'
+        ]
+      },
+      {
+        heading: 'La responsabilidad de quienes toman decisiones',
+        paragraphs: [
+          'Esta reflexión también interpela a quienes integran directorios, gerencias generales y equipos responsables de seleccionar ejecutivos, contratar asesorías o aprobar iniciativas organizacionales.',
+          'No siempre la propuesta más atractiva es la mejor. No siempre quien domina el discurso posee la experiencia necesaria para llevarlo a la práctica. Y no siempre una metodología que funcionó exitosamente en una organización puede trasladarse a otra esperando obtener idénticos resultados.',
+          'Por eso, considero que debemos aprender a mirar más allá de las presentaciones, los títulos y las promesas: preguntarnos por la experiencia real, por la profundidad del diagnóstico, por la capacidad de adaptación y por el conocimiento que sustenta las propuestas.',
+          'Valorar a quienes conocen el negocio, se involucran con sus equipos, comprenden sus particularidades y son capaces de traducir esa comprensión en decisiones concretas. Y también reconocer el trabajo intelectual y profesional que existe detrás de cada iniciativa bien construida.',
+          'Compartir buenas prácticas es necesario. Aprender de otros es indispensable. Inspirarse en experiencias exitosas forma parte natural del desarrollo empresarial. Pero inspirarse no es lo mismo que copiar. Y ejecutar no es lo mismo que comprender.'
+        ]
+      }
+    ],
+    conclusion: {
+      title: 'El verdadero valor profesional',
+      text: 'En tiempos donde se privilegia la inmediatez por sobre la profundidad, quizás debamos volver a valorar aquello que nunca debió perder importancia: la experiencia, el conocimiento del negocio y el trabajo profesional bien hecho. Las organizaciones necesitan ejecutivos capaces de mirar estratégicamente, pero también de comprender operacionalmente. Líderes que sepan escuchar antes de decidir. Profesionales que no confundan implementar actividades con generar transformaciones. Porque, al final, el verdadero valor de un profesional no está únicamente en lo que sabe hacer, sino en comprender profundamente por qué lo hace, para qué lo hace y qué impacto espera generar. Y eso no se consigue copiando una presentación ni permaneciendo detrás de un escritorio.'
+    },
+    titleEn: "What Isn't Learned Behind a Desk Cannot Be Copied Either",
+    subtitleEn: "Understanding an organization through metrics is one thing; knowing it from the frontlines—where operations and people intersect—is an entirely different challenge.",
+    summaryEn: "True strategic decisions are not forged behind a desk. They require grounded field experience, business acumen, and professional judgment: methodologies can be replicated, but the critical judgment behind them cannot.",
+    categoryEn: 'Organizational Development',
+    readTimeEn: '6 min read',
+    keywordsEn: [
+      'Field leadership',
+      'Organizational Development',
+      'María Pía Avendaño',
+      'Patagonia talent strategy',
+      'Operational excellence',
+      'Culture and people',
+      'Tailor Servicios'
+    ],
+    keyTakeawaysEn: [
+      'The most resilient strategic decisions are built from operational reality and close dialogue with frontline teams.',
+      'Leading without ground truth leads to managing assumptions rather than real business challenges.',
+      'Frameworks and workshops can be copied; professional judgment and diagnostic depth cannot.',
+      'People-centric leadership requires operational rigor, accountability, and strategic alignment with business continuity.'
+    ]
+  },
+  {
     "id": 1793050000000,
     "slug": "creer-en-las-personas-decision-de-negocio",
     "title": "Creer en las personas también es una decisión de negocio",

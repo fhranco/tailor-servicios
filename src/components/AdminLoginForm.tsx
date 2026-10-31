@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, FormEvent } from 'react';
+import React, { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useTranslations } from 'next-intl';
 import './AdminLoginForm.css';
@@ -16,6 +16,7 @@ export default function AdminLoginForm({ onLoginSuccess, initialError = '' }: Ad
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(initialError);
+  const [infoMsg, setInfoMsg] = useState('');
 
   React.useEffect(() => {
     if (initialError) {
@@ -23,12 +24,13 @@ export default function AdminLoginForm({ onLoginSuccess, initialError = '' }: Ad
     }
   }, [initialError]);
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
 
     setLoading(true);
     setError('');
+    setInfoMsg('');
 
     try {
       const { data, error: authError } = await supabase.auth.signInWithPassword({
@@ -37,14 +39,14 @@ export default function AdminLoginForm({ onLoginSuccess, initialError = '' }: Ad
       });
 
       if (authError) {
-        setError(authError.message === 'Invalid login credentials' 
-          ? t('err_invalid') 
+        setError(authError.message === 'Invalid login credentials'
+          ? t('err_invalid')
           : authError.message
         );
       } else if (data.session) {
         onLoginSuccess();
       }
-    } catch (err: any) {
+    } catch {
       setError(t('err_conn'));
     } finally {
       setLoading(false);
@@ -54,19 +56,29 @@ export default function AdminLoginForm({ onLoginSuccess, initialError = '' }: Ad
   const handleGoogleLogin = async () => {
     setLoading(true);
     setError('');
+    setInfoMsg('');
 
     try {
       const origin = typeof window !== 'undefined' ? window.location.origin : 'https://tailorservicios.cl';
+      const pathname = typeof window !== 'undefined' ? window.location.pathname : '/admin';
+      const cleanPath = pathname.startsWith('/en') ? '/en/admin' : '/admin';
+
       const { error: authError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${origin}/es/admin`,
+          redirectTo: `${origin}${cleanPath}`,
+          queryParams: {
+            prompt: 'select_account',
+            access_type: 'offline'
+          }
         },
       });
 
       if (authError) {
         setError(authError.message);
         setLoading(false);
+      } else {
+        onLoginSuccess();
       }
     } catch (err: any) {
       setError(err?.message || 'Error al conectar con Google.');
@@ -84,8 +96,25 @@ export default function AdminLoginForm({ onLoginSuccess, initialError = '' }: Ad
         </div>
 
         {error && (
-          <div className="login-error-alert" role="alert">
+          <div className="login-error-alert" role="alert" style={{ marginBottom: '1.25rem' }}>
             ⚠️ {error}
+          </div>
+        )}
+
+        {infoMsg && (
+          <div
+            role="status"
+            style={{
+              backgroundColor: 'rgba(22, 163, 74, 0.18)',
+              border: '1px solid #16a34a',
+              color: '#bbf7d0',
+              padding: '0.75rem',
+              borderRadius: '6px',
+              fontSize: '0.85rem',
+              marginBottom: '1.25rem'
+            }}
+          >
+            ✅ {infoMsg}
           </div>
         )}
 
@@ -101,15 +130,14 @@ export default function AdminLoginForm({ onLoginSuccess, initialError = '' }: Ad
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
           </svg>
-          <span>Continuar con Google</span>
+          <span>{loading ? 'Conectando con Google...' : 'Continuar con Google'}</span>
         </button>
 
         <div className="login-divider">
-          <span>O ingresa con correo corporativo</span>
+          <span>O ingresa con correo autorizado</span>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
-
           <div className="login-input-group">
             <label htmlFor="admin-email">{t('email_label')}</label>
             <input

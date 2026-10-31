@@ -45,13 +45,13 @@ export async function getAuthorizedUser(req: Request) {
       return null;
     }
     
-    // Verificación estricta de privilegios de administrador (Ley 21.719 - Control de acceso)
+    // Verificación estricta de privilegios de administrador vía Google OAuth / Supabase (Ley 21.719 - Control de acceso)
     const DEFAULT_ADMIN_EMAILS = [
       'tailorservicioschile@gmail.com',
       'patagoniacoach@gmail.com',
       'marketing@tailorservicios.cl',
       'contacto@tailorservicios.cl',
-      'dev-local@tailorservicios.cl'
+      ...(process.env.NODE_ENV === 'development' ? ['dev-local@tailorservicios.cl'] : [])
     ];
     const rawAdminEmails = process.env.ADMIN_ALLOWED_EMAILS || '';
     const envAdminEmails = rawAdminEmails
@@ -65,6 +65,23 @@ export async function getAuthorizedUser(req: Request) {
 
     if (!hasAdminRole && !isExplicitlyAuthorizedEmail) {
       console.warn(`[Auth] Acceso administrativo denegado: Usuario ${user.email || user.id} no cuenta con autorización explícita.`);
+      // Registrar intento no autorizado en bitácora de auditoría Ley 21.719
+      const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+      if (supabaseUrl && serviceKey) {
+        try {
+          const adminClient = createClient(supabaseUrl, serviceKey);
+          const rawIp = req.headers.get('x-forwarded-for') || 'unknown';
+          const ua = req.headers.get('user-agent') || 'unknown';
+          await adminClient.from('privacy_audit_logs').insert([{
+            action: 'UNAUTHORIZED_ADMIN_ACCESS_ATTEMPT',
+            performed_by: user.email || user.id || 'UNKNOWN_USER',
+            ip_address: maskIp(rawIp),
+            user_agent: ua
+          }]);
+        } catch {
+          // No bloquear respuesta si la tabla de auditoría no está disponible
+        }
+      }
       return null;
     }
     
