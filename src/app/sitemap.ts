@@ -1,88 +1,56 @@
 import { MetadataRoute } from 'next';
-import blogArticles from '@/data/blog_articles.json';
+import { getAllBlogSlugs } from '@/data/blogPosts';
 
 const BASE_URL = 'https://tailorservicios.cl';
 
-// Rutas públicas indexables del sitio
+// Rutas públicas indexables verificadas
 const baseRoutes = [
-  { path: '', priority: 1.0, changeFrequency: 'weekly' as const },
-  { path: '/nosotros', priority: 0.8, changeFrequency: 'monthly' as const },
-  { path: '/servicios', priority: 0.9, changeFrequency: 'monthly' as const },
-  { path: '/especializacion', priority: 0.8, changeFrequency: 'monthly' as const },
-  { path: '/empresas', priority: 0.8, changeFrequency: 'monthly' as const },
-  { path: '/candidatos', priority: 0.9, changeFrequency: 'monthly' as const },
-  { path: '/postulantes', priority: 0.8, changeFrequency: 'monthly' as const },
-  { path: '/contacto', priority: 0.8, changeFrequency: 'monthly' as const },
-  { path: '/blog', priority: 0.9, changeFrequency: 'weekly' as const },
-  { path: '/privacidad', priority: 0.5, changeFrequency: 'yearly' as const },
-  { path: '/terminos', priority: 0.5, changeFrequency: 'yearly' as const },
-  { path: '/cookies', priority: 0.5, changeFrequency: 'yearly' as const },
+  '',
+  '/nosotros',
+  '/servicios',
+  '/especializacion',
+  '/empresas',
+  '/candidatos',
+  '/postulantes',
+  '/contacto',
+  '/blog',
+  '/privacidad',
+  '/terminos',
+  '/cookies',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const LATEST_SITE_UPDATE = '2026-11-05';
+  // Fecha real de la última actualización mayor verificada
+  const LAST_MODIFIED_RELEASE = '2026-10-02';
+  const blogArticleRoutes = getAllBlogSlugs().map(slug => `/blog/${slug}`);
+  const routes = [...baseRoutes, ...blogArticleRoutes];
   const entries: MetadataRoute.Sitemap = [];
 
-  // 1. Páginas Institucionales y Principales
-  baseRoutes.forEach(({ path, priority, changeFrequency }) => {
-    // Español
+  routes.forEach((route) => {
+    // Versión en Español (por defecto, as-needed)
     entries.push({
-      url: `${BASE_URL}${path}`,
-      lastModified: LATEST_SITE_UPDATE,
-      changeFrequency,
-      priority,
+      url: `${BASE_URL}${route}`,
+      lastModified: LAST_MODIFIED_RELEASE,
+      changeFrequency: route === '' ? 'weekly' : 'monthly',
+      priority: route === '' ? 1.0 : route === '/servicios' || route === '/candidatos' ? 0.9 : 0.7,
       alternates: {
         languages: {
-          es: `${BASE_URL}${path}`,
-          en: `${BASE_URL}/en${path}`,
-        },
-      },
-    });
-
-    // Inglés
-    entries.push({
-      url: `${BASE_URL}/en${path}`,
-      lastModified: LATEST_SITE_UPDATE,
-      changeFrequency,
-      priority: Math.max(0.4, Number((priority - 0.1).toFixed(1))),
-      alternates: {
-        languages: {
-          es: `${BASE_URL}${path}`,
-          en: `${BASE_URL}/en${path}`,
-        },
-      },
-    });
-  });
-
-  // 2. Artículos Editoriales del Blog con fecha real de cada publicación (Google SEO E-E-A-T)
-  blogArticles.forEach((article: any) => {
-    const articleDate = article.isoDate || LATEST_SITE_UPDATE;
-    const articleSlug = article.slug;
-
-    // Versión en Español
-    entries.push({
-      url: `${BASE_URL}/blog/${articleSlug}`,
-      lastModified: articleDate,
-      changeFrequency: 'monthly',
-      priority: article.featured ? 0.85 : 0.75,
-      alternates: {
-        languages: {
-          es: `${BASE_URL}/blog/${articleSlug}`,
-          en: `${BASE_URL}/en/blog/${articleSlug}`,
+          es: `${BASE_URL}${route}`,
+          en: `${BASE_URL}/en${route}`,
         },
       },
     });
 
     // Versión en Inglés
     entries.push({
-      url: `${BASE_URL}/en/blog/${articleSlug}`,
-      lastModified: articleDate,
-      changeFrequency: 'monthly',
-      priority: article.featured ? 0.75 : 0.65,
+      url: `${BASE_URL}/en${route}`,
+      lastModified: LAST_MODIFIED_RELEASE,
+      changeFrequency: route === '' ? 'weekly' : 'monthly',
+      priority: route === '' ? 0.9 : route === '/servicios' || route === '/candidatos' ? 0.8 : 0.6,
       alternates: {
         languages: {
-          es: `${BASE_URL}/blog/${articleSlug}`,
-          en: `${BASE_URL}/en/blog/${articleSlug}`,
+          es: `${BASE_URL}${route}`,
+          en: `${BASE_URL}/en${route}`,
         },
       },
     });
