@@ -234,8 +234,15 @@ export default async function ArticleDetailPage({ params: { locale, slug } }: Pr
       />
 
       <article className="article-page">
-        {/* Hero del Artículo */}
+        {/* Hero del Artículo con Fondo Atmosférico de Portada */}
         <header className="article-hero">
+          <div 
+            className="article-hero-bg-layer" 
+            style={{ backgroundImage: `url("${article.image}")` }} 
+            aria-hidden="true" 
+          />
+          <div className="article-hero-overlay" aria-hidden="true" />
+
           <div className="fluid-container article-header-container">
             <nav className="article-breadcrumbs" aria-label="Breadcrumb">
               <Link href="/" className="crumb-link">{isEn ? 'Home' : 'Inicio'}</Link>
@@ -288,17 +295,6 @@ export default async function ArticleDetailPage({ params: { locale, slug } }: Pr
 
         {/* Contenedor del Cuerpo */}
         <div className="fluid-container article-content-layout">
-          
-          {/* Imagen Principal */}
-          <div className="article-featured-image-wrapper">
-            <img 
-              src={article.image} 
-              alt={article.imageAlt} 
-              className="article-featured-img" 
-              loading="eager"
-            />
-          </div>
-
           <div className="article-grid-layout">
             
             {/* Columna Principal de Contenido */}
