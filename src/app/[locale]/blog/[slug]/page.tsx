@@ -108,6 +108,18 @@ export async function generateMetadata({ params: { locale, slug } }: Props): Pro
   const baseUrl = 'https://tailorservicios.cl';
   const canonicalUrl = isEn ? `${baseUrl}/en/blog/${slug}` : `${baseUrl}/blog/${slug}`;
 
+  // Compatibilidad universal con WhatsApp, LinkedIn, Facebook, X (Twitter) y Telegram:
+  // 1. Evitar URLs relativas o data URIs
+  // 2. Priorizar JPG sobre WebP (los crawlers móviles de WhatsApp y LinkedIn descartan o fallan con WebP en previews)
+  let rawImg = article.image || '/Images/tailor-web15.jpg';
+  if (rawImg.startsWith('data:')) {
+    rawImg = '/Images/tailor-web15.jpg';
+  }
+  const jpgImg = rawImg.replace(/\.webp$/i, '.jpg');
+  const ogImageUrl = jpgImg.startsWith('http')
+    ? jpgImg
+    : `${baseUrl}${jpgImg.startsWith('/') ? jpgImg : `/${jpgImg}`}`;
+
   return {
     title: `${article.title} | Tailor Servicios`,
     description: article.summary,
@@ -132,10 +144,12 @@ export async function generateMetadata({ params: { locale, slug } }: Props): Pro
       authors: [article.author.name],
       images: [
         {
-          url: `${baseUrl}${article.image}`,
+          url: ogImageUrl,
+          secureUrl: ogImageUrl,
           width: 1200,
           height: 630,
-          alt: article.imageAlt,
+          alt: article.imageAlt || article.title,
+          type: 'image/jpeg',
         },
       ],
     },
@@ -143,7 +157,7 @@ export async function generateMetadata({ params: { locale, slug } }: Props): Pro
       card: 'summary_large_image',
       title: article.title,
       description: article.summary,
-      images: [`${baseUrl}${article.image}`],
+      images: [ogImageUrl],
     },
   };
 }
@@ -238,15 +252,8 @@ export default async function ArticleDetailPage({ params: { locale, slug } }: Pr
       />
 
       <article className="article-page">
-        {/* Hero del Artículo con Fondo Atmosférico de Portada */}
+        {/* Hero del Artículo */}
         <header className="article-hero">
-          <div 
-            className="article-hero-bg-layer" 
-            style={{ backgroundImage: `url("${article.image}")` }} 
-            aria-hidden="true" 
-          />
-          <div className="article-hero-overlay" aria-hidden="true" />
-
           <div className="fluid-container article-header-container">
             <nav className="article-breadcrumbs" aria-label="Breadcrumb">
               <Link href="/" className="crumb-link">{isEn ? 'Home' : 'Inicio'}</Link>
@@ -299,6 +306,17 @@ export default async function ArticleDetailPage({ params: { locale, slug } }: Pr
 
         {/* Contenedor del Cuerpo */}
         <div className="fluid-container article-content-layout">
+          
+          {/* Imagen Principal de Portada */}
+          <div className="article-featured-image-wrapper">
+            <img 
+              src={article.image} 
+              alt={article.imageAlt || article.title} 
+              className="article-featured-img" 
+              loading="eager"
+            />
+          </div>
+
           <div className="article-grid-layout">
             
             {/* Columna Principal de Contenido */}
