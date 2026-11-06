@@ -27,6 +27,8 @@
 .article-header-container {
   max-width: 960px;
   margin: 0 auto;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
 }
 
 .article-breadcrumbs {
@@ -159,8 +161,10 @@
    2. CUERPO DEL ARTÍCULO & LAYOUT
    ======================================================== */
 .article-content-layout {
-  padding: 3.5rem 0 7rem;
+  padding: 3.5rem 1.5rem 7rem;
   max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .article-featured-image-wrapper {
@@ -722,20 +726,198 @@ html {
 
 @media (max-width: 768px) {
   .article-hero {
-    padding: 10rem 0 3.5rem;
+    padding: 8.5rem 0 3rem;
+  }
+
+  .article-header-container {
+    padding: 0 1.25rem;
+  }
+
+  .article-content-layout {
+    padding: 2rem 1.25rem 4.5rem;
+  }
+
+  .article-main-title {
+    font-size: clamp(1.65rem, 5.5vw, 2.1rem);
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+
+  .article-main-subtitle {
+    font-size: 1.05rem;
+    line-height: 1.55;
+    margin-bottom: 1.5rem;
   }
 
   .article-meta-row {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1rem;
+    padding-top: 1.25rem;
   }
 
-  .article-content-layout {
-    padding: 2.5rem 0 5rem;
+  .article-featured-image-wrapper {
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    max-height: 320px;
+  }
+
+  .article-featured-img {
+    max-height: 320px;
   }
 
   .key-takeaways-card {
-    padding: 1.5rem;
+    padding: 1.35rem 1.15rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .table-of-contents-card {
+    padding: 1.25rem 1.1rem;
+    border-radius: 12px;
+    margin-bottom: 2.25rem;
+  }
+
+  .toc-list {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+  .article-html-direct h2,
+  .section-heading {
+    font-size: 1.45rem;
+    margin-top: 2.25rem;
+    margin-bottom: 1rem;
+    padding-left: 0.75rem;
+  }
+
+  .article-html-direct h3,
+  .section-sub-heading {
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .article-html-direct p,
+  .article-paragraph {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+  }
+
+  .article-html-direct p:first-of-type,
+  .article-lead-paragraph {
+    font-size: 1.12rem;
+    line-height: 1.7;
+  }
+
+  .article-html-direct blockquote,
+  .article-quote {
+    padding: 1.15rem 1.15rem;
+    margin: 1.5rem 0;
+    font-size: 1.02rem;
+    border-radius: 0 10px 10px 0;
+  }
+
+  .article-html-direct ul,
+  .article-html-direct ol,
+  .article-styled-list {
+    margin: 1rem 0 1.5rem 0.25rem;
+    padding-left: 1.15rem;
+  }
+
+  .article-callout-box {
+    padding: 1.15rem;
+    gap: 0.75rem;
+    margin: 1.75rem 0;
+    border-radius: 10px;
+  }
+
+  .article-conclusion-box {
+    padding: 1.5rem 1.15rem;
+    border-radius: 12px;
+    margin-top: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .article-tags-cloud {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+  }
+
+  .article-share-bar {
+    margin-top: 1.75rem;
+    padding: 1.25rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+
+  .share-buttons-group {
+    width: 100%;
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .share-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .article-grid-layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .article-sidebar {
+    position: static;
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .sidebar-card {
+    padding: 1.5rem 1.25rem;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .article-hero {
+    padding: 8rem 0 2.5rem;
+  }
+
+  .article-header-container {
+    padding: 0 1rem;
+  }
+
+  .article-content-layout {
+    padding: 1.5rem 1rem 3.5rem;
+  }
+
+  .article-main-title {
+    font-size: 1.55rem;
+  }
+
+  .article-main-subtitle {
+    font-size: 0.98rem;
+  }
+
+  .key-takeaways-card {
+    padding: 1.15rem 0.95rem;
+  }
+
+  .takeaways-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .table-of-contents-card {
+    padding: 1.15rem 0.9rem;
+  }
+
+  .sidebar-card {
+    padding: 1.25rem 1rem;
   }
 }
 
