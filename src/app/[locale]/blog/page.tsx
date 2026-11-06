@@ -197,9 +197,16 @@ export default function BlogPage() {
   // Garantizar orden estrictamente cronológico inverso: el artículo más reciente es siempre el índice 0 (destacado)
   const sortedPosts = [...posts].sort((a, b) => getPostTimestamp(b) - getPostTimestamp(a));
 
+  const getPostCategory = (p: any): string => {
+    if (isEn && (p.categoryEn || (p as any).category_en)) {
+      return p.categoryEn || (p as any).category_en;
+    }
+    return p.category;
+  };
+
   const categories = [
     { id: 'all', label: t('filter_all') },
-    ...Array.from(new Set(sortedPosts.map(p => p.category))).map(cat => ({
+    ...Array.from(new Set(sortedPosts.map(getPostCategory))).map(cat => ({
       id: cat,
       label: cat
     }))
@@ -207,7 +214,7 @@ export default function BlogPage() {
 
   const filteredPosts = selectedCategory === 'all'
     ? sortedPosts
-    : sortedPosts.filter(p => p.category === selectedCategory);
+    : sortedPosts.filter(p => getPostCategory(p) === selectedCategory);
 
   const featuredPost = selectedCategory === 'all' ? sortedPosts[0] : null;
   const gridPosts = filteredPosts;

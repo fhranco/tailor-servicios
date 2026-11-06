@@ -1060,7 +1060,7 @@ export function getBlogArticleBySlug(slug: string, locale: string = 'es'): BlogA
       keyTakeaways: article.keyTakeawaysEn && article.keyTakeawaysEn.length > 0 ? article.keyTakeawaysEn : article.keyTakeaways,
       sections: article.sectionsEn && article.sectionsEn.length > 0 ? article.sectionsEn : article.sections,
       conclusion: article.conclusionEn || article.conclusion,
-      contentHtml: article.contentHtmlEn || article.contentHtml
+      contentHtml: article.contentHtmlEn || (article.sectionsEn && article.sectionsEn.length > 0 ? undefined : article.contentHtml)
     };
   }
 

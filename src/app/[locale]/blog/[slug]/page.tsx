@@ -52,39 +52,43 @@ async function resolveBlogArticle(slug: string, locale: string): Promise<BlogArt
         const merged: BlogArticle = {
           id: dbA.id || localArticle?.id || Date.now(),
           slug: dbA.slug,
-          title: isEn ? (dbA.content_json?.titleEn || dbA.title_en || dbA.title) : dbA.title,
-          subtitle: isEn ? (dbA.content_json?.subtitleEn || dbA.subtitle_en || dbA.subtitle || localArticle?.subtitle || '') : (dbA.subtitle || localArticle?.subtitle || ''),
-          category: isEn ? (dbA.content_json?.categoryEn || dbA.category_en || dbA.category || 'Gestión de Personas') : (dbA.category || 'Gestión de Personas'),
+          title: isEn ? (dbA.content_json?.titleEn || dbA.title_en || localArticle?.titleEn || dbA.title) : dbA.title,
+          subtitle: isEn ? (dbA.content_json?.subtitleEn || dbA.subtitle_en || localArticle?.subtitleEn || dbA.subtitle || localArticle?.subtitle || '') : (dbA.subtitle || localArticle?.subtitle || ''),
+          category: isEn ? (dbA.content_json?.categoryEn || dbA.category_en || localArticle?.categoryEn || dbA.category || 'People Management') : (dbA.category || 'Gestión de Personas'),
           categoryKey: dbA.category_key || localArticle?.categoryKey || 'personas',
           date: formattedDate,
           isoDate,
           readTime: isEn
-            ? (dbA.content_json?.readTimeEn || dbA.read_time_en || (dbA.read_time || '5 min de lectura').replace('min de lectura', 'min read'))
+            ? (dbA.content_json?.readTimeEn || dbA.read_time_en || localArticle?.readTimeEn || (dbA.read_time || '5 min de lectura').replace('min de lectura', 'min read'))
             : (dbA.read_time || localArticle?.readTime || '5 min de lectura'),
           wordCount: dbA.word_count || localArticle?.wordCount || 500,
           author: {
             id: dbA.author_id || localArticle?.author?.id || 'consultoria',
-            name: dbA.author_name || localArticle?.author?.name || 'Equipo de Consultoría Tailor',
-            role: dbA.author_role || localArticle?.author?.role || '',
+            name: dbA.author_name || localArticle?.author?.name || (isEn ? 'Tailor Consulting Team' : 'Equipo de Consultoría Tailor'),
+            role: isEn
+              ? (localArticle?.author?.role?.replace('Directora Ejecutiva - Liderazgo Institucional & Estrategia', 'Executive Director - Institutional Leadership & Strategy').replace('Especialistas en Reclutamiento & Gestión de Personas', 'Recruitment & People Management Specialists') || dbA.author_role || '')
+              : (dbA.author_role || localArticle?.author?.role || ''),
             institution: dbA.author_institution || localArticle?.author?.institution || 'Tailor Servicios',
             avatar: dbA.author_avatar || localArticle?.author?.avatar || 'TS'
           },
           image: dbA.image || localArticle?.image || '/Images/tailor-web15.webp',
           imageAlt: dbA.image_alt || localArticle?.imageAlt || dbA.title,
-          summary: isEn ? (dbA.content_json?.summaryEn || dbA.summary_en || dbA.summary || '') : (dbA.summary || localArticle?.summary || ''),
-          keywords: isEn && Array.isArray(dbA.content_json?.keywordsEn) && dbA.content_json.keywordsEn.length > 0
-            ? dbA.content_json.keywordsEn
+          summary: isEn ? (dbA.content_json?.summaryEn || dbA.summary_en || localArticle?.summaryEn || dbA.summary || '') : (dbA.summary || localArticle?.summary || ''),
+          keywords: isEn && ((Array.isArray(dbA.content_json?.keywordsEn) && dbA.content_json.keywordsEn.length > 0) || (Array.isArray(localArticle?.keywordsEn) && localArticle.keywordsEn.length > 0))
+            ? (Array.isArray(dbA.content_json?.keywordsEn) && dbA.content_json.keywordsEn.length > 0 ? dbA.content_json.keywordsEn : (localArticle?.keywordsEn || []))
             : (Array.isArray(dbA.keywords) && dbA.keywords.length > 0 ? dbA.keywords : (localArticle?.keywords || [])),
-          keyTakeaways: isEn && Array.isArray(dbA.content_json?.keyTakeawaysEn) && dbA.content_json.keyTakeawaysEn.length > 0
-            ? dbA.content_json.keyTakeawaysEn
+          keyTakeaways: isEn && ((Array.isArray(dbA.content_json?.keyTakeawaysEn) && dbA.content_json.keyTakeawaysEn.length > 0) || (Array.isArray(localArticle?.keyTakeawaysEn) && localArticle.keyTakeawaysEn.length > 0))
+            ? (Array.isArray(dbA.content_json?.keyTakeawaysEn) && dbA.content_json.keyTakeawaysEn.length > 0 ? dbA.content_json.keyTakeawaysEn : (localArticle?.keyTakeawaysEn || []))
             : takeawaysEs,
-          sections: isEn && Array.isArray(dbA.content_json?.sectionsEn) && dbA.content_json.sectionsEn.length > 0
-            ? dbA.content_json.sectionsEn
+          sections: isEn && ((Array.isArray(dbA.content_json?.sectionsEn) && dbA.content_json.sectionsEn.length > 0) || (Array.isArray(localArticle?.sectionsEn) && localArticle.sectionsEn.length > 0))
+            ? (Array.isArray(dbA.content_json?.sectionsEn) && dbA.content_json.sectionsEn.length > 0 ? dbA.content_json.sectionsEn : (localArticle?.sectionsEn || []))
             : sectionsEs,
-          conclusion: (isEn ? dbA.content_json?.conclusionEn : null) || dbA.content_json?.conclusion || localArticle?.conclusion || { title: 'Reflexión Estratégica', text: '' },
+          conclusion: (isEn ? (dbA.content_json?.conclusionEn || localArticle?.conclusionEn) : null) || dbA.content_json?.conclusion || localArticle?.conclusion || { title: isEn ? 'Strategic Reflection' : 'Reflexión Estratégica', text: '' },
           contentHtml: isEn
-            ? (dbA.content_json?.contentHtmlEn || dbA.content_html_en || dbA.content_html || localArticle?.contentHtml)
-            : (dbA.content_html || localArticle?.contentHtml)
+            ? (dbA.content_json?.contentHtmlEn || dbA.content_html_en || localArticle?.contentHtmlEn || undefined)
+            : (dbA.content_html || localArticle?.contentHtml),
+          contentHtmlEn: dbA.content_json?.contentHtmlEn || localArticle?.contentHtmlEn,
+          sectionsEn: dbA.content_json?.sectionsEn || localArticle?.sectionsEn
         };
         return merged;
       }
@@ -301,7 +305,7 @@ export default async function ArticleDetailPage({ params: { locale, slug } }: Pr
             <main className="article-body-column">
               
               {/* Aviso si en ruta en inglés aún no hay traducción cargada */}
-              {isEn && !article.contentHtmlEn && (
+              {isEn && !article.contentHtmlEn && (!article.sectionsEn || article.sectionsEn.length === 0) && (
                 <div style={{
                   background: '#f8fafc',
                   border: '1px solid #e2e8f0',
@@ -494,30 +498,34 @@ export default async function ArticleDetailPage({ params: { locale, slug } }: Pr
                   <p className="author-card-desc">{article.author.role}</p>
                 </div>
                 <p className="author-bio">
-                  Equipo multidisciplinario especializado en Headhunting de alta dirección, reclutamiento masivo, gestión de dotaciones y transformación cultural con cobertura en Magallanes y la zona central de Chile.
+                  {isEn
+                    ? 'Multidisciplinary team specializing in executive search, high-volume recruitment, workforce management, and cultural transformation across Magallanes and central Chile.'
+                    : 'Equipo multidisciplinario especializado en Headhunting de alta dirección, reclutamiento masivo, gestión de dotaciones y transformación cultural con cobertura en Magallanes y la zona central de Chile.'}
                 </p>
                 <div className="author-divider"></div>
                 <div className="author-location">
-                  <span>📍 Punta Arenas &amp; Santiago</span>
+                  <span>📍 {isEn ? 'Punta Arenas & Santiago, Chile' : 'Punta Arenas & Santiago'}</span>
                 </div>
               </div>
 
               {/* Caja de Conversión B2B */}
               <div className="sidebar-card cta-sidebar-card">
-                <span className="sidebar-cta-pill">Consultoría Directa</span>
-                <h4>¿Tu empresa enfrenta este desafío?</h4>
+                <span className="sidebar-cta-pill">{isEn ? 'Direct Advisory' : 'Consultoría Directa'}</span>
+                <h4>{isEn ? 'Does your organization face this challenge?' : '¿Tu empresa enfrenta este desafío?'}</h4>
                 <p>
-                  Conversemos sobre cómo adaptar estos modelos a la realidad específica de tu organización y sector productivo.
+                  {isEn
+                    ? "Let's discuss how to tailor these strategic frameworks to your organization's specific operational context and industry."
+                    : 'Conversemos sobre cómo adaptar estos modelos a la realidad específica de tu organización y sector productivo.'}
                 </p>
                 <Link href="/contacto" className="btn-sidebar-cta">
-                  Agendar reunión con un consultor
+                  {isEn ? 'Schedule a meeting with a consultant' : 'Agendar reunión con un consultor'}
                 </Link>
               </div>
 
               {/* Botón Volver al Blog */}
               <div className="sidebar-card back-blog-card">
                 <Link href="/blog" className="back-blog-link">
-                  ← Volver a todos los artículos
+                  {isEn ? '← Back to all articles' : '← Volver a todos los artículos'}
                 </Link>
               </div>
 
