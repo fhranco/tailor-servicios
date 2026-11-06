@@ -303,31 +303,48 @@
   align-items: baseline;
   gap: 0.4rem;
   font-size: 0.95rem;
-  color: #334155;
+  color: #1e293b;
   text-decoration: none;
   transition: all 0.2s ease;
   line-height: 1.4;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  margin: -0.25rem -0.5rem;
 }
 
 .toc-number {
   font-weight: 800;
-  color: var(--color-accent);
+  color: #ed4240;
   font-size: 0.85rem;
 }
 
 .toc-text {
   font-weight: 600;
+  transition: color 0.2s ease;
 }
 
 .toc-link:hover {
-  color: #0f172a;
-  transform: translateX(3px);
+  color: #1d4ed8;
+  background-color: #f1f5f9;
+  transform: translateX(4px);
 }
 
-/* Estilos de Párrafos y Encabezados */
-.content-sub-section {
+.toc-link:hover .toc-text {
+  color: #1d4ed8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Estilos de Párrafos y Encabezados con anclaje de scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+.content-sub-section,
+.article-html-direct h2 {
   margin-bottom: 3.5rem;
-  scroll-margin-top: 6rem;
+  scroll-margin-top: 6.5rem;
 }
 
 .section-heading {

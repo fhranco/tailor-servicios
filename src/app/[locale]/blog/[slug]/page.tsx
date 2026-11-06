@@ -366,7 +366,18 @@ export default async function ArticleDetailPage({ params: { locale, slug } }: Pr
               {/* Secciones de Contenido o HTML Directo */}
               <div className="article-text-body article-html-direct">
                 {article.contentHtml ? (
-                  <div dangerouslySetInnerHTML={{ __html: article.contentHtml }} />
+                  <div 
+                    dangerouslySetInnerHTML={{ 
+                      __html: (() => {
+                        let secCount = 0;
+                        return article.contentHtml.replace(/<h2([^>]*)>/gi, (match, attrs) => {
+                          secCount++;
+                          if (/id=/i.test(attrs)) return match;
+                          return `<h2 id="seccion-${secCount}" ${attrs}>`;
+                        });
+                      })()
+                    }} 
+                  />
                 ) : (
                   <>
                     {article.sections?.map((section, sIdx) => (
