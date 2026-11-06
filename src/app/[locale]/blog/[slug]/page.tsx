@@ -234,19 +234,8 @@ export default async function ArticleDetailPage({ params: { locale, slug } }: Pr
       />
 
       <article className="article-page">
-        {/* Hero del Artículo con Fondo Dinámico de Portada */}
-        <header 
-          className="article-hero"
-          style={{
-            backgroundImage: `
-              radial-gradient(circle at 80% 20%, rgba(237, 66, 64, 0.15) 0%, transparent 50%),
-              linear-gradient(to bottom, rgba(15, 23, 42, 0.82) 0%, rgba(15, 23, 42, 0.95) 100%),
-              url("${article.image}")
-            `,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center 25%'
-          }}
-        >
+        {/* Hero del Artículo */}
+        <header className="article-hero">
           <div className="fluid-container article-header-container">
             <nav className="article-breadcrumbs" aria-label="Breadcrumb">
               <Link href="/" className="crumb-link">{isEn ? 'Home' : 'Inicio'}</Link>
@@ -299,6 +288,17 @@ export default async function ArticleDetailPage({ params: { locale, slug } }: Pr
 
         {/* Contenedor del Cuerpo */}
         <div className="fluid-container article-content-layout">
+          
+          {/* Imagen Principal */}
+          <div className="article-featured-image-wrapper">
+            <img 
+              src={article.image} 
+              alt={article.imageAlt} 
+              className="article-featured-img" 
+              loading="eager"
+            />
+          </div>
+
           <div className="article-grid-layout">
             
             {/* Columna Principal de Contenido */}
