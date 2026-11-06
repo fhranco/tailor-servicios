@@ -4,6 +4,8 @@ import { Metadata } from 'next';
 import { createClient } from '@supabase/supabase-js';
 import { Link } from '@/i18n/routing';
 import { getBlogArticleBySlug, getAllBlogSlugs, blogArticlesEs, BlogArticle } from '@/data/blogPosts';
+import blogArticlesCatalog from '@/data/blog_articles.json';
+import CopyLinkButton from '@/components/CopyLinkButton';
 import './page.css';
 
 export const dynamicParams = true;
@@ -221,6 +223,34 @@ export default async function ArticleDetailPage({ params: { locale, slug } }: Pr
 
   const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`;
   const whatsappShareUrl = `https://api.whatsapp.com/send?text=${shareText}%20${shareUrl}`;
+
+  const authorNameLower = (article.author?.name || '').toLowerCase();
+  const isMariaPia = authorNameLower.includes('maría pía') ||
+                     authorNameLower.includes('maria pia') ||
+                     authorNameLower.includes('ma. pía');
+
+  const authorBio = isMariaPia
+    ? (isEn
+        ? 'Executive Director at Tailor Servicios. Specialist in strategic leadership, organizational transformation, and executive talent development across Magallanes and southern Chile.'
+        : 'Directora Ejecutiva de Tailor Servicios. Especialista en liderazgo estratégico, transformación organizacional, alta dirección y desarrollo de talento en Magallanes y la zona austral de Chile.')
+    : (isEn
+        ? 'Multidisciplinary team specializing in C-level headhunting, workforce management, and cultural transformation across Magallanes and central Chile.'
+        : 'Equipo multidisciplinario especializado en Headhunting de alta dirección, reclutamiento masivo, gestión de dotaciones y transformación cultural con cobertura en Magallanes y la zona central de Chile.');
+
+  // Artículos recomendados dinámicos (3 artículos excluyendo el actual)
+  const relatedArticles = (blogArticlesCatalog as any[])
+    .filter((a) => a.slug !== slug)
+    .slice(0, 3)
+    .map((a) => ({
+      slug: a.slug,
+      title: isEn && a.titleEn ? a.titleEn : a.title,
+      category: isEn && a.categoryEn ? a.categoryEn : a.category,
+      image: a.image,
+      imageAlt: a.imageAlt || a.title,
+      readTime: isEn && a.readTimeEn ? a.readTimeEn : a.readTime,
+      authorName: a.author?.name || 'Tailor Servicios',
+      date: a.date
+    }));
 
   return (
     <>
@@ -471,6 +501,12 @@ export default async function ArticleDetailPage({ params: { locale, slug } }: Pr
                       </svg>
                       WhatsApp
                     </a>
+
+                    <CopyLinkButton
+                      url={currentUrl}
+                      label={isEn ? 'Copy Link' : 'Copiar Enlace'}
+                      copiedLabel={isEn ? 'Link Copied!' : '¡Enlace Copiado!'}
+                    />
                   </div>
                 </div>
 
@@ -487,7 +523,7 @@ export default async function ArticleDetailPage({ params: { locale, slug } }: Pr
                   <p className="author-card-desc">{article.author.role}</p>
                 </div>
                 <p className="author-bio">
-                  Equipo multidisciplinario especializado en Headhunting de alta dirección, reclutamiento masivo, gestión de dotaciones y transformación cultural con cobertura en Magallanes y la zona central de Chile.
+                  {authorBio}
                 </p>
                 <div className="author-divider"></div>
                 <div className="author-location">
@@ -517,6 +553,34 @@ export default async function ArticleDetailPage({ params: { locale, slug } }: Pr
             </aside>
 
           </div>
+
+          {/* Artículos Recomendados / Lecturas Sugeridas */}
+          {relatedArticles.length > 0 && (
+            <section className="related-articles-section" aria-label={isEn ? 'Related articles' : 'Artículos relacionados'}>
+              <div className="related-header">
+                <span className="related-badge">★ {isEn ? 'Recommended Reading' : 'Lecturas Recomendadas'}</span>
+                <h3 className="related-title">{isEn ? 'More Strategic Insights' : 'Más Artículos de Estrategia y Liderazgo'}</h3>
+              </div>
+              <div className="related-cards-grid">
+                {relatedArticles.map((rel) => (
+                  <Link key={rel.slug} href={`/blog/${rel.slug}`} className="related-card">
+                    <div className="related-card-image">
+                      <img src={rel.image} alt={rel.imageAlt} loading="lazy" />
+                    </div>
+                    <div className="related-card-body">
+                      <span className="related-card-category">{rel.category}</span>
+                      <h4 className="related-card-title">{rel.title}</h4>
+                      <div className="related-card-meta">
+                        <span className="meta-readtime">{rel.readTime}</span>
+                        <span className="meta-bullet">•</span>
+                        <span>{rel.authorName}</span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
 
         </div>
       </article>
