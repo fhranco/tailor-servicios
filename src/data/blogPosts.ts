@@ -77,12 +77,12 @@ export const blogArticlesEs: BlogArticle[] = [
     "wordCount": 880,
     "featured": true,
     "author": {
-      "id": "liderazgo",
-      "name": "Ma. Pía Avendaño A.",
-      "role": "Directora Ejecutiva - Liderazgo Institucional & Estrategia",
-      "institution": "Tailor Servicios",
-      "avatar": "MP"
-    },
+    "id": "tailor",
+    "name": "Tailor Servicios",
+    "role": "Consultoría Estratégica & Gestión de Personas",
+    "institution": "Tailor Servicios",
+    "avatar": "TS"
+  },
     "image": "/Images/la-red-invisible-que-sostiene-a-las-organizaciones-dap.webp",
     "imageAlt": "Aeronave de DAP sobrevolando buque antártico en las aguas de Magallanes y la Antártica - 46 años de historia",
     "keywords": [

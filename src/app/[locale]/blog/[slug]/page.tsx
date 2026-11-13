@@ -66,7 +66,7 @@ async function resolveBlogArticle(slug: string, locale: string): Promise<BlogArt
             id: dbA.author_id || localArticle?.author?.id || 'consultoria',
             name: dbA.author_name || localArticle?.author?.name || (isEn ? 'Tailor Consulting Team' : 'Equipo de Consultoría Tailor'),
             role: isEn
-              ? (localArticle?.author?.role?.replace('Directora Ejecutiva - Liderazgo Institucional & Estrategia', 'Executive Director - Institutional Leadership & Strategy').replace('Especialistas en Reclutamiento & Gestión de Personas', 'Recruitment & People Management Specialists') || dbA.author_role || '')
+              ? (localArticle?.author?.role?.replace('Directora Ejecutiva - Liderazgo Institucional & Estrategia', 'Executive Director - Institutional Leadership & Strategy').replace('Especialistas en Reclutamiento & Gestión de Personas', 'Recruitment & People Management Specialists').replace('Consultoría Estratégica & Gestión de Personas', 'Strategic Advisory & People Management') || dbA.author_role || '')
               : (dbA.author_role || localArticle?.author?.role || ''),
             institution: dbA.author_institution || localArticle?.author?.institution || 'Tailor Servicios',
             avatar: dbA.author_avatar || localArticle?.author?.avatar || 'TS'
