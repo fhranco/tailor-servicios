@@ -1051,3 +1051,102 @@ html {
   color: #0f172a;
 }
 
+/* ========================================================
+   7. COMPONENTES DE GALERÍA FOTOGRÁFICA EDITORIAL
+   ======================================================== */
+.article-gallery {
+  margin: 2.75rem 0 3.25rem;
+  width: 100%;
+}
+
+.gallery-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.gallery-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.gallery-bento {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  grid-template-rows: repeat(2, 220px);
+  gap: 1.25rem;
+}
+
+.gallery-bento .gallery-item:first-child {
+  grid-row: span 2;
+  height: 100%;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  background: #0f172a;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.gallery-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  max-height: 380px;
+  object-fit: cover;
+  display: block;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.03);
+}
+
+.gallery-caption {
+  font-size: 0.85rem;
+  color: #64748b;
+  line-height: 1.45;
+  padding: 0.75rem 1rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .article-gallery {
+    margin: 2rem 0 2.5rem;
+  }
+
+  .gallery-grid-2,
+  .gallery-grid-3,
+  .gallery-bento {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 1rem;
+  }
+
+  .gallery-bento .gallery-item:first-child {
+    grid-row: auto;
+  }
+
+  .gallery-item img {
+    max-height: 260px;
+  }
+}
+
+
