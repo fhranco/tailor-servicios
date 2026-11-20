@@ -1073,14 +1073,18 @@ html {
 
 .gallery-bento {
   display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  grid-template-rows: repeat(2, 220px);
+  grid-template-columns: 1.15fr 1fr;
+  grid-template-rows: repeat(2, 240px);
   gap: 1.25rem;
 }
 
 .gallery-bento .gallery-item:first-child {
   grid-row: span 2;
   height: 100%;
+}
+
+.gallery-bento .gallery-item:first-child img {
+  max-height: none;
 }
 
 .gallery-item {
@@ -1102,15 +1106,24 @@ html {
 
 .gallery-item img {
   width: 100%;
+  flex: 1;
+  min-height: 0;
   height: 100%;
-  min-height: 200px;
-  max-height: 380px;
   object-fit: cover;
   display: block;
   margin: 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   transition: transform 0.5s ease;
+}
+
+.gallery-grid-2 .gallery-item img,
+.gallery-grid-3 .gallery-item img {
+  height: 240px;
+}
+
+.gallery-item img.object-top {
+  object-position: center 20%;
 }
 
 .gallery-item:hover img {
